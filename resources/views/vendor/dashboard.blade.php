@@ -126,7 +126,7 @@
                                 onclick="event.preventDefault();
                                            document.getElementById('logout-form').submit();"
                                 class="nav-link text-body font-weight-bold px-0">
-                                <i class="fa fa-right-from-bracket"></i>
+                                <p>demo gg</p>
                                 <span class="d-sm-inline d-none">Log Out</span>
                             </a>
                             <form id="logout-form" action="{{ route('vendor.logout') }}" method="POST"
