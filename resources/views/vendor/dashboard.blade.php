@@ -7,7 +7,7 @@
     <link rel="apple-touch-icon" sizes="76x76" href="./assets/img/apple-icon.png">
     <link rel="icon" type="image/png" href="./assets/img/favicon.png">
     <title>
-        Sk Dashboard
+        Vendor Dashboard
     </title>
     <!--     Fonts and icons     -->
     <link rel="stylesheet" type="text/css"
@@ -31,8 +31,7 @@
         <div class="sidenav-header">
             <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
                 aria-hidden="true" id="iconSidenav"></i>
-            <a class="navbar-brand m-0" href=" https://demos.creative-tim.com/material-dashboard/pages/dashboard "
-                target="_blank">
+            <a class="navbar-brand m-0" href="{{ route('vendor.dashboard') }}">
                 <img src="{{ asset('assets/images/favicon.png') }}" class="navbar-brand-img h-100" alt="main_logo">
                 <span class="ms-1 font-weight-bold text-white">Vendor Dashboard</span>
             </a>
@@ -111,12 +110,12 @@
                         </li>
                         <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Dashboard</li>
                     </ol>
-                    <h6 class="font-weight-bolder mb-0">Dashboard</h6>
+                    <h6 class="font-weight-bolder mb-0">Vendor Dashboard</h6>
                 </nav>
                 <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
                     <div class="ms-md-auto pe-md-3 d-flex align-items-center">
                         <div class="input-group input-group-outline">
-                            <label class="form-label">Type here...</label>
+                            <label class="form-label">Type here</label>
                             <input type="text" class="form-control">
                         </div>
                     </div>
@@ -126,7 +125,7 @@
                                 onclick="event.preventDefault();
                                            document.getElementById('logout-form').submit();"
                                 class="nav-link text-body font-weight-bold px-0">
-                                <p>demo gg</p>
+                                <i class="fa fa-user"></i>
                                 <span class="d-sm-inline d-none">Log Out</span>
                             </a>
                             <form id="logout-form" action="{{ route('vendor.logout') }}" method="POST"
