@@ -535,6 +535,9 @@ Route::group([
     Route::group(['middleware' => ['vendor.auth', 'permission']], function () {
         Route::post('logout', [AdminAuthController::class, 'logout'])->name('logout');
         Route::get('dashboard', [VendorController::class, 'index'])->name('dashboard');
+        Route::get('profile', [VendorController::class, 'profile'])->name('profile');
+        Route::get('billing', [VendorController::class, 'billing'])->name('billing');
+        
         // Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
     });
 });

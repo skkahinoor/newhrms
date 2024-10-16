@@ -36,6 +36,5 @@
 
 @section('scripts')
     @include('admin.leadsenquiries.common.scripts')
-    {{-- @include('admin.users.common.scripts') --}}
 @endsection
 

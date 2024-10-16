@@ -124,6 +124,11 @@ class User extends Authenticatable
         return $this->belongsTo(User::class, 'created_by', 'id');
     }
 
+    public function assettype(): BelongsTo
+    {
+        return $this->belongsTo(AssetType::class, 'asset_type', 'id');
+    }
+
     public function updatedBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'updated_by', 'id');
