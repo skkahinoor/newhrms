@@ -38,7 +38,8 @@ class VendorRepository
             'email' => $validatedData['email'],
             'phone' => $validatedData['phone'],
             'password' => Hash::make($validatedData['password']),
-            'user_type' => User::VENDOR
+            'user_type' => User::VENDOR, 
+            'asset_type' => $validatedData['asset-type'],
         ];
 
         return User::create($data)->fresh();

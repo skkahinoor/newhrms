@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Web;
 
 use App\Exports\AssetListExport;
 use App\Http\Controllers\Controller;
+use App\Models\AssetType;
+use App\Models\User;
 use App\Repositories\BrandRepository;
 use App\Repositories\UserRepository;
 use App\Services\AssetManagement\AssetService;
@@ -56,7 +58,9 @@ class VendorRegisterController extends Controller
 
     public function viewRegistrationForm()
     {
-        return view('auth.vendorRegister');
+        $assettype = AssetType::all();
+        $vendoruser = User::all();
+        return view('auth.vendorRegister', compact('assettype', 'vendoruser'));
     }
 
     public function getErrorMessage($data)
@@ -77,11 +81,13 @@ class VendorRegisterController extends Controller
                 'email' => ['required', 'string', 'email', 'max:255'],
                 'phone' => ['required', 'numeric'],
                 'password' => ['required', 'string', 'confirmed'],
+                'asset-type' => ['required']
             ]);
             if ($validatedData->fails()) {
                 // dd($validatedData->errors());
                 return redirect()->back()->withErrors(self::getErrorMessage($validatedData->getMessageBag()->messages()));
             }
+            // dd($validatedData);
             $this->vendorService->saveVendorDetails($request->all());
 
             return redirect()->route('admin.login');

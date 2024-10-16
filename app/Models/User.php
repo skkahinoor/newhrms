@@ -87,6 +87,7 @@ class User extends Authenticatable
         'role_id',
         'supervisor_id',
         'office_time_id',
+        'asset_type',
         'created_by',
         'updated_by',
         'deleted_by',
