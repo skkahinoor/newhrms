@@ -535,6 +535,7 @@ Route::group([
         Route::get('dashboard', [VendorController::class, 'index'])->name('dashboard');
         Route::get('profile', [VendorController::class, 'profile'])->name('profile');
         Route::get('billing', [VendorController::class, 'billing'])->name('billing');
+        Route::get('orders', [VendorController::class, 'orders'])->name('orders');
 
         // Set Light and dark mode theme
         Route::post('user/dark-mode', [VendorController::class, 'updateDarkMode']);

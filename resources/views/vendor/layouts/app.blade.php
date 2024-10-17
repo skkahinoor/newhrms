@@ -36,7 +36,12 @@
         {{-- main Content  --}}
         @yield('main-content')
         {{-- End Main Content  --}}
+    </main>
+    {{-- Vendor Setting  --}}
+    @include('vendor.section.vendorsetting')
 
+    {{-- Vendor Script  --}}
+    @include('vendor.section.vendorscript')
 </body>
 
 </html>
