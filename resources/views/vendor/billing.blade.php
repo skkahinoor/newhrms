@@ -12,7 +12,7 @@
                     <div class="col-xl-6 mb-xl-0 mb-4">
                         <div class="card bg-transparent shadow-xl">
                             <div class="overflow-hidden position-relative border-radius-xl">
-                                <img src="../assets/img/illustrations/pattern-tree.svg"
+                                <img src="{{asset('assets/vendor/img/illustrations/pattern-tree.svg')}}"
                                     class="position-absolute opacity-2 start-0 top-0 w-100 z-index-1 h-100"
                                     alt="pattern-tree">
                                 <span class="mask bg-gradient-dark opacity-10"></span>
@@ -409,23 +409,7 @@
     </main>
     {{-- Vendor Setting  --}}
     @include('vendor.section.vendorsetting')
-    <!--   Core JS Files   -->
-    <script src="{{ asset('assets/vendor/js/core/popper.min.js') }}"></script>
-    <script src="{{ asset('assets/vendor/js/core/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('assets/vendor/js/plugins/perfect-scrollbar.min.js') }}"></script>
-    <script src="{{ asset('assets/vendor/js/plugins/smooth-scrollbar.min.js') }}"></script>
-    <script src="{{ asset('assets/vendor/js/plugins/chartjs.min.js') }}"></script>
-    <script>
-        var win = navigator.platform.indexOf('Win') > -1;
-        if (win && document.querySelector('#sidenav-scrollbar')) {
-            var options = {
-                damping: '0.5'
-            }
-            Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
-        }
-    </script>
-    <!-- Github buttons -->
-    <script async defer src="https://buttons.github.io/buttons.js"></script>
-    <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
-    <script src="{{ asset('assets/vendor/js/material-dashboard.min.js?v=3.0.0') }}"></script>
+    
+    {{-- Vendor Script  --}}
+    @include('vendor.section.vendorscript')
 @endsection

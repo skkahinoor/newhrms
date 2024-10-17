@@ -89,7 +89,6 @@ Route::get('privacy', [PrivacyPolicyController::class, 'index'])->name('privacy-
 Route::get('vendor/register', [VendorRegisterController::class, 'viewRegistrationForm'])->name('vendor.register');
 Route::post('vendor/create', [VendorRegisterController::class, 'store'])->name('vendor.create');
 
-
 Route::group([
     'prefix' => 'admin',
     'as' => 'admin.',
@@ -296,7 +295,6 @@ Route::group([
         Route::get('followuplist', [FollowUpController::class, 'index'])->name('followuplist.list');
         Route::put('followuplist/update/{id}', [FollowUpController::class, 'update'])->name('followuplist.update');
         Route::put('followuplist/follow-up-delete/{id}', [FollowUpController::class, 'followup_destroy'])->name('followuplist.destroy');
-
 
         // Follow Up Setting
         Route::get('followup-setting', [FollowUpSettingController::class, 'index'])->name('followupSetting.index');
@@ -529,7 +527,7 @@ Route::group([
 Route::group([
     'prefix' => 'vendor',
     'as' => 'vendor.',
-    'middleware' => ['web'],  // Same middleware as admin
+    'middleware' => ['web'], // Same middleware as admin
 ], function () {
 
     Route::group(['middleware' => ['vendor.auth', 'permission']], function () {
@@ -537,8 +535,11 @@ Route::group([
         Route::get('dashboard', [VendorController::class, 'index'])->name('dashboard');
         Route::get('profile', [VendorController::class, 'profile'])->name('profile');
         Route::get('billing', [VendorController::class, 'billing'])->name('billing');
-        
-        // Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+        // Set Light and dark mode theme
+        Route::post('user/dark-mode', [VendorController::class, 'updateDarkMode']);
+
+
     });
 });
 
