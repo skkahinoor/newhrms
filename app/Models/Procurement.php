@@ -20,19 +20,32 @@ class Procurement extends Model
         'user_id',
         'asset_type_id',
         'brand_id',
-        'status'
+        'status',
     ];
 
-    public function brands(){
-        return $this->belongsTo(Brand::class,'brand_id');
+    public function brands()
+    {
+        return $this->belongsTo(Brand::class, 'brand_id');
     }
 
-    public function asset_types(){
-        return $this->belongsTo(AssetType::class,'asset_type_id');
+    public function asset_types()
+    {
+        return $this->belongsTo(AssetType::class, 'asset_type_id');
     }
 
-    public function users(){
-        return $this->belongsTo(User::class,'user_id');
+    public function users()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class, 'user_id', 'id');
+    }
+
+    public function company()
+    {
+        return $this->belongsTo(Company::class, 'company_id', 'id');
     }
 
     public function assignedTo(): BelongsTo

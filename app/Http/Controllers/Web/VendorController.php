@@ -38,8 +38,19 @@ class VendorController extends Controller
     {
         $user = Auth::user();
         $getUserDetails = User::find($user->id);
-        $getOrder = Procurement::all();
-        return view('vendor.orders', ['getUserDetails' => $getUserDetails, 'getOrder' => $getOrder]);
+        $getOrder = Procurement::where('asset_type_id', $getUserDetails->asset_type)->where('status', 0)->with(['users','role','company'])->paginate(5);
+        // dd($getOrder);
+        $completeOrder = Procurement::where('asset_type_id', $getUserDetails->asset_type)->where('status', 1)->with(['users','role','company'])->paginate(5);
+        return view('vendor.orders', ['getUserDetails' => $getUserDetails, 'getOrder' => $getOrder, 'completeOrder' => $completeOrder]);
+    }
+
+    public function products()
+    {
+        $user = Auth::user();
+        $getUserDetails = User::find($user->id);
+        $getOrder = Procurement::where('asset_type_id', $getUserDetails->asset_type)->where('status', 0)->with(['users','role','company'])->paginate(5);
+        $completeOrder = Procurement::where('asset_type_id', $getUserDetails->asset_type)->where('status', 1)->with(['users','role','company'])->paginate(5);
+        return view('vendor.orders', ['getUserDetails' => $getUserDetails, 'getOrder' => $getOrder, 'completeOrder' => $completeOrder]);
     }
 
 }

@@ -66,6 +66,16 @@ class Company extends Model
         return $this->hasMany(Branch::class,'company_id','id')->select('id','name')->where('is_active',1);
     }
 
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
+
+    public function procurements()
+    {
+        return $this->hasMany(Procurement::class);
+    }
+
     public function employee()
     {
         return $this->hasMany(User::class,'company_id','id')
