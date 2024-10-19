@@ -50,7 +50,7 @@ class VendorController extends Controller
         $getUserDetails = User::find($user->id);
         $getOrder = Procurement::where('asset_type_id', $getUserDetails->asset_type)->where('status', 0)->with(['users','role','company'])->paginate(5);
         $completeOrder = Procurement::where('asset_type_id', $getUserDetails->asset_type)->where('status', 1)->with(['users','role','company'])->paginate(5);
-        return view('vendor.orders', ['getUserDetails' => $getUserDetails, 'getOrder' => $getOrder, 'completeOrder' => $completeOrder]);
+        return view('vendor.products', ['getUserDetails' => $getUserDetails, 'getOrder' => $getOrder, 'completeOrder' => $completeOrder]);
     }
 
 }

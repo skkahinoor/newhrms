@@ -1,7 +1,7 @@
 @extends('vendor.layouts.app')
-@section('title', 'Vendor Products')
-@section('breadcrumblink', 'Products')
-@section('breadcrumbtitle', 'Vendor Products')
+@section('title', 'Vendor Orders')
+@section('breadcrumblink', 'Orders')
+@section('breadcrumbtitle', 'Vendor Orders')
 {{-- @section('navactivecolor', 'active bg-gradient-primary') --}}
 
 @section('main-content')
