@@ -538,8 +538,10 @@ Route::group([
         Route::get('orders', [VendorController::class, 'orders'])->name('orders');
         Route::get('products', [VendorController::class, 'products'])->name('products');
 
-        // Set Light and dark mode theme
-        Route::post('user/dark-mode', [VendorController::class, 'updateDarkMode']);
+        // Create Product
+        Route::post('products/create', [VendorController::class, 'productCreate'])->name('productcreate');
+
+        
 
 
     });
