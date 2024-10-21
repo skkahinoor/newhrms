@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\VendorProduct;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class VendorController extends Controller
 {
@@ -24,7 +25,7 @@ class VendorController extends Controller
     {
         $user = Auth::user();
         $getUserDetails = User::find($user->id);
-        // dd('hi');
+        
         return view('vendor.profile', ['getUserDetails' => $getUserDetails]);
     }
 
@@ -41,7 +42,7 @@ class VendorController extends Controller
     {
         $user = Auth::user();
         $getUserDetails = User::find($user->id);
-        $getOrder = Procurement::where('asset_type_id', $getUserDetails->asset_type)->where('status', 0)->with(['users', 'role', 'company'])->paginate(5);
+        $getOrder = Procurement::where('asset_type_id', $getUserDetails->asset_type)->where('status', 0)->with(['users', 'role', 'company', 'asset_types'])->paginate(5);
         // dd($getOrder);
         $completeOrder = Procurement::where('asset_type_id', $getUserDetails->asset_type)->where('status', 1)->with(['users', 'role', 'company'])->paginate(5);
         return view('vendor.orders', ['getUserDetails' => $getUserDetails, 'getOrder' => $getOrder, 'completeOrder' => $completeOrder]);
@@ -51,43 +52,53 @@ class VendorController extends Controller
     {
         $user = Auth::user();
         $getUserDetails = User::find($user->id);
+        // dd($getUserDetails->toArray());
         $assetType = AssetType::all();
-        $getOrder = Procurement::where('asset_type_id', $getUserDetails->asset_type)->where('status', 0)->with(['users', 'role', 'company'])->paginate(5);
-        $completeOrder = Procurement::where('asset_type_id', $getUserDetails->asset_type)->where('status', 1)->with(['users', 'role', 'company'])->paginate(5);
-        return view('vendor.products', ['getUserDetails' => $getUserDetails, 'getOrder' => $getOrder, 'completeOrder' => $completeOrder, 'assetType' => $assetType]);
+        $fetchOrder = VendorProduct::where('vendor_id', $getUserDetails->id)->with(['asset_types']);
+        $getOrder = $fetchOrder->paginate(5);
+        return view('vendor.products', ['getUserDetails' => $getUserDetails, 'getOrder' => $getOrder, 'assetType' => $assetType]);
     }
+
 
     public function productCreate(Request $request)
     {
         $getUser = Auth::user();
-    
-        $request->validate([
+        $validator = Validator($request->all(), [
             'product' => 'required',
-            'brand' => 'required|string',
+            'brand' => 'required|string|unique:vendor_products,product_brand',
             'quantity' => 'required|integer',
             'buyprice' => 'required|numeric',
             'saleprice' => 'required|numeric',
-            'margin' => 'required|numeric',
-        ], [
-            'brand.string' => 'Brand name must be a string.',
-            'quantity.integer' => 'Quantity must be an integer.',
-            'buyprice.numeric' => 'Buy price must be a number.',
-            'saleprice.numeric' => 'Sale price must be a number.',
-            'margin.numeric' => 'Margin must be a number.',
         ]);
-    
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
         VendorProduct::create([
-            'vendor_id' => $getUser->id, // Use user ID
+            'vendor_id' => $getUser->id,
             'product_type' => $request->input('product'),
             'product_brand' => $request->input('brand'),
             'quantity' => $request->input('quantity'),
-            'buyprice' => $request->input('buyprice'),
-            'saleprice' => $request->input('saleprice'),
-            'margin' => $request->input('margin'), // Correctly get the margin
+            'buy_price' => $request->input('buyprice'),
+            'sale_price' => $request->input('saleprice'),
+            'margin' => $request->input('margin'),
         ]);
-    
+
         return redirect()->back()->with('success', 'Product added successfully!');
     }
-    
+
+    public function productUpdate(Request $request)
+{
+    $order = VendorProduct::find($request->order_id);
+    // dd($request->order_id);
+    $order->product_brand = $request->input('product_brand');
+    $order->buy_price = $request->input('buy_price');
+    $order->sale_price = $request->input('sale_price');
+    $order->quantity = $request->input('quantity');
+    $order->save();
+
+    return redirect()->back()->with('success', 'Product updated successfully.');
+}
+
 
 }

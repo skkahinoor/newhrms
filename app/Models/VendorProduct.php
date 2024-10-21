@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class VendorProduct extends Model
 {
     use HasFactory;
-    protected $table = 'vendor_products';
+    // protected $table = 'vendor_products';
 
     protected $fillable = [
         'vendor_id',
@@ -17,6 +17,11 @@ class VendorProduct extends Model
         'quantity',
         'buy_price',
         'sale_price',
-        'margin',
+        'margin'
     ];
+
+    public function asset_types()
+    {
+        return $this->belongsTo(AssetType::class, 'product_type', 'id');
+    }
 }

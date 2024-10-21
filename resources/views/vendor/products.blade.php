@@ -6,6 +6,10 @@
 
 @section('main-content')
     <div class="container-fluid py-4">
+
+        {{-- Show Alert Message  --}}
+        @include('vendor.common.flashmessage')
+
         <div class="row">
             <div class="col-12">
                 <div class="card my-4">
@@ -34,52 +38,59 @@
                                                 <option value="">No Product found</option>
                                             @endif
                                         </select>
-                                        <label for="floatingSelectGrid">Select Product&nbsp;<span class="text-danger">*</span></label>
+                                        <label for="floatingSelectGrid">Select Product&nbsp;<span
+                                                class="text-danger">*</span></label>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating"
                                         style="border: solid #3736362e 1px !important;border-radius: 7px !important;">
                                         <input type="text" name="brand" class="form-control" id="floatingInputGrid"
-                                            placeholder="Enter Product Brand" required
-                                            style="padding-left: 7px !important;">
-                                        <label for="floatingInputGrid">Enter Product Brand&nbsp;<span class="text-danger">*</span></label>
+                                            placeholder="Enter Product Brand" required style="padding-left: 7px !important;"
+                                            value="{{ old('brand') }}">
+                                        <label for="floatingInputGrid">Enter Product Brand&nbsp;<span
+                                                class="text-danger">*</span></label>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating"
                                         style="border: solid #3736362e 1px !important;border-radius: 7px !important;">
-                                        <input type="text" name="quantity" class="form-control" id="floatingInputGrid"
+                                        <input type="number" name="quantity" class="form-control" id="floatingInputGrid"
                                             placeholder="Enter Product Quantity" required
-                                            style="padding-left: 7px !important;">
-                                        <label for="floatingInputGrid">Enter Product Quantity&nbsp;<span class="text-danger">*</span></label>
+                                            style="padding-left: 7px !important;" value="{{ old('quantity') }}">
+                                        <label for="floatingInputGrid">Product Available Quantity&nbsp;<span
+                                                class="text-danger">*</span></label>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating"
                                         style="border: solid #3736362e 1px !important;border-radius: 7px !important;">
-                                        <input type="text" name="buyprice" class="form-control" id="floatingInputGrid"
-                                            placeholder="Enter Product Quantity" required
+                                        <input type="number" name="buyprice" class="form-control" id="floatingInputGrid"
+                                            placeholder="Enter Product Quantity" value="{{ old('buyprice') }}" required
                                             style="padding-left: 7px !important;">
-                                        <label for="floatingInputGrid">Enter Product Buy Price&nbsp;<span class="text-danger">*</span></label>
+                                        <label for="floatingInputGrid">Enter Product Buy Price&nbsp;<span
+                                                class="text-danger">*</span></label>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating"
                                         style="border: solid #3736362e 1px !important;border-radius: 7px !important;">
-                                        <input type="text" name="saleprice" class="form-control" id="floatingInputGrid"
-                                            placeholder="Enter Product Quantity" required
+                                        <input type="number" name="saleprice" class="form-control" id="floatingInputGrid"
+                                            placeholder="Enter Product Quantity" value="{{ old('saleprice') }}" required
                                             style="padding-left: 7px !important;">
-                                        <label for="floatingInputGrid">Enter Product Sale Price&nbsp;<span class="text-danger">*</span></label>
+                                        <label for="floatingInputGrid">Enter Product Sale Price&nbsp;<span
+                                                class="text-danger">*</span></label>
                                     </div>
                                 </div>
+                                <!-- Margin -->
                                 <div class="col-md-6">
                                     <div class="form-floating"
                                         style="border: solid #3736362e 1px !important;border-radius: 7px !important;">
                                         <input type="text" name="margin" class="form-control" id="floatingInputGrid"
-                                            placeholder="Estimated Margin" readonly
+                                            placeholder="Estimated Margin" value="{{ old('margin') }}" readonly
                                             style="padding-left: 7px !important;">
-                                        <label for="floatingInputGrid">Your Estimated Margin</label>
+                                        <label for="floatingInputGrid">Your Estimated Margin in&nbsp;<span
+                                                class="text-danger">₹</span></label>
                                     </div>
                                 </div>
                             </div>
@@ -122,25 +133,22 @@
                                                 #</th>
                                             <th
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                Order Number</th>
+                                                Product</th>
                                             <th
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                Requirement</th>
+                                                Product Brand</th>
                                             <th
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                                 Quantity</th>
                                             <th
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                Brand</th>
+                                                Buy Price</th>
                                             <th
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                Requested Date</th>
+                                                Sale Price</th>
                                             <th
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                Deliver Date</th>
-                                            <th
-                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                Status</th>
+                                                Margin</th>
                                             <th
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                                 Action</th>
@@ -155,11 +163,11 @@
                                                 </td>
                                                 <td class="align-middle text-center">
                                                     <span
-                                                        class="text-secondary text-xs font-weight-bold">{{ $order->procurement_number ?? 'N/A' }}</span>
+                                                        class="text-secondary text-xs font-weight-bold">{{ $order->asset_types->name ?? 'N/A' }}</span>
                                                 </td>
                                                 <td class="align-middle text-center">
                                                     <span
-                                                        class="text-secondary text-xs font-weight-bold">{{ $order->asset_types->name ?? 'N/A' }}</span>
+                                                        class="text-secondary text-xs font-weight-bold">{{ $order->product_brand ?? 'N/A' }}</span>
                                                 </td>
                                                 <td class="align-middle text-center">
                                                     <span
@@ -167,26 +175,51 @@
                                                 </td>
                                                 <td class="align-middle text-center">
                                                     <span
-                                                        class="text-secondary text-xs font-weight-bold">{{ $order->brands->name ?? 'N/A' }}</span>
+                                                        class="text-secondary text-xs font-weight-bold">₹{{ $order->buy_price ?? 'N/A' }}</span>
                                                 </td>
                                                 <td class="align-middle text-center">
                                                     <span
-                                                        class="text-secondary text-xs font-weight-bold">{{ $order->request_date }}</span>
+                                                        class="text-secondary text-xs font-weight-bold">₹{{ $order->sale_price }}</span>
                                                 </td>
                                                 <td class="align-middle text-center">
                                                     <span
-                                                        class="text-secondary text-xs font-weight-bold">{{ $order->delivery_date }}</span>
+                                                        class="text-secondary text-xs font-weight-bold">₹{{ $order->margin ?? 'N/A' }}</span>
                                                 </td>
-                                                <td class="align-middle text-center text-sm">
-                                                    <span
-                                                        class="badge badge-sm bg-gradient-info">{{ $order->status == 0 ? 'Active' : 'Error' }}</span>
-                                                </td>
+                                                <td class="align-middle text-center">
 
-                                                <td class="align-middle text-center">
-                                                    <a href="javascript:;" class="text-secondary font-weight-bold text-xs"
-                                                        data-toggle="tooltip" data-original-title="Edit user">
-                                                        Make Quotation
-                                                    </a>
+                                                    <div class="row"
+                                                        style="display: flex !important;justify-content: center !important;">
+                                                        <div class="col-md-3">
+                                                            <a class="editProductBtn" data-id="{{ $order->id }}"
+                                                                data-brand="{{ $order->product_brand }}"
+                                                                data-buyprice="{{ $order->buy_price }}"
+                                                                data-saleprice="{{ $order->sale_price }}"
+                                                                data-quantity="{{ $order->quantity }}"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#editProductBtnModal"
+                                                                style="cursor: pointer;">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="1em"
+                                                                    height="1.2rem" viewBox="0 0 24 24">
+                                                                    <path fill="#ff4242"
+                                                                        d="m7 17.013l4.413-.015l9.632-9.54c.378-.378.586-.88.586-1.414s-.208-1.036-.586-1.414l-1.586-1.586c-.756-.756-2.075-.752-2.825-.003L7 12.583zM18.045 4.458l1.589 1.583l-1.597 1.582l-1.586-1.585zM9 13.417l6.03-5.973l1.586 1.586l-6.029 5.971L9 15.006z" />
+                                                                    <path fill="#ff4242"
+                                                                        d="M5 21h14c1.103 0 2-.897 2-2v-8.668l-2 2V19H8.158c-.026 0-.053.01-.079.01c-.033 0-.066-.009-.1-.01H5V5h6.847l2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2" />
+                                                                </svg>
+                                                            </a>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <a class="deleteProduct" data-id="{{ $order->id }}"
+                                                                data-toggle="modal" data-target="#deleteProductModal"
+                                                                style="cursor: pointer;">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="1em"
+                                                                    height="1.2rem" viewBox="0 0 24 24">
+                                                                    <path fill="#ff4242"
+                                                                        d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V9c0-1.1-.9-2-2-2H8c-1.1 0-2 .9-2 2zM18 4h-2.5l-.71-.71c-.18-.18-.44-.29-.7-.29H9.91c-.26 0-.52.11-.7.29L8.5 4H6c-.55 0-1 .45-1 1s.45 1 1 1h12c.55 0 1-.45 1-1s-.45-1-1-1" />
+                                                                </svg>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -206,4 +239,54 @@
         {{-- Vendor Footer here  --}}
         @include('vendor.section.vendorfooter')
     </div>
+
+
+    {{-- Model Code is here  --}}
+
+    {{-- Modal for Update Product  --}}
+    <!-- Modal -->
+    <div class="modal fade" id="editProductBtnModal" tabindex="-1" aria-labelledby="editProductLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editProductLabel">Edit Product</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editProductForm" action="{{ route('vendor.productupdate') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="order_id" id="order_id">
+                        <div class="mb-3">
+                            <label for="product_brand" class="form-label">Brand</label>
+                            <input type="text" class="form-control" id="product_brand" name="product_brand">
+                        </div>
+                        <div class="mb-3">
+                            <label for="buy_price" class="form-label">Buy Price</label>
+                            <input type="number" class="form-control" id="buy_price" name="buy_price">
+                        </div>
+                        <div class="mb-3">
+                            <label for="sale_price" class="form-label">Sale Price</label>
+                            <input type="number" class="form-control" id="sale_price" name="sale_price">
+                        </div>
+                        <div class="mb-3">
+                            <label for="sale_price" class="form-label">Margin</label>
+                            <input type="number" class="form-control" id="modalmargin" name="modalmargin" disabled>
+                        </div>
+                        <div class="mb-3">
+                            <label for="quantity" class="form-label">Quantity</label>
+                            <input type="number" class="form-control" id="quantity" name="quantity">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    {{-- Script  --}}
+    @include('vendor.common.script')
+
+
 @endsection

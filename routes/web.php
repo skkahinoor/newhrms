@@ -540,6 +540,7 @@ Route::group([
 
         // Create Product
         Route::post('products/create', [VendorController::class, 'productCreate'])->name('productcreate');
+        Route::post('update-product', [VendorController::class, 'productUpdate'])->name('productupdate');
 
         
 

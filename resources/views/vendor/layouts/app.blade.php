@@ -42,6 +42,7 @@
 
     {{-- Vendor Script  --}}
     @include('vendor.section.vendorscript')
+    
 </body>
 
 </html>
