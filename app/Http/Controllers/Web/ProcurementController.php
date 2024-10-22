@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Web;
 use App\Exports\AssetAssignmentListExport;
 use App\Http\Controllers\Controller;
 use App\Models\Asset;
+use App\Models\Procurement;
 use App\Repositories\AssetAssignmentRepository;
 use App\Repositories\BrandRepository;
 use App\Repositories\ProcurementRepository;
@@ -15,6 +16,7 @@ use App\Services\AssetManagement\AssetTypeService;
 use App\Services\Procurement\ProcurementService;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -35,12 +37,13 @@ class ProcurementController extends Controller
     ) {}
     public function index(Request $request)
     {
-        // $this->authorize('list_type');
         $this->authorize('view_procurement');
         try {
+            $getUser = Auth::user();
+            $getProcurement = Procurement::all();
             $filterParameters = [
                 'procurement_number' => $request->procurement_number ?? null,
-                'user_id' => $request->user_id ?? null,
+                'user_id' => $request->user_id,
                 'email' => $request->email ?? null,
                 'asset_type_id' => $request->asset_type_id ?? null,
                 'quantity' => $request->quantity ?? null,
@@ -49,21 +52,22 @@ class ProcurementController extends Controller
                 'delivery_date' => $request->delivery_date ?? null,
                 'brand_id' => $request->asset_type_id ?? null,
                 'download_excel' => $request->download_excel ?? null,
-
             ];
+           
             $select = ['*'];
             $with = ['users', 'asset_types', 'brands'];
             $assetType = $this->assetTypeService->getAllAssetTypes(['id', 'name']);
             $brands = $this->brandRepo->getBrandlist(['id', 'name']);
             $requests = $this->procurementRepo->getAllRequests($filterParameters, $select, $with);
-
+            // dd($requests);
+            
             if ($filterParameters['download_excel']) {
                 unset($filterParameters['download_excel']);
                 return Excel::download(new AssetAssignmentListExport($filterParameters), 'Asset-assignment-report.xlsx');
             }
             // dd($request->all());
 
-            return view($this->view . 'index', compact('requests', 'assetType', 'filterParameters', 'brands'));
+            return view($this->view . 'index', compact('requests', 'assetType', 'filterParameters', 'brands', 'getProcurement'));
         } catch (\Exception $exception) {
             return redirect()->back()->with('danger', $exception->getMessage());
         }

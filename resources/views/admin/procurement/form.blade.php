@@ -7,7 +7,7 @@
             id="pnumber" name="procurement_number" required autocomplete="off" placeholder="Number">
     </div>
 
-    <div class="col-lg-4 col-md-6 mb-4">
+    {{-- <div class="col-lg-4 col-md-6 mb-4">
         <label for="user_id" class="form-label">Name</label>
         <select class="form-select" id="user_id" name="user_id">
             <option value="" {{ isset($procurementDetail) || old('assigned_to') ? '' : 'selected' }}>Select
@@ -19,7 +19,7 @@
                 </option>
             @endforeach
         </select>
-    </div>
+    </div> --}}
 
     <div class="col-lg-4 col-md-6 mb-4">
         <label for="email" class="form-label">Email <span style="color: red">*</span></label>
@@ -82,7 +82,7 @@
         <label for="purpose" class="form-label">Purpose</label>
         <textarea class="form-control" name="purpose" id="ckeditor" rows="2">{{ isset($procurementDetail) ? $procurementDetail->purpose : old('note') }}</textarea>
     </div>
-
+    
     @canany(['edit_assets', 'create_assets'])
         <div class="text-start">
             <button type="submit" class="btn btn-primary">

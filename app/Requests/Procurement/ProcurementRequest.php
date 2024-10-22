@@ -26,7 +26,6 @@ class ProcurementRequest extends FormRequest
     {
         $rules =  [
             'procurement_number' => 'required',
-            'user_id' => 'required',
             'brand_id' => 'required',
             'email' => 'required',
             'asset_type_id' => [
@@ -38,6 +37,7 @@ class ProcurementRequest extends FormRequest
             'request_date' => 'required',
             'delivery_date' => ['required', 'after_or_equal:request_date'],
             'purpose' => ['nullable', 'string'],
+            // 'status' => 'required',
         ];
 
         return $rules;

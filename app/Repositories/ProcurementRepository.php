@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Company;
 use App\Models\Procurement;
+use Illuminate\Support\Facades\Auth;
 
 class ProcurementRepository
 {
@@ -58,6 +59,8 @@ class ProcurementRepository
 
     public function store($data)
     {
+        $data['user_id'] = Auth::user()->id;
+        // $data['status'] = 
         return Procurement::create($data)->fresh();
     }
 
