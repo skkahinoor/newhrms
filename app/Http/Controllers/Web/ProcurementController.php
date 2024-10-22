@@ -35,7 +35,8 @@ class ProcurementController extends Controller
     ) {}
     public function index(Request $request)
     {
-        $this->authorize('list_type');
+        // $this->authorize('list_type');
+        $this->authorize('view_procurement');
         try {
             $filterParameters = [
                 'procurement_number' => $request->procurement_number ?? null,
@@ -70,6 +71,7 @@ class ProcurementController extends Controller
 
     public function create()
     {
+        $this->authorize('create_procurement');
         try {
             $employeeSelect = ['id', 'name'];
             $typeSelect = ['id', 'name'];
@@ -88,6 +90,7 @@ class ProcurementController extends Controller
 
     public function store(ProcurementRequest $request)
     {
+        $this->authorize('create_procurement');
         try {
             $validated_data = $request->validated();
             $this->procurementService->storeProcurement($validated_data);
@@ -99,7 +102,8 @@ class ProcurementController extends Controller
 
     public function edit($id)
     {
-        $this->authorize('edit_assets');
+        $this->authorize('edit_procurement');
+        // $this->authorize('edit_assets');
         try {
             $employeeSelect = ['id', 'name'];
             $typeSelect = ['id', 'name'];
@@ -115,6 +119,7 @@ class ProcurementController extends Controller
 
     public function update(ProcurementRequest $request, $id)
     {
+        $this->authorize('edit_procurement');
         try {
             $validatedData = $request->validated();
             $this->procurementService->updateProcurement($id, $validatedData);
@@ -129,6 +134,7 @@ class ProcurementController extends Controller
 
     public function delete($id)
     {
+        $this->authorize('delete_procurement');
         try {
             DB::beginTransaction();
             $this->procurementService->deleteProcurementRequest($id);
@@ -142,11 +148,12 @@ class ProcurementController extends Controller
 
     public function show(Request $request, $id)
     {
+        $this->authorize('show_procurement');
         try {
             $select = ['*'];
             $with = ['asset_types:id,name', 'assignedTo:id,name'];
             $procurementDetails = $this->procurementService->findProcurementById($id, $select, $with, );
-            
+
             return view('admin.procurement.show', compact('procurementDetails'));
         } catch (Exception $exception) {
             return redirect()->back()->with('danger', $exception->getMessage());

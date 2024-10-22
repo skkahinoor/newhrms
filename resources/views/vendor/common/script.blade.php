@@ -35,6 +35,7 @@
             var productBrand = $(this).data('brand');
             var buyPrice = $(this).data('buyprice');
             var salePrice = $(this).data('saleprice');
+            var margin = $(this).data('margin');
             var quantity = $(this).data('quantity');
 
             // Log the data to make sure they are being fetched correctly
@@ -43,6 +44,7 @@
                 productBrand,
                 buyPrice,
                 salePrice,
+                margin,
                 quantity
             });
 
@@ -51,6 +53,7 @@
             $('#product_brand').val(productBrand);
             $('#buy_price').val(buyPrice);
             $('#sale_price').val(salePrice);
+            $('#modalmargin').val(margin);
             $('#quantity').val(quantity);
 
         });
@@ -72,6 +75,20 @@
 
         // Initialize margin calculation on page load if values are pre-filled
         calculateMargin();
+
+        // Delete Product modal code 
+        $(document).ready(function() {
+            // Trigger delete modal and populate with order id
+            $(document).on('click', '.deleteProduct', function() {
+                var orderId = $(this).data('id');
+                // Set the order id in the modal's hidden input field
+                $('#delete_order_id').val(orderId);
+
+                // Show the delete confirmation modal
+                $('#deleteProductModal').modal('show');
+            });
+        });
+
 
     });
 </script>

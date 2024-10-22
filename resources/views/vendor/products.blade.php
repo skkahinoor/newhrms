@@ -30,7 +30,8 @@
                                             <option value="">Select option</option>
                                             @if (count($assetType) > 0)
                                                 @foreach ($assetType as $product)
-                                                    <option value="{{ $product->id }}">
+                                                    <option value="{{ $product->id }}"
+                                                        {{ $getUserDetails->asset_type == $product->id ? 'selected' : '' }}>
                                                         {{ $product->name }}
                                                     </option>
                                                 @endforeach
@@ -118,11 +119,10 @@
                         </div>
                     </div>
                     <div class="card-body px-0 pb-2">
-                        @if ($getOrder->count() < 0)
+                        @if ($fetchProduct->isEmpty())
                             <br>
                             <p class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">No
-                                Active
-                                Orders Found ...</p>
+                                Product Found ...</p>
                         @else
                             <div class="table-responsive p-0">
                                 <table class="table align-items-center mb-0">
@@ -194,6 +194,7 @@
                                                                 data-brand="{{ $order->product_brand }}"
                                                                 data-buyprice="{{ $order->buy_price }}"
                                                                 data-saleprice="{{ $order->sale_price }}"
+                                                                data-margin="{{ $order->margin }}"
                                                                 data-quantity="{{ $order->quantity }}"
                                                                 data-bs-toggle="modal"
                                                                 data-bs-target="#editProductBtnModal"
@@ -209,7 +210,7 @@
                                                         </div>
                                                         <div class="col-md-3">
                                                             <a class="deleteProduct" data-id="{{ $order->id }}"
-                                                                data-toggle="modal" data-target="#deleteProductModal"
+                                                                data-bs-toggle="modal" data-target="#deleteProductModal"
                                                                 style="cursor: pointer;">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="1em"
                                                                     height="1.2rem" viewBox="0 0 24 24">
@@ -258,31 +259,67 @@
                         @csrf
                         <input type="hidden" name="order_id" id="order_id">
                         <div class="mb-3">
-                            <label for="product_brand" class="form-label">Brand</label>
-                            <input type="text" class="form-control" id="product_brand" name="product_brand">
+                            <label for="product_brand" class="form-label">Brand&nbsp;<span
+                                    class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="product_brand" name="product_brand"
+                                placeholder="Enter the Product Brand Name" required>
                         </div>
                         <div class="mb-3">
-                            <label for="buy_price" class="form-label">Buy Price</label>
-                            <input type="number" class="form-control" id="buy_price" name="buy_price">
+                            <label for="buy_price" class="form-label">Buy Price&nbsp;<span
+                                    class="text-danger">*</span></label>
+                            <input type="number" class="form-control" id="buy_price" name="buy_price"
+                                placeholder="Enter the Product Buy Price" required>
                         </div>
                         <div class="mb-3">
-                            <label for="sale_price" class="form-label">Sale Price</label>
-                            <input type="number" class="form-control" id="sale_price" name="sale_price">
+                            <label for="sale_price" class="form-label">Sale Price&nbsp;<span
+                                    class="text-danger">*</span></label>
+                            <input type="number" class="form-control" id="sale_price" name="sale_price"
+                                placeholder="Enter the Product Sale Price" required>
                         </div>
                         <div class="mb-3">
                             <label for="sale_price" class="form-label">Margin</label>
-                            <input type="number" class="form-control" id="modalmargin" name="modalmargin" disabled>
+                            <input type="number" class="form-control" id="modalmargin" name="modalmargin" readonly
+                                placeholder=" Margin Will be Automatic calculated">
                         </div>
                         <div class="mb-3">
-                            <label for="quantity" class="form-label">Quantity</label>
-                            <input type="number" class="form-control" id="quantity" name="quantity">
+                            <label for="quantity" class="form-label">Available Quantity&nbsp;<span
+                                    class="text-danger">*</span></label>
+                            <input type="number" class="form-control" id="quantity" name="quantity"
+                                placeholder="Enter the Product available stock" required>
                         </div>
-                        <button type="submit" class="btn btn-primary">Save changes</button>
+                        <button type="submit" class="btn btn-primary">Update</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+
+    {{-- Modal for Delete  --}}
+    <!-- Delete Product Modal -->
+    <div class="modal fade" id="deleteProductModal" tabindex="-1" aria-labelledby="deleteProductModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteProductModalLabel">Delete Product</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete this product?</p>
+                    <form id="deleteProductForm" action="{{ route('vendor.productdelete') }}" method="POST">
+                        @csrf
+                        @method('PUT') 
+                        <input type="hidden" name="order_id" id="delete_order_id">
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary">Delete</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 
     {{-- Script  --}}

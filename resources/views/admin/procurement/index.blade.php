@@ -2,7 +2,7 @@
 @section('title', 'Procurement')
 @section('action', 'Procurements')
 @section('button')
-    @can('create_type')
+    @can('create_procurement')
         <a href="{{ route('admin.procurement.create') }}">
             <button class="btn btn-primary">
                 <i class="link-icon" data-feather="plus"></i>Add Request
@@ -112,7 +112,7 @@
 
                                 <td class="text-center">
                                     <ul class="d-flex list-unstyled mb-0 justify-content-center">
-                                        @can('edit_assets')
+                                        @can('edit_procurement')
                                             <li class="me-2">
                                                 <a href="{{ route('admin.procurement.edit', $value->id) }}" title="Edit">
                                                     <i class="link-icon" data-feather="edit"></i>
@@ -120,7 +120,7 @@
                                             </li>
                                         @endcan
 
-                                        @can('show_asset')
+                                        @can('show_procurement')
                                             <li class="me-2">
                                                 <a href="{{ route('admin.procurement.show', $value->id) }}" title="Show Detail">
                                                     <i class="link-icon" data-feather="eye"></i>
@@ -128,7 +128,7 @@
                                             </li>
                                         @endcan
 
-                                        @can('delete_assets')
+                                        @can('delete_procurement')
                                             <li>
                                                 <a href="{{ route('admin.procurement.delete', $value->id) }}" title="Delete">
                                                     <i class="link-icon" data-feather="delete"></i>

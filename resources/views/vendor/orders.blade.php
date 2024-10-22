@@ -15,7 +15,7 @@
                         </div>
                     </div>
                     <div class="card-body px-0 pb-2">
-                        @if ($getOrder->count() < 0)
+                        @if ($getOrder->isEmpty())
                             <br>
                             <p class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">No
                                 Active
@@ -117,7 +117,7 @@
                         </div>
                     </div>
                     <div class="card-body px-0 pb-2">
-                        @if ($getOrder->count() < 0)
+                        @if ($getOrder->isEmpty())
                             <br>
                             <p class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">No
                                 Complete
