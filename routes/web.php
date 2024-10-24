@@ -421,6 +421,8 @@ Route::group([
         ]);
         Route::get('procurement/show/{id}', [ProcurementController::class, 'show'])->name('procurement.show');
         Route::get('procurement/delete/{id}', [ProcurementController::class, 'delete'])->name('procurement.delete');
+        Route::post('procurement/{id}/change-status', [ProcurementController::class, 'changeStatus'])->name('change-status');
+        Route::post('procurement/{id}/pause-status', [ProcurementController::class, 'pauseStatus'])->name('pause-status');
 
         /** Salary Component route */
         Route::resource('salary-components', SalaryComponentController::class, [

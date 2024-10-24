@@ -23,21 +23,36 @@
         <div class="card">
             <?php
             $changeColor = [
-                0 => 'warning',
-                1 => 'success',
-            ];
-            $changetextcolor = [
-                0 => 'black',
-                1 => 'white',
-            ];
+                                0 => 'warning',
+                                1 => 'success',
+                                2 => 'info',
+                                3 => 'success',
+                                4 => 'danger',
+                            
+                                // null => 'danger'
+                            ];
+                            $changeTextColor = [
+                                0 => '#000000',
+                                1 => '#ffffff',
+                                2 => '#ffffff',
+                                3 => '#ffffff',
+                                4 => '#ffffff',
+                            ];
+                            $changeStatusValue = [
+                                0 => 'Pending',
+                                1 => 'Approved',
+                                2 => 'In Process',
+                                3 => 'Delivered',
+                                4 => 'Pause',
+                            ];
             ?>
             <h4 class="card-header">Procurement Details&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="1.2em"
                     height="1.2em" viewBox="0 0 24 24">
                     <path fill="none" stroke="#e82e5f" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M13 5h8m-8 4h5m-5 6h8m-8 4h5M3 5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1zm0 10a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z" />
                 </svg>&nbsp;<span
-                    style="font-size: 11px; padding: 7px; color:{{ $changetextcolor[$procurementDetails->status] }}; border-radius:5px;"
-                    class="btn-{{ $changeColor[$procurementDetails->status] }}">{{ $procurementDetails->status == 0 ? 'Pending' : 'Approved' }}</span>
+                    style="font-size: 11px; padding: 7px; color:{{ $changeTextColor[$procurementDetails->status] }}; border-radius:5px;"
+                    class="btn-{{ $changeColor[$procurementDetails->status] }}"> {{ $changeStatusValue[$procurementDetails->status] ?? 'null' }}</span>
             </h4>
             <div class="card-body">
                 <div class="row">

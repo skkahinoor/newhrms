@@ -53,7 +53,8 @@
         @include('admin.section.flash_message')
         @include('admin.procurement.breadCrumb')
 
-        <div class="card">
+        @if (true)
+             <div class="card">
             <div class="card-body">
                 <div class="table-responsive" style="overflow-x: clip !important;">
                     <table id="dataTableExample" class="table">
@@ -200,11 +201,39 @@
                                                 <li>
                                                     <a style="cursor: pointer; color: #383838 !important; font-size: 13px; font-weight: bold;"
                                                         class="dropdown-item deleteLeadEnquiryLink" href="#"
-                                                        data-toggle="modal" data-target="#confirmModal">
+                                                        data-id="{{ $value->id }}" data-toggle="modal"
+                                                        data-target="#confirmModal"><svg
+                                                            xmlns="http://www.w3.org/2000/svg" width="1.2rem"
+                                                            height="1.2rem" viewBox="0 0 24 24">
+                                                            <path fill="#ff4242"
+                                                                d="m23 12l-2.44-2.78l.34-3.68l-3.61-.82l-1.89-3.18L12 3L8.6 1.54L6.71 4.72l-3.61.81l.34 3.68L1 12l2.44 2.78l-.34 3.69l3.61.82l1.89 3.18L12 21l3.4 1.46l1.89-3.18l3.61-.82l-.34-3.68zm-13 5l-4-4l1.41-1.41L10 14.17l6.59-6.59L18 9z" />
+                                                        </svg>
                                                         &nbsp;Approve This Procurement
                                                     </a>
                                                 </li>
                                             @endif
+                                            <li>
+                                                <a style="cursor: pointer; color: #383838 !important; font-size: 13px; font-weight: bold;"
+                                                    class="dropdown-item pauseOrder" href="#"
+                                                    data-id="{{ $value->id }}" data-toggle="modal"
+                                                    data-target="#pauseModal"><svg xmlns="http://www.w3.org/2000/svg"
+                                                        width="1.2rem" height="1.2rem" viewBox="0 0 24 24">
+                                                        <g fill="none" stroke="#ff4242" stroke-dasharray="32"
+                                                            stroke-dashoffset="32" stroke-linecap="round"
+                                                            stroke-linejoin="round" stroke-width="2">
+                                                            <path d="M7 6h2v12h-2Z">
+                                                                <animate fill="freeze" attributeName="stroke-dashoffset"
+                                                                    dur="0.4s" values="32;0" />
+                                                            </path>
+                                                            <path d="M15 6h2v12h-2Z">
+                                                                <animate fill="freeze" attributeName="stroke-dashoffset"
+                                                                    begin="0.4s" dur="0.4s" values="32;0" />
+                                                            </path>
+                                                        </g>
+                                                    </svg>
+                                                    &nbsp;Pause This Procurement
+                                                </a>
+                                            </li>
                                         </ul>
                                     </div>
                                 </td>
@@ -223,6 +252,8 @@
                 </div>
             </div>
         </div>
+        @endif
+       
     </section>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script type="text/javascript" src="{{ asset('ckeditor/ckeditor.js') }}"></script>
@@ -234,7 +265,7 @@
     <!-- Modal -->
     <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel"
         aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="confirmModalLabel">Confirm Status Change</h5>
@@ -252,6 +283,138 @@
             </div>
         </div>
     </div>
+
+    {{-- Pause Procurement modal  --}}
+    <div class="modal fade" id="pauseModal" tabindex="-1" role="dialog" aria-labelledby="pauseModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="pauseModalLabel">Confirm To Pause</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to Pause the Procurement?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="pauseStatusChange">Yes, Pause Now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // JS code to change status - approved
+        document.addEventListener('DOMContentLoaded', function() {
+
+            let procurementId = null;
+
+
+            document.querySelectorAll('.deleteLeadEnquiryLink').forEach(function(link) {
+                link.addEventListener('click', function() {
+
+                    procurementId = this.getAttribute(
+                        'data-id');
+                });
+            });
+
+            // Handle the modal confirmation
+            document.getElementById('confirmStatusChange').addEventListener('click', function() {
+                console.log(procurementId);
+
+                if (procurementId) {
+                    // Make AJAX request to change the status
+                    fetch(`procurement/${procurementId}/change-status`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            },
+                            body: JSON.stringify({
+                                status: 1
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                $('#confirmModal').modal('hide');
+                                Swal.fire('Success!', 'Status updated successfully!',
+                                    'success').then(() => {
+                                    location
+                                        .reload();
+                                });
+                            } else {
+                                Swal.fire('Error!', 'Failed to update status!',
+                                    'error').then(() => {
+                                    location
+                                        .reload();
+                                });
+                            }
+                        })
+                        .catch(error => console.error('Error:', error));
+                }
+            });
+        });
+
+        // JS code to change status - pause
+        document.addEventListener('DOMContentLoaded', function() {
+
+            let procurementId = null;
+
+
+            document.querySelectorAll('.pauseOrder').forEach(function(link) {
+                link.addEventListener('click', function() {
+
+                    procurementId = this.getAttribute(
+                        'data-id');
+                });
+            });
+
+            // Handle the modal confirmation
+            document.getElementById('pauseStatusChange').addEventListener('click', function() {
+                console.log(procurementId);
+
+                if (procurementId) {
+                    // Make AJAX request to change the status
+                    fetch(`procurement/${procurementId}/pause-status`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            },
+                            body: JSON.stringify({
+                                status: 4
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            // Close the modal regardless of success or error
+                            $('#pauseModal').modal('hide');
+
+                            if (data.success) {
+                                // Show success alert with SweetAlert2 and reload
+                                Swal.fire('Success!', 'Status updated successfully!', 'success')
+                                    .then(() => location.reload());
+                            } else {
+                                // Show error alert with SweetAlert2 and reload
+                                Swal.fire('Error!', 'Failed to update status!', 'error')
+                                    .then(() => location.reload());
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            // Handle unexpected errors gracefully
+                            Swal.fire('Error!', 'An unexpected error occurred!', 'error')
+                                .then(() => location.reload());
+                        });
+                }
+            });
+
+        });
+    </script>
 
 @endsection
 

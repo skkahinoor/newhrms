@@ -53,21 +53,30 @@ class ProcurementController extends Controller
                 'brand_id' => $request->asset_type_id ?? null,
                 'download_excel' => $request->download_excel ?? null,
             ];
-           
-            $select = ['*'];
-            $with = ['users', 'asset_types', 'brands'];
-            $assetType = $this->assetTypeService->getAllAssetTypes(['id', 'name']);
-            $brands = $this->brandRepo->getBrandlist(['id', 'name']);
-            $requests = $this->procurementRepo->getAllRequests($filterParameters, $select, $with);
-            // dd($requests);
-            
-            if ($filterParameters['download_excel']) {
-                unset($filterParameters['download_excel']);
-                return Excel::download(new AssetAssignmentListExport($filterParameters), 'Asset-assignment-report.xlsx');
-            }
-            // dd($request->all());
+            if (auth()->user()->role_id == $getUser->id) { // is Admin
+                $isAdmin = true;
+                $select = ['*'];
+                $with = ['users', 'asset_types', 'brands'];
+                $where = ['user_id', $getUser->id];
+                $assetType = $this->assetTypeService->getAllAssetTypes(['id', 'name']);
+                $brands = $this->brandRepo->getBrandlist(['id', 'name']);
+                $requests = $this->procurementRepo->getAllRequests($filterParameters, $select, $with);
 
-            return view($this->view . 'index', compact('requests', 'assetType', 'filterParameters', 'brands', 'getProcurement'));
+                if ($filterParameters['download_excel']) {
+                    unset($filterParameters['download_excel']);
+                    return Excel::download(new AssetAssignmentListExport($filterParameters), 'Asset-assignment-report.xlsx');
+                }
+            } else { // For other users
+                $isAdmin = false;
+                $select = ['*'];
+                $with = ['users', 'asset_types', 'brands'];
+                $assetType = $this->assetTypeService->getAllAssetTypes(['id', 'name']);
+                $brands = $this->brandRepo->getBrandlist(['id', 'name']);
+                $requests = $this->procurementRepo->getAllRequests($filterParameters, $select, $with);
+                // $requests = Procurement::find('user_id', $getUser->id);
+            }
+
+            return view($this->view . 'index', compact('requests', 'assetType', 'filterParameters', 'brands', 'getProcurement','isAdmin'));
         } catch (\Exception $exception) {
             return redirect()->back()->with('danger', $exception->getMessage());
         }
@@ -163,4 +172,33 @@ class ProcurementController extends Controller
             return redirect()->back()->with('danger', $exception->getMessage());
         }
     }
+
+    public function changeStatus(Request $request, $id)
+    {
+        $procurement = Procurement::find($id);
+
+        if ($procurement) {
+            $procurement->status = $request->status;
+            $procurement->save();
+
+            return response()->json(['success' => true]);
+        }
+
+        return response()->json(['success' => false, 'message' => 'Procurement not found']);
+    }
+
+    public function pauseStatus(Request $request, $id)
+    {
+        $procurement = Procurement::find($id);
+
+        if ($procurement) {
+            $procurement->status = $request->status;
+            $procurement->save();
+
+            return response()->json(['success' => true]);
+        }
+
+        return response()->json(['success' => false, 'message' => 'Procurement not found']);
+    }
+
 }

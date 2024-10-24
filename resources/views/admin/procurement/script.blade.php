@@ -10,7 +10,8 @@
                 menubar: false,
                 default_text_color: 'red',
                 plugins: [
-                    'a11ychecker', 'advlist', 'advcode', 'advtable', 'autolink', 'checklist', 'export',
+                    'a11ychecker', 'advlist', 'advcode', 'advtable', 'autolink', 'checklist',
+                    'export',
                     'lists', 'link', 'charmap', 'anchor', 'searchreplace', 'visualblocks',
                     'powerpaste', 'fullscreen', 'formatpainter', 'table',
                 ],
@@ -32,6 +33,10 @@
                 content_css: []
             });
         }
+
+
+       
+
 
     });
 </script>

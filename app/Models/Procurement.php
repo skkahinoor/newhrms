@@ -25,7 +25,7 @@ class Procurement extends Model
 
     public function brands()
     {
-        return $this->belongsTo(Brand::class, 'brand_id');
+        return $this->belongsTo(Brand::class, 'brand_id', 'id');
     }
 
     public function asset_types()

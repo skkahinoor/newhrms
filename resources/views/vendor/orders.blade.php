@@ -88,10 +88,10 @@
                                                 </td>
                                                 <td class="align-middle text-center text-sm">
                                                     <span
-                                                        class="badge badge-sm bg-gradient-info">{{ $order->status == 0 ? 'Active' : 'Error' }}</span>
+                                                        class="badge badge-sm bg-gradient-info">{{ $order->status == 1 ? 'Active' : 'Error' }}</span>
                                                 </td>
                                                 <td class="align-middle text-center">
-                                                    <a href="javascript:;" class="text-secondary font-weight-bold text-xs"
+                                                    <a href="javascript:void(0);" class="text-secondary font-weight-bold text-xs" data-id="{{ $order->id }}"
                                                         data-toggle="tooltip" data-original-title="Edit user">
                                                         Make Quotation
                                                     </a>
@@ -117,7 +117,7 @@
                         </div>
                     </div>
                     <div class="card-body px-0 pb-2">
-                        @if ($getOrder->isEmpty())
+                        @if ($completeOrder->isEmpty())
                             <br>
                             <p class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">No
                                 Complete
@@ -171,15 +171,15 @@
                                                 </td>
                                                 <td class="align-middle text-center">
                                                     <span
-                                                        class="text-secondary text-xs font-weight-bold">{{ $order->asset_types->name ?? 'N/A' }}</span>
+                                                        class="text-secondary text-xs font-weight-bold">{{ $corder->asset_types->name ?? 'N/A' }}</span>
                                                 </td>
                                                 <td class="align-middle text-center">
                                                     <span
-                                                        class="text-secondary text-xs font-weight-bold">{{ $order->quantity ?? 'N/A' }}&nbsp;Pcs</span>
+                                                        class="text-secondary text-xs font-weight-bold">{{ $corder->quantity ?? 'N/A' }}&nbsp;Pcs</span>
                                                 </td>
                                                 <td class="align-middle text-center">
                                                     <span
-                                                        class="text-secondary text-xs font-weight-bold">{{ $order->brands->name ?? 'N/A' }}</span>
+                                                        class="text-secondary text-xs font-weight-bold">{{ $corder->brands->name ?? 'N/A' }}</span>
                                                 </td>
                                                 <td class="align-middle text-center">
                                                     <span
@@ -191,7 +191,7 @@
                                                 </td>
                                                 <td class="align-middle text-center text-sm">
                                                     <span
-                                                        class="badge badge-sm bg-gradient-success">{{ $corder->status == 1 ? 'Complete' : 'Error' }}</span>
+                                                        class="badge badge-sm bg-gradient-success">{{ $corder->status == 3 ? 'Delivered' : 'Error' }}</span>
                                                 </td>
 
                                                 <td class="align-middle text-center">
