@@ -90,5 +90,43 @@
         });
 
 
+
+
+        // Make quotation code
+        $(document).ready(function() {
+            $(document).on('click', '.make-quotation-btn', function() {
+                var orderId = $(this).data('id');
+                $('#order_id').val(orderId);
+                $('#quotationModal').modal('show');
+            });
+            $('#quotationForm').on('submit', function(e) {
+                e.preventDefault();
+                var formData = $(this).serialize();
+                $.ajax({
+                    url: '{{ route('vendor.quotationsStore') }}',
+                    type: 'POST',
+                    data: formData,
+                    success: function(response) {
+                        $('#quotationModal').modal('hide');
+                        Swal.fire('Success!', 'Quotation created successfully!',
+                                'success')
+                            .then(() => location.reload());
+                    },
+                    error: function(xhr) {
+                        Swal.fire('Error!',
+                                'Failed to create quotation. Please try again!',
+                                'error')
+                            .then(() => location.reload());
+                    }
+                });
+            });
+        });
+
+
+        // Promise code here
+       
+
+
+
     });
 </script>

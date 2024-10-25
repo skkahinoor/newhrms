@@ -544,6 +544,10 @@ Route::group([
         Route::post('products/create', [VendorController::class, 'productCreate'])->name('productcreate');
         Route::post('update-product', [VendorController::class, 'productUpdate'])->name('productupdate');
         Route::put('delete-product', [VendorController::class, 'productDelete'])->name('productdelete');
+
+        // Make Quotation on Order page
+        Route::post('quotation/store', [VendorController::class, 'storeQuotation'])->name('quotationsStore');
+
         
 
 

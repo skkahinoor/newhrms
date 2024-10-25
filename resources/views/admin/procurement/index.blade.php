@@ -53,8 +53,8 @@
         @include('admin.section.flash_message')
         @include('admin.procurement.breadCrumb')
 
-        @if (true)
-             <div class="card">
+
+        <div class="card">
             <div class="card-body">
                 <div class="table-responsive" style="overflow-x: clip !important;">
                     <table id="dataTableExample" class="table">
@@ -107,15 +107,15 @@
                                 <td class="text-center">
                                     {{ $value->procurement_number }}
                                 </td>
-                                <td>{{ ucfirst($value->name) }}</td>
+                                <td>{{ $value->users->name }}</td>
                                 <td class="text-center">
                                     {{ $value->email }}
                                 </td>
                                 <td class="text-center">
-                                    {{ $value->asset_types }}
+                                    {{ $value->asset_types->name }}
                                 </td>
                                 <td class="text-center">
-                                    {{ $value->brand }}
+                                    {{ $value->brands->name }}
                                 </td>
                                 <td class="text-center">
                                     {{ $value->quantity }}
@@ -234,6 +234,14 @@
                                                     &nbsp;Pause This Procurement
                                                 </a>
                                             </li>
+                                            <li>
+                                                <a style="cursor: pointer; color: #383838 !important; font-size: 13px; font-weight: bold;"
+                                                    class="dropdown-item pauseOrder" href="#"
+                                                    data-id="{{ $value->id }}" data-toggle="modal"
+                                                    data-target="#pauseModal">
+                                                    &nbsp;Quotation List
+                                                </a>
+                                            </li>
                                         </ul>
                                     </div>
                                 </td>
@@ -249,11 +257,13 @@
 
                         </tbody>
                     </table>
+                    <br>
+                    <div class="row" style="padding-left: 7px !important;">{{ $requests->links() }}</div>
                 </div>
             </div>
         </div>
-        @endif
-       
+
+
     </section>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script type="text/javascript" src="{{ asset('ckeditor/ckeditor.js') }}"></script>

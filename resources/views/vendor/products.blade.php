@@ -66,7 +66,7 @@
                                 <div class="col-md-6">
                                     <div class="form-floating"
                                         style="border: solid #3736362e 1px !important;border-radius: 7px !important;">
-                                        <input type="number" name="buyprice" class="form-control" id="floatingInputGrid"
+                                        <input type="number" name="buyprice" step="0.01" class="form-control" id="floatingInputGrid"
                                             placeholder="Enter Product Quantity" value="{{ old('buyprice') }}" required
                                             style="padding-left: 7px !important;">
                                         <label for="floatingInputGrid">Enter Product Buy Price&nbsp;<span
@@ -76,7 +76,7 @@
                                 <div class="col-md-6">
                                     <div class="form-floating"
                                         style="border: solid #3736362e 1px !important;border-radius: 7px !important;">
-                                        <input type="number" name="saleprice" class="form-control" id="floatingInputGrid"
+                                        <input type="number" name="saleprice" step="0.01" class="form-control" id="floatingInputGrid"
                                             placeholder="Enter Product Quantity" value="{{ old('saleprice') }}" required
                                             style="padding-left: 7px !important;">
                                         <label for="floatingInputGrid">Enter Product Sale Price&nbsp;<span

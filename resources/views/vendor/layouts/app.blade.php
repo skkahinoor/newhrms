@@ -23,6 +23,9 @@
     <!-- CSS Files -->
     <link id="pagestyle" href="{{ asset('assets/vendor/css/material-dashboard.css?v=3.0.0') }}" rel="stylesheet" />
     <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}" />
+    <!-- Include SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </head>
 
 <body class="g-sidenav-show bg-gray-200">
@@ -42,7 +45,7 @@
 
     {{-- Vendor Script  --}}
     @include('vendor.section.vendorscript')
-    
+
 </body>
 
 </html>

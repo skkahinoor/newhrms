@@ -60,7 +60,6 @@ class ProcurementRepository
     public function store($data)
     {
         $data['user_id'] = Auth::user()->id;
-        // $data['status'] = 
         return Procurement::create($data)->fresh();
     }
 

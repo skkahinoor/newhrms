@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Models\AssetType;
 use App\Models\Procurement;
+use App\Models\Quotation;
 use App\Models\User;
 use App\Models\VendorProduct;
 use Illuminate\Http\Request;
@@ -38,14 +39,31 @@ class VendorController extends Controller
         return view('vendor.billing', ['getUserDetails' => $getUserDetails]);
     }
 
-    public function orders()
+    public function orders(Request $request)
     {
         $user = Auth::user();
         $getUserDetails = User::find($user->id);
+       
         $getOrder = Procurement::where('asset_type_id', $getUserDetails->asset_type)->where('status', 1)->with(['users', 'role', 'company', 'asset_types', 'brands'])->paginate(5);
-        // dd($getOrder);
-        $completeOrder = Procurement::where('asset_type_id', $getUserDetails->asset_type)->where('status', 3)->with(['users', 'role', 'company','asset_types', 'brands'])->paginate(5);
+
+        $completeOrder = Procurement::where('asset_type_id', $getUserDetails->asset_type)->where('status', 3)->with(['users', 'role', 'company', 'asset_types', 'brands'])->paginate(5);
         return view('vendor.orders', ['getUserDetails' => $getUserDetails, 'getOrder' => $getOrder, 'completeOrder' => $completeOrder]);
+    }
+
+    public function storeQuotation(Request $request)
+    {
+        $request->validate([
+            'order_id' => 'required|unique:procurement_id, quotations',
+            'amount' => 'required|numeric',
+        ]);
+        Quotation::create([
+            'procurement_id' => $request->order_id,
+            'calculated_amount' => $request->amount,
+            'remark' => $request->remark,
+            'quotation_status' => 0,
+        ]);
+
+        return response()->json(['message', 'Quotation Sent Successfully!'], 200);
     }
 
     public function products()

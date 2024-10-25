@@ -13,13 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('quotations', function (Blueprint $table) {
-            $table->id();
-            $table->integer('procurement_id');
-            $table->float('calculated_amount');
-            $table->text('remark')->nullable();
-            $table->integer('quotation_status')->nullable()->default(0);
-            $table->timestamps();
+        Schema::table('quotations', function (Blueprint $table) {
+            $table->integer('vendor_product_id')->after('procurement_id');
         });
     }
 
@@ -30,6 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('quotations');
+        Schema::table('quotations', function (Blueprint $table) {
+            $table->dropColumn('vendor_product_id');
+        });
     }
 };

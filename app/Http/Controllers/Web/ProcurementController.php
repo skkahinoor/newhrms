@@ -6,6 +6,7 @@ use App\Exports\AssetAssignmentListExport;
 use App\Http\Controllers\Controller;
 use App\Models\Asset;
 use App\Models\Procurement;
+use App\Models\User;
 use App\Repositories\AssetAssignmentRepository;
 use App\Repositories\BrandRepository;
 use App\Repositories\ProcurementRepository;
@@ -60,7 +61,9 @@ class ProcurementController extends Controller
                 $where = ['user_id', $getUser->id];
                 $assetType = $this->assetTypeService->getAllAssetTypes(['id', 'name']);
                 $brands = $this->brandRepo->getBrandlist(['id', 'name']);
-                $requests = $this->procurementRepo->getAllRequests($filterParameters, $select, $with);
+                // $requests = $this->procurementRepo->getAllRequests($filterParameters, $select, $with);
+                $query = Procurement::with('users', 'asset_types', 'brands');
+                $requests = $query->paginate(5);
 
                 if ($filterParameters['download_excel']) {
                     unset($filterParameters['download_excel']);
@@ -68,15 +71,17 @@ class ProcurementController extends Controller
                 }
             } else { // For other users
                 $isAdmin = false;
+                $otheruser = User::where('id', $getUser->id)->first();
                 $select = ['*'];
                 $with = ['users', 'asset_types', 'brands'];
                 $assetType = $this->assetTypeService->getAllAssetTypes(['id', 'name']);
                 $brands = $this->brandRepo->getBrandlist(['id', 'name']);
-                $requests = $this->procurementRepo->getAllRequests($filterParameters, $select, $with);
-                // $requests = Procurement::find('user_id', $getUser->id);
+                // $requests = $this->procurementRepo->getAllRequests($filterParameters, $select, $where, $with);
+                $query = Procurement::where('user_id', $getUser->id)->with('users', 'asset_types', 'brands');
+                $requests = $query->paginate(5);
             }
 
-            return view($this->view . 'index', compact('requests', 'assetType', 'filterParameters', 'brands', 'getProcurement','isAdmin'));
+            return view($this->view . 'index', compact('requests', 'assetType', 'filterParameters', 'brands', 'getProcurement', 'isAdmin'));
         } catch (\Exception $exception) {
             return redirect()->back()->with('danger', $exception->getMessage());
         }
