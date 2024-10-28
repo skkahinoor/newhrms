@@ -7,20 +7,6 @@
             id="pnumber" name="procurement_number" required autocomplete="off" placeholder="Number">
     </div>
 
-    {{-- <div class="col-lg-4 col-md-6 mb-4">
-        <label for="user_id" class="form-label">Name</label>
-        <select class="form-select" id="user_id" name="user_id">
-            <option value="" {{ isset($procurementDetail) || old('assigned_to') ? '' : 'selected' }}>Select
-                Employee</option>
-            @foreach ($employees as $key => $value)
-                <option value="{{ $value->id }}"
-                    {{ (isset($procurementDetail) && $procurementDetail->user_id == $value->id) || old('user_id') == $value->id ? 'selected' : old('user_id') }}>
-                    {{ ucfirst($value->name) }}
-                </option>
-            @endforeach
-        </select>
-    </div> --}}
-
     <div class="col-lg-4 col-md-6 mb-4">
         <label for="email" class="form-label">Email <span style="color: red">*</span></label>
         <input type="text" value="{{ isset($procurementDetail) ? $procurementDetail->email : null }}"
@@ -28,61 +14,87 @@
     </div>
 
     <div class="col-lg-4 col-md-6 mb-4">
-        <label for="asset_type_id" class="form-label">Type <span style="color: red">*</span></label>
-        <select class="form-select" id="type" name="asset_type_id" required>
-            <option value="" {{ isset($procurementDetail) ? '' : 'selected' }} disabled>Select Type</option>
-            @if (count($assetType) > 0)
-                @foreach ($assetType as $value)
+        <label for="request_date" class="form-label">Request Date <span style="color: red">*</span></label>
+        <input type="date" class="form-control" id="request_date" name="request_date"
+            value="{{ isset($procurementDetail) ? $procurementDetail->request_date : old('request_date') }}" required
+            autocomplete="off">
+    </div>
+
+    {{-- Jquery will run and store multiple data  --}}
+    <div class="row">
+        <div class="col-md-2">
+            <label for="asset_type_id" class="form-label">Type <span style="color: red">*</span></label>
+            <select class="form-select" id="type" name="asset_type_id" required>
+                <option value="" {{ isset($procurementDetail) ? '' : 'selected' }} disabled>Select Type</option>
+                @if (count($assetType) > 0)
+                    @foreach ($assetType as $value)
+                        <option value="{{ $value->id }}"
+                            {{ (isset($procurementDetail) && $procurementDetail->asset_type_id == $value->id) || old('type_id') == $value->id ? 'selected' : '' }}>
+                            {{ ucfirst($value->name) }}
+                        </option>
+                    @endforeach
+                @else
+                    <option value="">No Asset Type found</option>
+                @endif
+            </select>
+        </div>
+        <div class="col-md">
+            <label for="brand_id" class="form-label">Brand <span style="color: red">*</span></label>
+            <select class="form-select" id="brand" name="brand_id" required>
+                <option value="" {{ isset($procurementDetail) ? '' : 'selected' }} disabled>Select Type</option>
+                @foreach ($brands as $key => $value)
                     <option value="{{ $value->id }}"
-                        {{ (isset($procurementDetail) && $procurementDetail->asset_type_id == $value->id) || old('type_id') == $value->id ? 'selected' : '' }}>
+                        {{ (isset($procurementDetail) && $procurementDetail->brand_id == $value->id) || old('brand_id') == $value->id ? 'selected' : '' }}>
                         {{ ucfirst($value->name) }}
                     </option>
                 @endforeach
-            @else
-                <option value="">No Asset Type found</option>
-            @endif
-        </select>
+            </select>
+        </div>
+        <div class="col-md"> <label for="quantity" class="form-label">Quantity<span style="color: red">*</span></label>
+            <input type="number" value="{{ isset($procurementDetail) ? $procurementDetail->quantity : null }}"
+                min="1" class="form-control" id="procurement_quantity" name="quantity" required
+                autocomplete="off" placeholder="Enter Amount">
+        </div>
+        <div class="col-md">
+            <label for="quantity" class="form-label">Specification<span style="color: red">*</span></label>
+            <textarea name="specification" class="form-control" id="specification" cols="15" rows="2" required>{{ isset($procurementDetail) ? $procurementDetail->quantity : null }}</textarea>
+        </div>
+        <div class="col-md">
+            {{-- ajax button to add the data  --}}
+            <button type="add" class="btn btn-primary">Add</button>
+        </div>
     </div>
 
-    <div class="col-lg-4 col-md-6 mb-4">
-        <label for="brand_id" class="form-label">Brand <span style="color: red">*</span></label>
-        <select class="form-select" id="brand" name="brand_id" required>
-            <option value="" {{ isset($procurementDetail) ? '' : 'selected' }} disabled>Select Type</option>
-            @foreach ($brands as $key => $value)
-                <option value="{{ $value->id }}"
-                    {{ (isset($procurementDetail) && $procurementDetail->brand_id == $value->id) || old('brand_id') == $value->id ? 'selected' : '' }}>
-                    {{ ucfirst($value->name) }}
-                </option>
-            @endforeach
-        </select>
+    <table class="table mt-3" id="added-items">
+        <thead>
+            <tr>
+                <th>Type</th>
+                <th>Brand</th>
+                <th>Quantity</th>
+                <th>Specification</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Added rows will appear here -->
+        </tbody>
+    </table>
+   
+
+
+    <div class="row">
+        <div class="col-md-6">
+            <label for="delivery_date" class="form-label">Delivery Date <span style="color: red">*</span></label>
+            <input type="date" class="form-control" id="delivery_date" name="delivery_date"
+                value="{{ isset($procurementDetail) ? $procurementDetail->delivery_date : old('delivery_date') }}"
+                required autocomplete="off">
+        </div>
+        <div class="col-md-6">
+            <label for="purpose" class="form-label">Purpose</label>
+            <textarea class="form-control" name="purpose" id="ckeditor" rows="2">{{ isset($procurementDetail) ? $procurementDetail->purpose : old('note') }}</textarea>
+        </div>
     </div>
 
-    <div class="col-lg-4 col-md-6 mb-4">
-        <label for="quantity" class="form-label">Quantity<span style="color: red">*</span></label>
-        <input type="number" value="{{ isset($procurementDetail) ? $procurementDetail->quantity : null }}"
-            min="1" class="form-control" id="procurement_quantity" name="quantity" required autocomplete="off"
-            placeholder="Enter Amount">
-    </div>
-
-    <div class="col-lg-4 col-md-6 mb-4">
-        <label for="request_date" class="form-label">Request Date <span style="color: red">*</span></label>
-        <input type="date" class="form-control" id="request_date" name="request_date"
-            value="{{ isset($procurementDetail) ? $procurementDetail->request_date : old('request_date') }}"
-            required autocomplete="off">
-    </div>
-
-    <div class="col-lg-4 col-md-6 mb-4">
-        <label for="delivery_date" class="form-label">Delivery Date <span style="color: red">*</span></label>
-        <input type="date" class="form-control" id="delivery_date" name="delivery_date"
-            value="{{ isset($procurementDetail) ? $procurementDetail->delivery_date : old('delivery_date') }}"
-            required autocomplete="off">
-    </div>
-
-    <div class="col-lg-4 col-md-6 mb-4">
-        <label for="purpose" class="form-label">Purpose</label>
-        <textarea class="form-control" name="purpose" id="ckeditor" rows="2">{{ isset($procurementDetail) ? $procurementDetail->purpose : old('note') }}</textarea>
-    </div>
-    
     @canany(['edit_assets', 'create_assets'])
         <div class="text-start">
             <button type="submit" class="btn btn-primary">

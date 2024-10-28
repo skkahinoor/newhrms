@@ -1,42 +1,81 @@
 <script>
-    $(function() {
-        'use strict';
+    $(document).ready(function() {
+        // Initialize an empty array to store entries
+        let procurementItems = [];
 
-        //Tinymce editor
-        if ($("#tinymceExample").length) {
-            tinymce.init({
-                selector: '#tinymceExample',
-                height: 400,
-                menubar: false,
-                default_text_color: 'red',
-                plugins: [
-                    'a11ychecker', 'advlist', 'advcode', 'advtable', 'autolink', 'checklist',
-                    'export',
-                    'lists', 'link', 'charmap', 'anchor', 'searchreplace', 'visualblocks',
-                    'powerpaste', 'fullscreen', 'formatpainter', 'table',
-                ],
-                toolbar1: 'undo redo | formatpainter casechange blocks | bold italic  | \' +\n' +
-                    '\'alignleft aligncenter alignright alignjustify | \' +\n' +
-                    '\'bullist numlist checklist \'',
+        // Handle the "Add" button click
+        $('.btn-primary[type="add"]').click(function(e) {
+            e.preventDefault(); // Prevent form submission
 
-                // toolbar2: 'print preview media | forecolor backcolor emoticons | codesample help',
-                image_advtab: true,
-                templates: [{
-                        title: 'Test template 1',
-                        content: 'Test 1'
-                    },
-                    {
-                        title: 'Test template 2',
-                        content: 'Test 2'
-                    }
-                ],
-                content_css: []
-            });
-        }
+            // Get input values
+            const assetTypeId = $('#type').val();
+            const assetTypeText = $('#type option:selected').text();
+            const brandId = $('#brand').val();
+            const brandText = $('#brand option:selected').text();
+            const quantity = $('#procurement_quantity').val();
+            const specification = $('#specification').val();
 
+            // Validate fields
+            if (!assetTypeId || !brandId || !quantity || !specification) {
+                alert("All fields are required.");
+                return;
+            }
 
-       
+            // Create an entry object and push to the array
+            const entry = {
+                asset_type_id: assetTypeId,
+                asset_type_name: assetTypeText,
+                brand_id: brandId,
+                brand_name: brandText,
+                quantity: quantity,
+                specification: specification
+            };
+            procurementItems.push(entry);
 
+            // Append the new entry to the table
+            $('#added-items tbody').append(`
+                <tr>
+                    <td>${assetTypeText}</td>
+                    <td>${brandText}</td>
+                    <td>${quantity}</td>
+                    <td>${specification}</td>
+                    <td><button type="button" class="btn btn-danger btn-sm remove-item" data-index="${procurementItems.length - 1}">Remove</button></td>
+                </tr>
+            `);
+
+            // Clear input fields
+            $('#type').val('');
+            $('#brand').val('');
+            $('#procurement_quantity').val('');
+            $('#specification').val('');
+        });
+
+        // Remove entry from array and table on click of "Remove" button
+        $('#added-items').on('click', '.remove-item', function() {
+            const index = $(this).data('index');
+            procurementItems.splice(index, 1); // Remove from array
+            $(this).closest('tr').remove(); // Remove row from table
+        });
+
+        // When the "Create" button is pressed, convert array to JSON and append it to the form
+        $('#create-button').click(function() {
+            const jsonData = JSON.stringify(procurementItems); // Convert array to JSON
+
+            // Check if hidden input already exists, update it; otherwise, create a new one
+            let hiddenInput = $('input[name="procurement_items"]');
+            if (hiddenInput.length) {
+                hiddenInput.val(jsonData);
+            } else {
+                $('<input>').attr({
+                    type: 'hidden',
+                    name: 'procurement_items',
+                    value: jsonData
+                }).appendTo('form');
+            }
+
+            // Submit the form
+            $('form').submit();
+        });
 
     });
 </script>

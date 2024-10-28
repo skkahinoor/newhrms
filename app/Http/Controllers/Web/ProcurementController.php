@@ -106,7 +106,50 @@ class ProcurementController extends Controller
         }
     }
 
-    public function store(ProcurementRequest $request)
+    public function store(Request $request)
+    {
+        $validatedData = $request->validate([
+            'procurement_number' => 'required|string|max:255',
+            'email' => 'required|email',
+            'request_date' => 'required|date',
+            'delivery_date' => 'required|date',
+            'purpose' => 'nullable|string',
+            'procurement_items' => ['required', 'string', function ($attribute, $value, $fail) {
+                // Decode JSON to check for empty array
+                $items = json_decode($value, true);
+                if (empty($items)) {
+                    $fail('You must add at least one procurement item.');
+                }
+            }],
+        ]);
+    
+        // Decode the procurement items JSON data
+        $procurementItems = json_decode($validatedData['procurement_items'], true);
+    
+        // Save main procurement data
+        $procurementDetail = Procurement::create([
+            'procurement_number' => $validatedData['procurement_number'],
+            'email' => $validatedData['email'],
+            'request_date' => $validatedData['request_date'],
+            'delivery_date' => $validatedData['delivery_date'],
+            'purpose' => $validatedData['purpose'],
+        ]);
+    
+        // Loop through each item in procurementItems and save it
+        foreach ($procurementItems as $item) {
+            $procurementDetail->items()->create([
+                'asset_type_id' => $item['asset_type_id'],
+                'brand_id' => $item['brand_id'],
+                'quantity' => $item['quantity'],
+                'specification' => $item['specification'],
+            ]);
+        }
+    
+        return redirect()->back()->with('success', 'Procurement created successfully.');
+    }
+    
+
+    public function oldstore(ProcurementRequest $request)
     {
         $this->authorize('create_procurement');
         try {
