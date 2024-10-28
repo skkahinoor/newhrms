@@ -43,25 +43,60 @@ class VendorController extends Controller
     {
         $user = Auth::user();
         $getUserDetails = User::find($user->id);
-       
+        $getVendorProduct = VendorProduct::all();
+        // dd($request->input('order_id'));
+        
+
         $getOrder = Procurement::where('asset_type_id', $getUserDetails->asset_type)->where('status', 1)->with(['users', 'role', 'company', 'asset_types', 'brands'])->paginate(5);
 
+        $quotationOrder = Procurement::where('asset_type_id', $getUserDetails->asset_type)->where('status', 2)->with(['users', 'role', 'company', 'asset_types', 'brands'])->paginate(5);
+
         $completeOrder = Procurement::where('asset_type_id', $getUserDetails->asset_type)->where('status', 3)->with(['users', 'role', 'company', 'asset_types', 'brands'])->paginate(5);
-        return view('vendor.orders', ['getUserDetails' => $getUserDetails, 'getOrder' => $getOrder, 'completeOrder' => $completeOrder]);
+        return view('vendor.orders', ['getUserDetails' => $getUserDetails, 'getOrder' => $getOrder, 'completeOrder' => $completeOrder, 'getVendorProduct' => $getVendorProduct, 'quotationOrder' => $quotationOrder]);
+    }
+    public function getProductDetails(Request $request)
+    {
+        $productId = $request->input('product_id');
+        if (!$productId) {
+            return response()->json(['success' => false, 'message' => 'Product ID not provided'], 400);
+        }
+        $product = VendorProduct::find($productId);
+
+        if ($product) {
+            return response()->json([
+                'success' => true,
+                'salePrice' => $product->sale_price,
+
+            ]);
+        }
+
+        return response()->json(['success' => false], 404);
     }
 
     public function storeQuotation(Request $request)
     {
         $request->validate([
-            'order_id' => 'required|unique:procurement_id, quotations',
-            'amount' => 'required|numeric',
+            'order_id' => 'required',
+            'vendorproduct' => 'required',
+            'calculatedamount' => 'required|numeric',
+            'givediscountamount' => 'required|numeric',
+            'finalamount' => 'required|numeric',
         ]);
         Quotation::create([
             'procurement_id' => $request->order_id,
-            'calculated_amount' => $request->amount,
+            'vendor_product_id' => $request->vendorproduct,
+            'calculated_amount' => $request->calculatedamount,
+            'discounted_amount' => $request->givediscountamount,
+            'final_amount' => $request->finalamount,
             'remark' => $request->remark,
+            'final_delivery_date' => $request->delivery_date,
             'quotation_status' => 0,
         ]);
+        $procurement = Procurement::find($request->order_id);
+        if ($procurement) {
+            $procurement->status = 2;
+            $procurement->save();
+        }
 
         return response()->json(['message', 'Quotation Sent Successfully!'], 200);
     }

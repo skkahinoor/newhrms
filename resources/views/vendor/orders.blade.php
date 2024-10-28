@@ -10,6 +10,32 @@
         {{-- Show Alert Message  --}}
         @include('vendor.common.flashmessage')
 
+        <?php
+        $changeColor = [
+            0 => 'warning',
+            1 => 'primary',
+            2 => 'info',
+            3 => 'success',
+            4 => 'danger',
+        
+            // null => 'danger'
+        ];
+        $changeTextColor = [
+            0 => '#000000',
+            1 => '#ffffff',
+            2 => '#ffffff',
+            3 => '#ffffff',
+            4 => '#ffffff',
+        ];
+        $changeStatusValue = [
+            0 => 'Pending',
+            1 => 'Active',
+            2 => 'In Process',
+            3 => 'Delivered',
+            4 => 'Pause',
+        ];
+        ?>
+
         <div class="row">
             <div class="col-12">
                 <div class="card my-4">
@@ -91,13 +117,14 @@
                                                         class="text-secondary text-xs font-weight-bold">{{ $order->delivery_date }}</span>
                                                 </td>
                                                 <td class="align-middle text-center text-sm">
-                                                    <span
-                                                        class="badge badge-sm bg-gradient-info">{{ $order->status == 1 ? 'Active' : 'Error' }}</span>
+                                                    <span class="badge badge-sm btn-{{ $changeColor[$order->status] }}"
+                                                        style="color: {{ $changeTextColor[$order->status] }};">{{ $changeStatusValue[$order->status] ?? 'null' }}</span>
                                                 </td>
                                                 <td class="align-middle text-center">
                                                     <a href="javascript:void(0);"
                                                         class="text-secondary font-weight-bold text-xs make-quotation-btn"
-                                                        data-id="{{ $order->id }}" data-toggle="tooltip"
+                                                        data-id="{{ $order->id }}"
+                                                        data-quantity="{{ $order->quantity }}" data-toggle="tooltip"
                                                         data-original-title="Make Quotation">
                                                         Make Quotation
                                                     </a>
@@ -109,6 +136,110 @@
                             </div>
                             <br>
                             <div class="row">{{ $getOrder->links() }}</div>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="card my-4">
+                    <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                        <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
+                            <h6 class="text-white text-capitalize ps-3">Quotation Orders</h6>
+                        </div>
+                    </div>
+                    <div class="card-body px-0 pb-2">
+                        @if ($quotationOrder->isEmpty())
+                            <br>
+                            <p class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">No
+                                Complete
+                                Orders found ...</p>
+                        @else
+                            <div class="table-responsive p-0">
+                                <table class="table align-items-center mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th
+                                                class="text-uppercase text-center text-secondary text-xxs font-weight-bolder opacity-7">
+                                                #</th>
+                                            <th
+                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Order Number</th>
+                                            <th
+                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Requirement</th>
+                                            <th
+                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Quantity</th>
+                                            <th
+                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Brand</th>
+                                            <th
+                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Requested Date</th>
+                                            <th
+                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Delivery Date</th>
+                                            <th
+                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Status</th>
+
+                                            <th
+                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($quotationOrder as $key => $qorder)
+                                            <tr>
+                                                <td class="align-middle text-center">
+                                                    <span
+                                                        class="text-secondary text-xs font-weight-bold">{{ $quotationOrder->firstItem() + $key }}</span>
+                                                </td>
+
+                                                <td class="align-middle text-center">
+                                                    <span
+                                                        class="text-secondary text-xs font-weight-bold">{{ $qorder->procurement_number ?? 'N/A' }}</span>
+                                                </td>
+                                                <td class="align-middle text-center">
+                                                    <span
+                                                        class="text-secondary text-xs font-weight-bold">{{ $qorder->asset_types->name ?? 'N/A' }}</span>
+                                                </td>
+                                                <td class="align-middle text-center">
+                                                    <span
+                                                        class="text-secondary text-xs font-weight-bold">{{ $qorder->quantity ?? 'N/A' }}&nbsp;Pcs</span>
+                                                </td>
+                                                <td class="align-middle text-center">
+                                                    <span
+                                                        class="text-secondary text-xs font-weight-bold">{{ $qorder->brands->name ?? 'N/A' }}</span>
+                                                </td>
+                                                <td class="align-middle text-center">
+                                                    <span
+                                                        class="text-secondary text-xs font-weight-bold">{{ $qorder->request_date }}</span>
+                                                </td>
+                                                <td class="align-middle text-center">
+                                                    <span
+                                                        class="text-secondary text-xs font-weight-bold">{{ $qorder->delivery_date }}</span>
+                                                </td>
+                                                <td class="align-middle text-center text-sm">
+                                                    <span class="badge badge-sm btn-{{ $changeColor[$qorder->status] }}"
+                                                        style="color: {{ $changeTextColor[$qorder->status] }};">{{ $changeStatusValue[$qorder->status] ?? 'null' }}</span>
+                                                </td>
+
+                                                <td class="align-middle text-center">
+                                                    <a href="javascript:;" class="text-secondary font-weight-bold text-xs"
+                                                        data-toggle="tooltip" data-original-title="Edit user">
+                                                        View Quotation
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                            <br>
+                            <div class="row">{{ $quotationOrder->links() }}</div>
                         @endif
                     </div>
                 </div>
@@ -234,46 +365,48 @@
                         <form id="quotationForm">
                             @csrf
                             <input type="hidden" name="order_id" id="order_id" value="">
-
                             <h6 class="text-secondary">Order Request For <span class="text-primary"
-                                    style="font-size: 15px;">{{ $makeQuotation->procurement_number ?? 'Null' }}</span>
+                                    style="font-size: 15px;"></span>
                             </h6>
                             <div class="row">
                                 <div class="col-md-3">
                                     <label for="producttype" class="text-primary"
-                                        style="font-size: 11px;font-weight:bold;">Requested Product</label>
+                                        style="font-size: 11px; font-weight: bold;">
+                                        Requested Product
+                                    </label>
                                     <input type="text" class="form-control"
-                                        style="border: 1px solid #d2d6da !important; padding-left: 5px !important;"
-                                        id="producttype" name="producttype"
-                                        value="{{ $makeQuotation->asset_types->name ?? 'Null' }}" readonly required>
+                                        style="border: 1px solid #d2d6da; padding-left: 5px;" id="producttype"
+                                        name="producttype" value="" readonly required>
                                 </div>
                                 <div class="col-md-3">
                                     <label for="quantity" class="text-primary"
-                                        style="font-size: 11px;font-weight:bold;">Quantity</label>
+                                        style="font-size: 11px; font-weight: bold;">
+                                        Quantity
+                                    </label>
                                     <input type="number" class="form-control"
-                                        style="border: 1px solid #d2d6da !important; padding-left: 5px !important;"
-                                        id="producttype" name="quantity" readonly
-                                        value="{{ $makeQuotation->quantity ?? 'Null' }}" required>
+                                        style="border: 1px solid #d2d6da; padding-left: 5px;" id="quantity"
+                                        name="quantity" value="" readonly required>
                                 </div>
                                 <div class="col-md-3">
                                     <label for="brand" class="text-primary"
-                                        style="font-size: 11px;font-weight:bold;">Requested
-                                        Brand</label>
+                                        style="font-size: 11px; font-weight: bold;">
+                                        Requested Brand
+                                    </label>
                                     <input type="text" class="form-control"
-                                        style="border: 1px solid #d2d6da !important; padding-left: 5px !important;"
-                                        id="producttype" name="brand" readonly
-                                        value="{{ $makeQuotation->brands->name ?? 'Null' }}" required>
+                                        style="border: 1px solid #d2d6da; padding-left: 5px;" id="brand"
+                                        name="brand" value="" readonly required>
                                 </div>
                                 <div class="col-md-3">
                                     <label for="deliverydate" class="text-primary"
-                                        style="font-size: 11px;font-weight:bold;">Delivery
-                                        Date</label>
+                                        style="font-size: 11px; font-weight: bold;">
+                                        Delivery Date
+                                    </label>
                                     <input type="date" class="form-control"
-                                        style="border: 1px solid #d2d6da !important; padding-left: 5px !important;"
-                                        id="producttype" name="deliverydate" readonly
-                                        value="{{ $makeQuotation->delivery_date ?? 'Null' }}" required>
+                                        style="border: 1px solid #d2d6da; padding-left: 5px;" id="deliverydate"
+                                        name="deliverydate" value="" readonly required>
                                 </div>
                             </div>
+
 
 
                             <br>
@@ -281,17 +414,44 @@
                             <div class="row">
                                 <div class="col-md-3">
                                     <label for="amount" class="text-primary"
-                                        style="font-size: 11px;font-weight:bold;">Amount&nbsp;<span
+                                        style="font-size: 11px;font-weight:bold;">Choose Product&nbsp;<span
+                                            class="text-danger">*</span></label>
+                                    <select name="vendorproduct" class="form-control" id="vendorproduct"
+                                        style="border: 1px solid #d2d6da !important; padding-left: 5px !important;"
+                                        required>
+                                        <option value="">Select Product</option>
+                                        @foreach ($getVendorProduct as $product)
+                                            <option value="{{ $product->id }}">{{ $product->product_brand }}&nbsp;(
+                                                {{ $product->quantity }}&nbsp;Pcs)</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="amount" class="text-primary"
+                                        style="font-size: 11px;font-weight:bold;">Calculated Total Amount&nbsp;<span
                                             class="text-danger">*</span></label>
                                     <input type="number" step="0.01" class="form-control"
                                         style="border: 1px solid #d2d6da !important; padding-left: 5px !important;"
-                                        id="amount" name="amount" placeholder="Enter Amount" required>
+                                        id="calculatedamount" name="calculatedamount"
+                                        placeholder="Total calulated amount" required readonly>
                                 </div>
                                 <div class="col-md-3">
-                                    <label for="remark" class="text-primary"
-                                        style="font-size: 11px;font-weight:bold;">Quotation</label>
-                                    <textarea class="form-control" style="border: 1px solid #d2d6da !important;" name="remark" id="remark"
-                                        cols="23" rows="1"></textarea>
+                                    <label for="amount" class="text-primary"
+                                        style="font-size: 11px;font-weight:bold;">Give Discount&nbsp;<span
+                                            class="text-danger">*</span></label>
+                                    <input type="number" step="0.01" class="form-control"
+                                        style="border: 1px solid #d2d6da !important; padding-left: 5px !important;"
+                                        id="givediscountamount" name="givediscountamount"
+                                        placeholder="Total calulated amount" required>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="amount" class="text-primary"
+                                        style="font-size: 11px;font-weight:bold;">Final Price&nbsp;<span
+                                            class="text-danger">*</span></label>
+                                    <input type="number" step="0.01" class="form-control"
+                                        style="border: 1px solid #d2d6da !important; padding-left: 5px !important;"
+                                        id="finalamount" name="finalamount" placeholder="Total calulated amount" readonly
+                                        required>
                                 </div>
                             </div>
                             <br>
@@ -315,7 +475,7 @@
                                         Date</label>
                                     <input type="date" class="form-control"
                                         style="border: 1px solid #d2d6da !important; padding-left: 5px !important;"
-                                        id="delivery_date" name="delivery_date" required>
+                                        id="delivery_date" name="delivery_date">
                                 </div>
 
                                 <div class="col-md-4">

@@ -78,7 +78,7 @@
                             <?php
                             $changeColor = [
                                 0 => 'warning',
-                                1 => 'success',
+                                1 => 'primary',
                                 2 => 'info',
                                 3 => 'success',
                                 4 => 'danger',

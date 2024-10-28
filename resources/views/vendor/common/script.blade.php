@@ -64,7 +64,7 @@
 
             if (!isNaN(buyPrice) && !isNaN(salePrice)) {
                 let margin = salePrice - buyPrice;
-                $('input[name="margin"]').val(margin.toFixed(2)); // Display margin with 2 decimal places
+                $('input[name="margin"]').val(margin.toFixed(2));
             }
         }
 
@@ -96,9 +96,68 @@
         $(document).ready(function() {
             $(document).on('click', '.make-quotation-btn', function() {
                 var orderId = $(this).data('id');
+                var quantity = $(this).data('quantity');
+                console.log("Need Quantity", quantity);
+
                 $('#order_id').val(orderId);
                 $('#quotationModal').modal('show');
+
+                // In quotation margin calculated code here
+                $(document).on('change', '#vendorproduct', function() {
+                    const productId = $(this).val();
+                    console.log("Vendor Product Id", productId);
+                    if (productId) {
+                        $.ajax({
+                            url: '{{ route('vendor.getProductDetails') }}',
+                            type: 'GET',
+                            data: {
+                                product_id: productId
+                            },
+                            success: function(response) {
+                                console.log("AJAX Response:", response);
+                                if (response.success) {
+
+                                    const vendorProductSalePrice = response
+                                        .salePrice;
+                                    const procurementQuantity = quantity;
+
+
+                                    const totalCost =
+                                        vendorProductSalePrice *
+                                        procurementQuantity;
+
+
+                                    $('#calculatedamount').val(totalCost
+                                        .toFixed(2));
+                                } else {
+                                    console.error(
+                                        'Failed to retrieve product details.'
+                                    );
+                                }
+                            },
+                            error: function() {
+                                Swal.fire('Error!',
+                                    'Could not fetch product details.',
+                                    'error');
+                            }
+                        });
+                    } else {
+                        $('#calculatedamount').val(
+                            '');
+                    }
+                });
             });
+            $('#givediscountamount').on('input', function() {
+                updateFinalAmount();
+            });
+
+            function updateFinalAmount() {
+                const calculatedAmount = parseFloat($('#calculatedamount').val()) || 0;
+                const discount = parseFloat($('#givediscountamount').val()) || 0;
+                const finalAmount = calculatedAmount - discount;
+
+                $('#finalamount').val(finalAmount.toFixed(2));
+            }
             $('#quotationForm').on('submit', function(e) {
                 e.preventDefault();
                 var formData = $(this).serialize();
@@ -123,8 +182,10 @@
         });
 
 
-        // Promise code here
-       
+
+
+
+
 
 
 

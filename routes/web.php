@@ -547,6 +547,7 @@ Route::group([
 
         // Make Quotation on Order page
         Route::post('quotation/store', [VendorController::class, 'storeQuotation'])->name('quotationsStore');
+        Route::get('getproductdetails', [VendorController::class, 'getProductDetails'])->name('getProductDetails');
 
         
 
