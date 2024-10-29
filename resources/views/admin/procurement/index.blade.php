@@ -64,10 +64,8 @@
                                 <th class="text-center">Request Number</th>
                                 <th>Name</th>
                                 <th class="text-center">Email</th>
-                                <th class="text-center">Types</th>
-                                <th class="text-center">Brands</th>
-                                <th class="text-center">Quantity</th>
                                 <th class="text-center">Request Date</th>
+                                <th class="text-center">Delivery Date</th>
                                 <th class="text-center">Status</th>
                                 @canany(['edit_type', 'delete_type'])
                                     <th class="text-center">Action</th>
@@ -105,23 +103,17 @@
                             <tr>
                                 <td>{{ ++$key }}</td>
                                 <td class="text-center">
-                                    {{ $value->procurement_number }}
+                                    {{ $value->procurement_number ?? 'Null'}}
                                 </td>
-                                <td>{{ $value->users->name }}</td>
+                                <td>{{ $value->users->name ?? 'Null'}}</td>
                                 <td class="text-center">
                                     {{ $value->email }}
                                 </td>
                                 <td class="text-center">
-                                    {{ $value->asset_types->name }}
+                                    {{ $value->request_date ?? 'Null'}}
                                 </td>
                                 <td class="text-center">
-                                    {{ $value->brands->name }}
-                                </td>
-                                <td class="text-center">
-                                    {{ $value->quantity }}
-                                </td>
-                                <td class="text-center">
-                                    {{ $value->request_date }}
+                                    {{ $value->delivery_date ?? 'Null'}}
                                 </td>
                                 <td class="text-center">
                                     <h6 style="border-radius: 5px; padding: 4px; opacity: 0.6; font-family: serif; color: {{ $changeTextColor[$value->status] }};"

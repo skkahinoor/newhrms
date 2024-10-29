@@ -12,14 +12,11 @@ class Procurement extends Model
 
     protected $fillable = [
         'procurement_number',
+        'user_id',
         'email',
-        'quantity',
         'request_date',
         'delivery_date',
         'purpose',
-        'user_id',
-        'asset_type_id',
-        'brand_id',
         'status',
     ];
 
@@ -51,5 +48,9 @@ class Procurement extends Model
     public function assignedTo(): BelongsTo
     {
         return $this->belongsTo(User::class, 'assigned_to', 'id')->withDefault();
+    }
+    public function items()
+    {
+        return $this->hasMany(ProcurementItem::class);
     }
 }

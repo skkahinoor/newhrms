@@ -6,6 +6,7 @@ use App\Exports\AssetAssignmentListExport;
 use App\Http\Controllers\Controller;
 use App\Models\Asset;
 use App\Models\Procurement;
+use App\Models\ProcurementItem;
 use App\Models\User;
 use App\Repositories\AssetAssignmentRepository;
 use App\Repositories\BrandRepository;
@@ -108,12 +109,15 @@ class ProcurementController extends Controller
 
     public function store(Request $request)
     {
+        // dd($request->all());
+        $this->authorize('create_procurement');
         $validatedData = $request->validate([
             'procurement_number' => 'required|string|max:255',
             'email' => 'required|email',
             'request_date' => 'required|date',
             'delivery_date' => 'required|date',
             'purpose' => 'nullable|string',
+            // 'procurement_items' => 'required|string',
             'procurement_items' => ['required', 'string', function ($attribute, $value, $fail) {
                 // Decode JSON to check for empty array
                 $items = json_decode($value, true);
@@ -122,44 +126,41 @@ class ProcurementController extends Controller
                 }
             }],
         ]);
-    
-        // Decode the procurement items JSON data
-        $procurementItems = json_decode($validatedData['procurement_items'], true);
-    
-        // Save main procurement data
-        $procurementDetail = Procurement::create([
+
+        $procurement = Procurement::create([
+            'user_id' => Auth::user()->id,
             'procurement_number' => $validatedData['procurement_number'],
             'email' => $validatedData['email'],
             'request_date' => $validatedData['request_date'],
             'delivery_date' => $validatedData['delivery_date'],
             'purpose' => $validatedData['purpose'],
         ]);
-    
-        // Loop through each item in procurementItems and save it
+
+        $procurementItems = json_decode($validatedData['procurement_items'], true);
+
         foreach ($procurementItems as $item) {
-            $procurementDetail->items()->create([
+            $procurement->items()->create([
                 'asset_type_id' => $item['asset_type_id'],
                 'brand_id' => $item['brand_id'],
                 'quantity' => $item['quantity'],
                 'specification' => $item['specification'],
             ]);
         }
-    
+
         return redirect()->back()->with('success', 'Procurement created successfully.');
     }
-    
 
-    public function oldstore(ProcurementRequest $request)
-    {
-        $this->authorize('create_procurement');
-        try {
-            $validated_data = $request->validated();
-            $this->procurementService->storeProcurement($validated_data);
-            return redirect()->route($this->view . 'index')->with('success', 'Request Added Successfully');
-        } catch (\Exception $e) {
-            return redirect()->back()->with('danger', $e->getMessage());
-        }
-    }
+    // public function oldstore(ProcurementRequest $request)
+    // {
+    //     $this->authorize('create_procurement');
+    //     try {
+    //         $validated_data = $request->validated();
+    //         $this->procurementService->storeProcurement($validated_data);
+    //         return redirect()->route($this->view . 'index')->with('success', 'Request Added Successfully');
+    //     } catch (\Exception $e) {
+    //         return redirect()->back()->with('danger', $e->getMessage());
+    //     }
+    // }
 
     public function edit($id)
     {
@@ -214,8 +215,10 @@ class ProcurementController extends Controller
             $select = ['*'];
             $with = ['asset_types:id,name', 'assignedTo:id,name'];
             $procurementDetails = $this->procurementService->findProcurementById($id, $select, $with, );
+            $requestAsset = ProcurementItem::where('procurement_id', $id)->get();
+            
 
-            return view('admin.procurement.show', compact('procurementDetails'));
+            return view('admin.procurement.show', compact('procurementDetails', 'requestAsset'));
         } catch (Exception $exception) {
             return redirect()->back()->with('danger', $exception->getMessage());
         }
