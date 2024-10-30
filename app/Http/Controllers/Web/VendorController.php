@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Models\AssetType;
 use App\Models\Procurement;
+use App\Models\ProcurementItem;
 use App\Models\Quotation;
 use App\Models\User;
 use App\Models\VendorProduct;
@@ -47,11 +48,11 @@ class VendorController extends Controller
         // dd($request->input('order_id'));
         
 
-        $getOrder = Procurement::where('asset_type_id', $getUserDetails->asset_type)->where('status', 1)->with(['users', 'role', 'company', 'asset_types', 'brands'])->paginate(5);
+        $getOrder = ProcurementItem::where('asset_type_id', $getUserDetails->asset_type)->with(['users', 'role', 'company', 'assetType', 'brand'])->paginate(5);
 
-        $quotationOrder = Procurement::where('asset_type_id', $getUserDetails->asset_type)->where('status', 2)->with(['users', 'role', 'company', 'asset_types', 'brands'])->paginate(5);
+        $quotationOrder = ProcurementItem::where('asset_type_id', $getUserDetails->asset_type)->with(['users', 'role', 'company', 'assetType', 'brand'])->paginate(5);
 
-        $completeOrder = Procurement::where('asset_type_id', $getUserDetails->asset_type)->where('status', 3)->with(['users', 'role', 'company', 'asset_types', 'brands'])->paginate(5);
+        $completeOrder = ProcurementItem::where('asset_type_id', $getUserDetails->asset_type)->with(['users', 'role', 'company', 'assetType', 'brand'])->paginate(5);
         return view('vendor.orders', ['getUserDetails' => $getUserDetails, 'getOrder' => $getOrder, 'completeOrder' => $completeOrder, 'getVendorProduct' => $getVendorProduct, 'quotationOrder' => $quotationOrder]);
     }
     public function getProductDetails(Request $request)

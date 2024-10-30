@@ -110,16 +110,16 @@
                                                 </td>
                                                 <td class="align-middle text-center">
                                                     <span
-                                                        class="text-secondary text-xs font-weight-bold">{{ $order->request_date }}</span>
+                                                        class="text-secondary text-xs font-weight-bold">{{ $order->request_date ?? 'N/A'}}</span>
                                                 </td>
                                                 <td class="align-middle text-center">
                                                     <span
-                                                        class="text-secondary text-xs font-weight-bold">{{ $order->delivery_date }}</span>
+                                                        class="text-secondary text-xs font-weight-bold">{{ $order->delivery_date ?? 'N/A'}}</span>
                                                 </td>
-                                                <td class="align-middle text-center text-sm">
+                                                {{-- <td class="align-middle text-center text-sm">
                                                     <span class="badge badge-sm btn-{{ $changeColor[$order->status] }}"
                                                         style="color: {{ $changeTextColor[$order->status] }};">{{ $changeStatusValue[$order->status] ?? 'null' }}</span>
-                                                </td>
+                                                </td> --}}
                                                 <td class="align-middle text-center">
                                                     <a href="javascript:void(0);"
                                                         class="text-secondary font-weight-bold text-xs make-quotation-btn"
@@ -216,16 +216,16 @@
                                                 </td>
                                                 <td class="align-middle text-center">
                                                     <span
-                                                        class="text-secondary text-xs font-weight-bold">{{ $qorder->request_date }}</span>
+                                                        class="text-secondary text-xs font-weight-bold">{{ $qorder->request_date ?? 'N/A'}}</span>
                                                 </td>
                                                 <td class="align-middle text-center">
                                                     <span
-                                                        class="text-secondary text-xs font-weight-bold">{{ $qorder->delivery_date }}</span>
+                                                        class="text-secondary text-xs font-weight-bold">{{ $qorder->delivery_date ?? 'N/A'}}</span>
                                                 </td>
-                                                <td class="align-middle text-center text-sm">
+                                                {{-- <td class="align-middle text-center text-sm">
                                                     <span class="badge badge-sm btn-{{ $changeColor[$qorder->status] }}"
                                                         style="color: {{ $changeTextColor[$qorder->status] }};">{{ $changeStatusValue[$qorder->status] ?? 'null' }}</span>
-                                                </td>
+                                                </td> --}}
 
                                                 <td class="align-middle text-center">
                                                     <a href="javascript:;" class="text-secondary font-weight-bold text-xs"
@@ -320,16 +320,16 @@
                                                 </td>
                                                 <td class="align-middle text-center">
                                                     <span
-                                                        class="text-secondary text-xs font-weight-bold">{{ $corder->request_date }}</span>
+                                                        class="text-secondary text-xs font-weight-bold">{{ $corder->request_date ?? 'N/A'}}</span>
                                                 </td>
                                                 <td class="align-middle text-center">
                                                     <span
-                                                        class="text-secondary text-xs font-weight-bold">{{ $corder->delivery_date }}</span>
+                                                        class="text-secondary text-xs font-weight-bold">{{ $corder->delivery_date ?? 'N/A'}}</span>
                                                 </td>
-                                                <td class="align-middle text-center text-sm">
+                                                {{-- <td class="align-middle text-center text-sm">
                                                     <span
                                                         class="badge badge-sm bg-gradient-success">{{ $corder->status == 3 ? 'Delivered' : 'Error' }}</span>
-                                                </td>
+                                                </td> --}}
 
                                                 <td class="align-middle text-center">
                                                     <a href="javascript:;" class="text-secondary font-weight-bold text-xs"

@@ -33,5 +33,19 @@ class ProcurementItem extends Model
     {
         return $this->belongsTo(Brand::class);
     }
+    public function users()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class, 'user_id', 'id');
+    }
+
+    public function company()
+    {
+        return $this->belongsTo(Company::class, 'company_id', 'id');
+    }
 
 }
