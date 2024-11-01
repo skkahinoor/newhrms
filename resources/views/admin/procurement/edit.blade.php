@@ -13,7 +13,7 @@
             <form id="" class="forms-sample" action="{{route('admin.procurement.update',$procurementDetail->id)}}" enctype="multipart/form-data" method="post">
                 @method('PUT')
                 @csrf
-                @include('admin.procurement.form')
+                @include('admin.procurement.editform')
             </form>
         </div>
     </div>
@@ -22,4 +22,5 @@
 
 @section('scripts')
 @include('admin.assetManagement.assetDetail.common.scripts')
+@include('admin.procurement.editscript')
 @endsection

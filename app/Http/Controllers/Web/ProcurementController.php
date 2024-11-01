@@ -57,6 +57,7 @@ class ProcurementController extends Controller
             ];
             if (auth()->user()->role_id == $getUser->id) { // is Admin
                 $isAdmin = true;
+                $isUser = false;
                 $select = ['*'];
                 $with = ['users', 'asset_types', 'brands'];
                 $where = ['user_id', $getUser->id];
@@ -72,6 +73,7 @@ class ProcurementController extends Controller
                 }
             } else { // For other users
                 $isAdmin = false;
+                $isUser = true;
                 $otheruser = User::where('id', $getUser->id)->first();
                 $select = ['*'];
                 $with = ['users', 'asset_types', 'brands'];
@@ -82,7 +84,7 @@ class ProcurementController extends Controller
                 $requests = $query->paginate(5);
             }
 
-            return view($this->view . 'index', compact('requests', 'assetType', 'filterParameters', 'brands', 'getProcurement', 'isAdmin'));
+            return view($this->view . 'index', compact('requests', 'assetType', 'filterParameters', 'brands', 'getProcurement', 'isAdmin', 'isUser'));
         } catch (\Exception $exception) {
             return redirect()->back()->with('danger', $exception->getMessage());
         }
@@ -117,12 +119,11 @@ class ProcurementController extends Controller
             'request_date' => 'required|date',
             'delivery_date' => 'required|date',
             'purpose' => 'nullable|string',
-            // 'procurement_items' => 'required|string',
             'procurement_items' => ['required', 'string', function ($attribute, $value, $fail) {
                 // Decode JSON to check for empty array
                 $items = json_decode($value, true);
                 if (empty($items)) {
-                    $fail('You must add at least one procurement item.');
+                    $fail('You must add at least one procurement item');
                 }
             }],
         ]);
@@ -147,20 +148,8 @@ class ProcurementController extends Controller
             ]);
         }
 
-        return redirect()->back()->with('success', 'Procurement created successfully.');
+        return redirect()->route('admin.procurement.index')->with('success', 'Procurement created successfully.');
     }
-
-    // public function oldstore(ProcurementRequest $request)
-    // {
-    //     $this->authorize('create_procurement');
-    //     try {
-    //         $validated_data = $request->validated();
-    //         $this->procurementService->storeProcurement($validated_data);
-    //         return redirect()->route($this->view . 'index')->with('success', 'Request Added Successfully');
-    //     } catch (\Exception $e) {
-    //         return redirect()->back()->with('danger', $e->getMessage());
-    //     }
-    // }
 
     public function edit($id)
     {
@@ -179,7 +168,77 @@ class ProcurementController extends Controller
         }
     }
 
-    public function update(ProcurementRequest $request, $id)
+    public function update(Request $request, $id)
+    {
+        $this->authorize('edit_procurement');
+    
+        $validatedData = $request->validate([
+            'procurement_number' => 'required|string|max:255',
+            'email' => 'required|email',
+            'request_date' => 'required|date',
+            'delivery_date' => 'required|date',
+            'purpose' => 'nullable|string',
+            'procurement_items' => ['required', 'string', function ($attribute, $value, $fail) {
+                $items = json_decode($value, true);
+                if (empty($items)) {
+                    $fail('You must add at least one procurement item.');
+                }
+            }],
+        ]);
+    
+        try {
+            // Step 1: Update main procurement details
+            $procurement = Procurement::findOrFail($id);
+            $procurement->update([
+                'procurement_number' => $validatedData['procurement_number'],
+                'email' => $validatedData['email'],
+                'request_date' => $validatedData['request_date'],
+                'delivery_date' => $validatedData['delivery_date'],
+                'purpose' => $validatedData['purpose'],
+            ]);
+    
+            // Step 2: Process procurement items
+            $procurementItems = json_decode($validatedData['procurement_items'], true);
+    
+            // Collect existing item IDs for deletion check
+            $existingItemIds = $procurement->items()->pluck('id')->toArray();
+            $updatedItemIds = [];
+    
+            foreach ($procurementItems as $item) {
+                if (isset($item['id']) && in_array($item['id'], $existingItemIds)) {
+                    // Update existing item
+                    $procurementItem = ProcurementItem::find($item['id']);
+                    $procurementItem->update([
+                        'asset_type_id' => $item['asset_type_id'],
+                        'brand_id' => $item['brand_id'],
+                        'quantity' => $item['quantity'],
+                        'specification' => $item['specification'],
+                    ]);
+                    $updatedItemIds[] = $item['id'];
+                } else {
+                    // Create new item
+                    $newItem = $procurement->items()->create([
+                        'asset_type_id' => $item['asset_type_id'],
+                        'brand_id' => $item['brand_id'],
+                        'quantity' => $item['quantity'],
+                        'specification' => $item['specification'],
+                    ]);
+                    $updatedItemIds[] = $newItem->id;
+                }
+            }
+    
+            // Step 3: Delete items not included in the update
+            $itemsToDelete = array_diff($existingItemIds, $updatedItemIds);
+            ProcurementItem::whereIn('id', $itemsToDelete)->delete();
+    
+            return redirect()->route('admin.procurement.index')->with('success', 'Procurement updated successfully.');
+        } catch (Exception $exception) {
+            return redirect()->back()->with('danger', 'Error updating procurement: ' . $exception->getMessage());
+        }
+    }
+    
+
+    public function oldupdate(ProcurementRequest $request, $id)
     {
         $this->authorize('edit_procurement');
         try {
@@ -216,7 +275,6 @@ class ProcurementController extends Controller
             $with = ['asset_types:id,name', 'assignedTo:id,name'];
             $procurementDetails = $this->procurementService->findProcurementById($id, $select, $with, );
             $requestAsset = ProcurementItem::where('procurement_id', $id)->get();
-            
 
             return view('admin.procurement.show', compact('procurementDetails', 'requestAsset'));
         } catch (Exception $exception) {

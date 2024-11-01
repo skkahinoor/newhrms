@@ -103,17 +103,17 @@
                             <tr>
                                 <td>{{ ++$key }}</td>
                                 <td class="text-center">
-                                    {{ $value->procurement_number ?? 'Null'}}
+                                    {{ $value->procurement_number ?? 'Null' }}
                                 </td>
-                                <td>{{ $value->users->name ?? 'Null'}}</td>
+                                <td>{{ $value->users->name ?? 'Null' }}</td>
                                 <td class="text-center">
                                     {{ $value->email }}
                                 </td>
                                 <td class="text-center">
-                                    {{ $value->request_date ?? 'Null'}}
+                                    {{ $value->request_date ?? 'Null' }}
                                 </td>
                                 <td class="text-center">
-                                    {{ $value->delivery_date ?? 'Null'}}
+                                    {{ $value->delivery_date ?? 'Null' }}
                                 </td>
                                 <td class="text-center">
                                     <h6 style="border-radius: 5px; padding: 4px; opacity: 0.6; font-family: serif; color: {{ $changeTextColor[$value->status] }};"
@@ -189,7 +189,24 @@
                                                     </a>
                                                 </li>
                                             @endcan
-                                            @if ($value->status == 0)
+
+                                            @if ($isAdmin)
+                                                @if ($value->status == 0)
+                                                    <li>
+                                                        <a style="cursor: pointer; color: #383838 !important; font-size: 13px; font-weight: bold;"
+                                                            class="dropdown-item deleteLeadEnquiryLink" href="#"
+                                                            data-id="{{ $value->id }}" data-toggle="modal"
+                                                            data-target="#confirmModal"><svg
+                                                                xmlns="http://www.w3.org/2000/svg" width="1.2rem"
+                                                                height="1.2rem" viewBox="0 0 24 24">
+                                                                <path fill="#ff4242"
+                                                                    d="m23 12l-2.44-2.78l.34-3.68l-3.61-.82l-1.89-3.18L12 3L8.6 1.54L6.71 4.72l-3.61.81l.34 3.68L1 12l2.44 2.78l-.34 3.69l3.61.82l1.89 3.18L12 21l3.4 1.46l1.89-3.18l3.61-.82l-.34-3.68zm-13 5l-4-4l1.41-1.41L10 14.17l6.59-6.59L18 9z" />
+                                                            </svg>
+                                                            &nbsp;Approve
+                                                        </a>
+                                                    </li>
+                                                @endif
+                                            @else
                                                 <li>
                                                     <a style="cursor: pointer; color: #383838 !important; font-size: 13px; font-weight: bold;"
                                                         class="dropdown-item deleteLeadEnquiryLink" href="#"
@@ -200,10 +217,15 @@
                                                             <path fill="#ff4242"
                                                                 d="m23 12l-2.44-2.78l.34-3.68l-3.61-.82l-1.89-3.18L12 3L8.6 1.54L6.71 4.72l-3.61.81l.34 3.68L1 12l2.44 2.78l-.34 3.69l3.61.82l1.89 3.18L12 21l3.4 1.46l1.89-3.18l3.61-.82l-.34-3.68zm-13 5l-4-4l1.41-1.41L10 14.17l6.59-6.59L18 9z" />
                                                         </svg>
-                                                        &nbsp;Approve This Procurement
+                                                        &nbsp;Approve
                                                     </a>
                                                 </li>
                                             @endif
+
+
+
+
+
                                             <li>
                                                 <a style="cursor: pointer; color: #383838 !important; font-size: 13px; font-weight: bold;"
                                                     class="dropdown-item pauseOrder" href="#"
@@ -223,7 +245,7 @@
                                                             </path>
                                                         </g>
                                                     </svg>
-                                                    &nbsp;Pause This Procurement
+                                                    &nbsp;Pause
                                                 </a>
                                             </li>
                                             <li>
