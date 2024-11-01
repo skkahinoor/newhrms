@@ -138,125 +138,145 @@
                                         <ul class="dropdown-menu">
                                             @can('show_procurement')
                                                 <li>
-                                                    <a style="color: #383838 !important;font-size:13px;font-weight:bold;"
-                                                        class="dropdown-item enquire-modal-trigger"
-                                                        href="{{ route('admin.procurement.show', $value->id) }}">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem"
-                                                            viewBox="0 0 50 50">
-                                                            <g fill="none" stroke-linecap="round" stroke-linejoin="round"
-                                                                stroke-width="4">
-                                                                <path stroke="#344054"
-                                                                    d="M39.583 25S33.063 33.333 25 33.333C16.938 33.333 10.417 25 10.417 25s6.52-8.333 14.583-8.333S39.583 25 39.583 25M25 20.833a4.167 4.167 0 1 0 0 8.334a4.167 4.167 0 0 0 0-8.334" />
-                                                                <path stroke="#E82E5F"
-                                                                    d="M6.25 14.583v-6.25A2.083 2.083 0 0 1 8.333 6.25h6.25m29.167 8.333v-6.25a2.083 2.083 0 0 0-2.083-2.083h-6.25M6.25 35.417v6.25a2.083 2.083 0 0 0 2.083 2.083h6.25m29.167-8.333v6.25a2.083 2.083 0 0 1-2.083 2.083h-6.25" />
-                                                            </g>
-                                                        </svg>&nbsp;View
-                                                    </a>
-                                                </li>
-                                            @endcan
-                                            @can('edit_procurement')
-                                                <li><a style="color: #383838 !important;font-size:13px;font-weight:bold;"
-                                                        class="dropdown-item"
-                                                        href="{{ route('admin.procurement.edit', $value->id) }}"
-                                                        title="Edit Lead Enquiries"><svg xmlns="http://www.w3.org/2000/svg"
-                                                            width="1rem" height="1rem" viewBox="0 0 48 48">
-                                                            <g fill="none" stroke="#000" stroke-linejoin="round"
-                                                                stroke-width="4">
-                                                                <path stroke-linecap="round"
-                                                                    d="M42 26V40C42 41.1046 41.1046 42 40 42H8C6.89543 42 6 41.1046 6 40V8C6 6.89543 6.89543 6 8 6L22 6" />
-                                                                <path fill="#E82E5F"
-                                                                    d="M14 26.7199V34H21.3172L42 13.3081L34.6951 6L14 26.7199Z" />
-                                                            </g>
-                                                        </svg>&nbsp;Edit
-                                                    </a>
-                                                </li>
-                                            @endcan
-                                            @can('delete_procurement')
-                                                <li><a style="cursor: pointer;color: #383838 !important;font-size:13px;font-weight:bold;"
-                                                        class="dropdown-item deleteLeadEnquiryLink"
-                                                        href="{{ route('admin.procurement.delete', $value->id) }}"><svg
-                                                            xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem"
-                                                            viewBox="0 0 48 48">
-                                                            <g fill="none" stroke-linejoin="round" stroke-width="4">
-                                                                <path fill="#E82E5F" stroke="#000" d="M9 10V44H39V10H9Z" />
-                                                                <path stroke="#fff" stroke-linecap="round" d="M20 20V33" />
-                                                                <path stroke="#fff" stroke-linecap="round" d="M28 20V33" />
-                                                                <path stroke="#000" stroke-linecap="round" d="M4 10H44" />
-                                                                <path fill="#E82E5F" stroke="#000"
-                                                                    d="M16 10L19.289 4H28.7771L32 10H16Z" />
-                                                            </g>
-                                                        </svg>&nbsp;Delete
+                                                    <a class="dropdown-item enquire-modal-trigger"
+                                                        href="{{ route('admin.procurement.show', $value->id) }}"
+                                                        style="font-weight:bold;">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="1.4rem" height="1.4rem"
+                                                            viewBox="0 0 24 24">
+                                                            <path fill="none" stroke="#ff3366" stroke-width="2"
+                                                                d="M12 21c-5 0-11-5-11-9s6-9 11-9s11 5 11 9s-6 9-11 9Zm0-14a5 5 0 1 0 0 10a5 5 0 0 0 0-10Z" />
+                                                        </svg>
+                                                        &nbsp;View
                                                     </a>
                                                 </li>
                                             @endcan
 
+                                            @can('edit_procurement')
+                                                <li>
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('admin.procurement.edit', $value->id) }}"
+                                                        title="Edit Procurement" style="font-weight:bold;">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="1.4rem" height="1.4rem"
+                                                            viewBox="0 0 24 24">
+                                                            <g fill="none" stroke="#ff3366" stroke-linecap="round"
+                                                                stroke-linejoin="round" stroke-width="2">
+                                                                <path stroke-dasharray="20" stroke-dashoffset="20" d="M3 21h18">
+                                                                    <animate fill="freeze" attributeName="stroke-dashoffset"
+                                                                        dur="0.2s" values="20;0" />
+                                                                </path>
+                                                                <path stroke-dasharray="48" stroke-dashoffset="48"
+                                                                    d="M7 17v-4l10 -10l4 4l-10 10h-4">
+                                                                    <animate fill="freeze" attributeName="stroke-dashoffset"
+                                                                        begin="0.2s" dur="0.6s" values="48;0" />
+                                                                </path>
+                                                                <path stroke-dasharray="8" stroke-dashoffset="8" d="M14 6l4 4">
+                                                                    <animate fill="freeze" attributeName="stroke-dashoffset"
+                                                                        begin="0.8s" dur="0.2s" values="8;0" />
+                                                                </path>
+                                                            </g>
+                                                        </svg>
+                                                        &nbsp;Edit
+                                                    </a>
+                                                </li>
+                                            @endcan
+
+                                            @can('delete_procurement')
+                                                <li>
+                                                    <a class="dropdown-item deleteLeadEnquiryLink"
+                                                        href="{{ route('admin.procurement.delete', $value->id) }}"
+                                                        style="cursor: pointer; font-weight:bold;">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="1.4rem" height="1.4rem"
+                                                            viewBox="0 0 24 24">
+                                                            <path fill="#ff3366" d="M8 9h8v10H8z" opacity="0.3" />
+                                                            <path fill="#ff3366"
+                                                                d="m15.5 4l-1-1h-5l-1 1H5v2h14V4zM6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6zM8 9h8v10H8z" />
+                                                        </svg>
+                                                        &nbsp;Delete
+                                                    </a>
+                                                </li>
+                                            @endcan
+
+                                            <!-- Approval Options -->
                                             @if ($isAdmin)
-                                                @if ($value->status == 0)
+                                                @if ($value->status != 1 && $value->status != 4)
                                                     <li>
-                                                        <a style="cursor: pointer; color: #383838 !important; font-size: 13px; font-weight: bold;"
-                                                            class="dropdown-item deleteLeadEnquiryLink" href="#"
+                                                        <a class="dropdown-item deleteLeadEnquiryLink" href="#"
                                                             data-id="{{ $value->id }}" data-toggle="modal"
-                                                            data-target="#confirmModal"><svg
-                                                                xmlns="http://www.w3.org/2000/svg" width="1.2rem"
-                                                                height="1.2rem" viewBox="0 0 24 24">
-                                                                <path fill="#ff4242"
-                                                                    d="m23 12l-2.44-2.78l.34-3.68l-3.61-.82l-1.89-3.18L12 3L8.6 1.54L6.71 4.72l-3.61.81l.34 3.68L1 12l2.44 2.78l-.34 3.69l3.61.82l1.89 3.18L12 21l3.4 1.46l1.89-3.18l3.61-.82l-.34-3.68zm-13 5l-4-4l1.41-1.41L10 14.17l6.59-6.59L18 9z" />
+                                                            data-target="#confirmModal" style="font-weight:bold;">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="1.4rem"
+                                                                height="1.4rem" viewBox="0 0 24 24">
+                                                                <path fill="#ff3366"
+                                                                    d="m17.371 19.827l2.84-2.796l-.626-.627l-2.214 2.183l-.955-.975l-.627.632zM6.77 8.731h10.462v-1H6.769zM18 22.116q-1.671 0-2.835-1.165Q14 19.787 14 18.116t1.165-2.836T18 14.116t2.836 1.164T22 18.116q0 1.67-1.164 2.835Q19.67 22.116 18 22.116M4 20.769V5.616q0-.672.472-1.144T5.616 4h12.769q.67 0 1.143.472q.472.472.472 1.144v5.944q-.892-.293-1.828-.301t-1.845.241H6.769v1h7.312q-.752.521-1.326 1.223t-.946 1.546H6.77v1h4.71q-.108.404-.168.815t-.061.858q0 .685.143 1.359t.43 1.299l-.034.034l-1.135-.826l-1.346.961l-1.346-.961l-1.346.961l-1.347-.961z" />
                                                             </svg>
                                                             &nbsp;Approve
                                                         </a>
                                                     </li>
                                                 @endif
-                                            @else
+                                            @endif
+
+                                            <!-- Pause and Resume Options -->
+                                            @if ($value->status == 1)
                                                 <li>
-                                                    <a style="cursor: pointer; color: #383838 !important; font-size: 13px; font-weight: bold;"
-                                                        class="dropdown-item deleteLeadEnquiryLink" href="#"
+                                                    <a class="dropdown-item pauseOrder" href="#"
                                                         data-id="{{ $value->id }}" data-toggle="modal"
-                                                        data-target="#confirmModal"><svg
-                                                            xmlns="http://www.w3.org/2000/svg" width="1.2rem"
-                                                            height="1.2rem" viewBox="0 0 24 24">
-                                                            <path fill="#ff4242"
-                                                                d="m23 12l-2.44-2.78l.34-3.68l-3.61-.82l-1.89-3.18L12 3L8.6 1.54L6.71 4.72l-3.61.81l.34 3.68L1 12l2.44 2.78l-.34 3.69l3.61.82l1.89 3.18L12 21l3.4 1.46l1.89-3.18l3.61-.82l-.34-3.68zm-13 5l-4-4l1.41-1.41L10 14.17l6.59-6.59L18 9z" />
+                                                        data-target="#pauseModal" style="font-weight:bold;">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="1.4rem"
+                                                            height="1.4rem" viewBox="0 0 24 24">
+                                                            <g fill="none" stroke="#ff3366" stroke-dasharray="32"
+                                                                stroke-dashoffset="32" stroke-linecap="round"
+                                                                stroke-linejoin="round" stroke-width="2">
+                                                                <path d="M7 6h2v12h-2Z">
+                                                                    <animate fill="freeze"
+                                                                        attributeName="stroke-dashoffset" dur="0.4s"
+                                                                        values="32;0" />
+                                                                </path>
+                                                                <path d="M15 6h2v12h-2Z">
+                                                                    <animate fill="freeze"
+                                                                        attributeName="stroke-dashoffset" begin="0.4s"
+                                                                        dur="0.4s" values="32;0" />
+                                                                </path>
+                                                            </g>
                                                         </svg>
-                                                        &nbsp;Approve
+                                                        &nbsp;Pause
                                                     </a>
                                                 </li>
                                             @endif
 
 
+                                            @if ($isAdmin && $value->status == 4)
+                                                <li>
+                                                    <a class="dropdown-item resumeOrder" href="#"
+                                                        data-id="{{ $value->id }}" data-toggle="modal"
+                                                        data-target="#resumeModal" style="font-weight:bold;">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="1.4rem"
+                                                            height="1.4rem" viewBox="0 0 24 24">
+                                                            <path fill="none" stroke="#ff3366" stroke-width="2"
+                                                                d="M1 20h5V4H1zm10-1l11-7l-11-7z" />
+                                                        </svg>
+                                                        &nbsp;Resume
+                                                    </a>
+                                                </li>
+                                            @endif
 
+                                            <!-- Quotation List -->
+                                            @if ($isAdmin)
+                                                <li>
+                                                    <a class="dropdown-item pauseOrder" href="#"
+                                                        data-id="{{ $value->id }}" data-toggle="modal"
+                                                        data-target="#pausedModal" style="font-weight:bold;">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="1.4rem"
+                                                            height="1.4rem" viewBox="0 0 24 24">
+                                                            <path fill="#ff3366" fill-rule="evenodd"
+                                                                d="M20 4H4a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1M4 2a3 3 0 0 0-3 3v14a3 3 0 0 0 3 3h16a3 3 0 0 0 3-3V5a3 3 0 0 0-3-3zm2 5h2v2H6zm5 0a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2zm-3 4H6v2h2zm2 1a1 1 0 0 1 1-1h6a1 1 0 1 1 0 2h-6a1 1 0 0 1-1-1m-2 3H6v2h2zm2 1a1 1 0 0 1 1-1h6a1 1 0 1 1 0 2h-6a1 1 0 0 1-1-1"
+                                                                clip-rule="evenodd" />
+                                                        </svg>
+                                                        &nbsp;Quotation List
+                                                    </a>
+                                                </li>
+                                            @endif
 
-
-                                            <li>
-                                                <a style="cursor: pointer; color: #383838 !important; font-size: 13px; font-weight: bold;"
-                                                    class="dropdown-item pauseOrder" href="#"
-                                                    data-id="{{ $value->id }}" data-toggle="modal"
-                                                    data-target="#pauseModal"><svg xmlns="http://www.w3.org/2000/svg"
-                                                        width="1.2rem" height="1.2rem" viewBox="0 0 24 24">
-                                                        <g fill="none" stroke="#ff4242" stroke-dasharray="32"
-                                                            stroke-dashoffset="32" stroke-linecap="round"
-                                                            stroke-linejoin="round" stroke-width="2">
-                                                            <path d="M7 6h2v12h-2Z">
-                                                                <animate fill="freeze" attributeName="stroke-dashoffset"
-                                                                    dur="0.4s" values="32;0" />
-                                                            </path>
-                                                            <path d="M15 6h2v12h-2Z">
-                                                                <animate fill="freeze" attributeName="stroke-dashoffset"
-                                                                    begin="0.4s" dur="0.4s" values="32;0" />
-                                                            </path>
-                                                        </g>
-                                                    </svg>
-                                                    &nbsp;Pause
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a style="cursor: pointer; color: #383838 !important; font-size: 13px; font-weight: bold;"
-                                                    class="dropdown-item pauseOrder" href="#"
-                                                    data-id="{{ $value->id }}" data-toggle="modal"
-                                                    data-target="#pauseModal">
-                                                    &nbsp;Quotation List
-                                                </a>
-                                            </li>
                                         </ul>
+
                                     </div>
                                 </td>
                                 <!-- Modal -->
@@ -325,6 +345,28 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                     <button type="button" class="btn btn-primary" id="pauseStatusChange">Yes, Pause Now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- Resume Procurement modal  --}}
+    <div class="modal fade" id="resumeModal" tabindex="-1" role="dialog" aria-labelledby="resumeModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="pauseModalLabel">Confirm To Resume</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to Resume the Procurement?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="resumeStatusChange">Yes, Resume Now</button>
                 </div>
             </div>
         </div>
@@ -417,6 +459,62 @@
                         .then(data => {
                             // Close the modal regardless of success or error
                             $('#pauseModal').modal('hide');
+
+                            if (data.success) {
+                                // Show success alert with SweetAlert2 and reload
+                                Swal.fire('Success!', 'Status updated successfully!', 'success')
+                                    .then(() => location.reload());
+                            } else {
+                                // Show error alert with SweetAlert2 and reload
+                                Swal.fire('Error!', 'Failed to update status!', 'error')
+                                    .then(() => location.reload());
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            // Handle unexpected errors gracefully
+                            Swal.fire('Error!', 'An unexpected error occurred!', 'error')
+                                .then(() => location.reload());
+                        });
+                }
+            });
+
+        });
+
+        // JS code to change status - Resume
+        document.addEventListener('DOMContentLoaded', function() {
+
+            let procurementId = null;
+
+
+            document.querySelectorAll('.resumeOrder').forEach(function(link) {
+                link.addEventListener('click', function() {
+
+                    procurementId = this.getAttribute(
+                        'data-id');
+                });
+            });
+
+            // Handle the modal confirmation
+            document.getElementById('resumeStatusChange').addEventListener('click', function() {
+                console.log(procurementId);
+
+                if (procurementId) {
+                    // Make AJAX request to change the status
+                    fetch(`procurement/${procurementId}/resume-status`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            },
+                            body: JSON.stringify({
+                                status: 1
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            // Close the modal regardless of success or error
+                            $('#resumeModal').modal('hide');
 
                             if (data.success) {
                                 // Show success alert with SweetAlert2 and reload

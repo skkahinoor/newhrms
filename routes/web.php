@@ -423,6 +423,7 @@ Route::group([
         Route::get('procurement/delete/{id}', [ProcurementController::class, 'delete'])->name('procurement.delete');
         Route::post('procurement/{id}/change-status', [ProcurementController::class, 'changeStatus'])->name('change-status');
         Route::post('procurement/{id}/pause-status', [ProcurementController::class, 'pauseStatus'])->name('pause-status');
+        Route::post('procurement/{id}/resume-status', [ProcurementController::class, 'resumeStatus'])->name('resume-status');
 
         /** Salary Component route */
         Route::resource('salary-components', SalaryComponentController::class, [

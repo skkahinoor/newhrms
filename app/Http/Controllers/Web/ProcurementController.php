@@ -310,4 +310,18 @@ class ProcurementController extends Controller
         return response()->json(['success' => false, 'message' => 'Procurement not found']);
     }
 
+    public function resumeStatus(Request $request, $id)
+    {
+        $procurement = Procurement::find($id);
+
+        if ($procurement) {
+            $procurement->status = $request->status;
+            $procurement->save();
+
+            return response()->json(['success' => true]);
+        }
+
+        return response()->json(['success' => false, 'message' => 'Procurement not found']);
+    }
+
 }
