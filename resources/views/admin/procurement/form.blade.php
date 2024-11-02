@@ -19,15 +19,14 @@
 
         <div class="col-md-4">
             <label for="email" class="form-label">Email <span style="color: red">*</span></label>
-            <input type="text" value="{{ old('email') }}"
-                class="form-control" id="mail" name="email" required autocomplete="off" placeholder="Email">
+            <input type="text" value="{{ old('email') }}" class="form-control" id="mail" name="email"
+                required autocomplete="off" placeholder="Email">
         </div>
 
         <div class="col-md-4">
             <label for="request_date" class="form-label">Request Date <span style="color: red">*</span></label>
             <input type="date" class="form-control" id="request_date" name="request_date"
-                value="{{ old('request_date') }}"
-                required autocomplete="off">
+                value="{{ old('request_date') }}" required autocomplete="off">
         </div>
 
     </div>
@@ -36,8 +35,7 @@
         <div class="col-md-6">
             <label for="delivery_date" class="form-label">Delivery Date <span style="color: red">*</span></label>
             <input type="date" class="form-control" id="delivery_date" name="delivery_date"
-                value="{{ old('delivery_date') }}"
-                required autocomplete="off">
+                value="{{ old('delivery_date') }}" required autocomplete="off">
         </div>
         <div class="col-md-6">
             <label for="purpose" class="form-label">Purpose</label>
@@ -88,9 +86,11 @@
                 min="1" class="form-control" id="procurement_quantity" name="quantity" autocomplete="off"
                 placeholder="Enter Amount">
         </div>
+
         <div class="col-md-3">
             <label for="quantity" class="form-label">Specification&nbsp;<span class="text-danger">*</span></label>
-            <textarea name="specification" class="form-control" id="specification" cols="15" rows="2">{{ isset($procurementDetail) ? $procurementDetail->specification : null }}</textarea>
+            <textarea name="specification" class="form-control" id="specification" cols="15" rows="1"
+                placeholder="Enter Requirement">{{ isset($procurementDetail) ? $procurementDetail->specification : null }}</textarea>
         </div>
     </div>
 

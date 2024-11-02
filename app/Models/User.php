@@ -7,6 +7,7 @@ use App\Helpers\AttendanceHelper;
 use App\Notifications\ResetPasswordNotification;
 use Carbon\Carbon;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -127,6 +128,20 @@ class User extends Authenticatable
     public function assettype(): BelongsTo
     {
         return $this->belongsTo(AssetType::class, 'asset_type', 'id');
+    }
+
+    public function assetTypes()
+    {
+        return $this->belongsToMany(AssetType::class, 'user_asset_types');
+    }
+
+    // Cast the asset-type JSON attribute as an array
+    protected function assetTypeIds(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => json_decode($value, true),
+            set: fn ($value) => json_encode($value)
+        );
     }
 
     public function updatedBy(): BelongsTo

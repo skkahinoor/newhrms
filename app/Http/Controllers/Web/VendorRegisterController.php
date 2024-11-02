@@ -40,7 +40,7 @@ class VendorRegisterController extends Controller
                 'is_working' => $request->is_working ?? null,
                 'is_available' => $request->is_available ?? null,
                 'type' => $request->type ?? null,
-                'download_excel' => $request->download_excel ?? null
+                'download_excel' => $request->download_excel ?? null,
             ];
             $select = ['*'];
             $with = ['type:id,name', 'assignedTo:id,name'];
@@ -72,27 +72,49 @@ class VendorRegisterController extends Controller
         }
         return $message;
     }
+
     public function store(Request $request)
     {
-        // dd($request->all());
         try {
             $validatedData = Validator::make($request->all(), [
                 'name' => ['required', 'string', 'max:25'],
                 'email' => ['required', 'string', 'email', 'max:255'],
                 'phone' => ['required', 'numeric'],
                 'password' => ['required', 'string', 'confirmed'],
-                'asset-type' => ['required']
+                'asset-type' => ['required', 'array'],
+
             ]);
             if ($validatedData->fails()) {
-                // dd($validatedData->errors());
                 return redirect()->back()->withErrors(self::getErrorMessage($validatedData->getMessageBag()->messages()));
             }
-            // dd($validatedData);
-            $this->vendorService->saveVendorDetails($request->all());
 
-            return redirect()->route('admin.login');
+            $data = $request->all();
+            $data['asset-type'] = json_encode($data['asset-type']);
+
+            $this->vendorService->saveVendorDetails($data);
+
+            return redirect()->route('admin.login')->with('success', 'Vendor registered successfully.');
         } catch (\Throwable $th) {
             return redirect()->back();
         }
     }
+
+    public function demostore(Request $request)
+    {
+        $validatedData = $request->validate([
+            'name' => ['required', 'string', 'max:25'],
+            'email' => ['required', 'string', 'email', 'max:255'],
+            'phone' => ['required', 'numeric'],
+            'password' => ['required', 'string', 'confirmed'],
+            'asset-type' => ['required', 'array'],
+        ]);
+
+        $user = User::create($validatedData);
+
+        // Sync the asset types to the user in the pivot table
+        $user->assetTypes()->sync($validatedData['asset-type']);
+
+        return redirect()->route('admin.login')->with('success', 'Vendor registered successfully.');
+    }
+
 }

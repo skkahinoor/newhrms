@@ -20,10 +20,13 @@
                 <tr class='text-center'>
                     <td>${item.type_name}</td>
                     <td>${item.brand_name}</td>
-                    <td>${item.quantity}</td>
-                    <td>${item.specification}</td>
+                    <td><input type="number" value="${item.quantity}" min="1" class="form-control text-center edit-quantity" data-index="${index}"></td>
+                <td><textarea class="form-control text-center edit-specification" data-index="${index}" cols="15" rows="1">${item.specification}</textarea></td>
                     <td><button type="button" class="btn btn-danger btn-sm" onclick="removeItem(${index})">Remove</button></td>
                 </tr>`;
+                // Reset form fields
+                $('#type, #brand').prop('selectedIndex', 0);
+                $('#quantity, #specification').val('');
                 tableBody.insertAdjacentHTML('beforeend', row);
             });
             document.getElementById('procurement_items').value = JSON.stringify(procurementItems);

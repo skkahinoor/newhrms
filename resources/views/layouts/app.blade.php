@@ -20,7 +20,8 @@
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
 
-
+    {{-- Multiple select css  --}}
+    <link rel="stylesheet" href="{{ asset('assets/css/MultiSelect.css') }}">
     <!-- core:css -->
     <link rel="stylesheet" href="{{ asset('assets/vendors/core/core.css') }}">
     <!-- endinject -->
@@ -123,6 +124,8 @@
             })
         })()
     </script>
+    {{-- Multi Select Option for js  --}}
+    <script src="{{ asset('assets/js/MultiSelect.js') }}"></script>
 </body>
 
 </html>

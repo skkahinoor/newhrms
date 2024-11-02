@@ -19,6 +19,15 @@ class VendorController extends Controller
     {
         $user = Auth::user();
         $getUserDetails = User::find($user->id);
+        
+        // if (!empty($getUserDetails->{"asset_type"})) { // Ensure asset-type is not null or empty
+            
+        //     $getUserDetails->decoded_asset_types = json_decode($getUserDetails->{"asset_type"}, true);
+        //     // dd('if');
+        // } else {
+        //     dd('else');
+        //     $getUserDetails->decoded_asset_types = [];
+        // }
         // dd($getuserDetails);
         return view('vendor.dashboard', ['getUserDetails' => $getUserDetails]);
     }
@@ -46,7 +55,6 @@ class VendorController extends Controller
         $getUserDetails = User::find($user->id);
         $getVendorProduct = VendorProduct::all();
         // dd($request->input('order_id'));
-        
 
         $getOrder = ProcurementItem::where('asset_type_id', $getUserDetails->asset_type)->with(['users', 'role', 'company', 'assetType', 'brand'])->paginate(5);
 

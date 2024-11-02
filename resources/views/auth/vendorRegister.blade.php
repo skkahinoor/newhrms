@@ -36,7 +36,7 @@
                                                             <input type="text"
                                                                 class="form-control @error('name') is-invalid @enderror"
                                                                 name="name" value="{{ old('name') }}" required
-                                                                autocomplete="name" autofocus>
+                                                                autocomplete="name" placeholder="Enter Name" autofocus>
                                                             @error('name')
                                                                 <span class="text-danger">
                                                                     <strong>{{ $message }}</strong>
@@ -51,7 +51,7 @@
                                                             <input type="email"
                                                                 class="form-control @error('email') is-invalid @enderror"
                                                                 name="email" value="{{ old('email') }}" required
-                                                                autocomplete="email" autofocus>
+                                                                autocomplete="email" placeholder="Enter Email" autofocus>
                                                             @error('email')
                                                                 <span class="text-danger">
                                                                     <strong>{{ $message }}</strong>
@@ -69,7 +69,7 @@
                                                                     class="text-danger">*</span></label>
                                                             <input id="phone" type="phone"
                                                                 class="form-control @error('phone') is-invalid @enderror"
-                                                                name="phone" required autocomplete="phone">
+                                                                name="phone" placeholder="Enter Phone Number" required autocomplete="phone">
                                                             @error('phone')
                                                                 <span class="text-danger">
                                                                     <strong>{{ $message }}</strong>
@@ -81,9 +81,9 @@
                                                         <div class="mb-3">
                                                             <label for="userPassword" class="form-label">Choose Asset
                                                                 Type&nbsp;<span class="text-danger">*</span></label>
-                                                            <select name="asset-type" id="asset-type" class="form-select"
-                                                                required>
-                                                                <option value="">Select option</option>
+                                                            <select name="asset-type[]" id="asset-type" class="form-select"
+                                                                required data-placeholder="Select Type" multiple
+                                                                data-multi-select>
                                                                 @if (count($assettype) > 0)
                                                                     @foreach ($assettype as $category)
                                                                         <option value="{{ $category->id }}">
@@ -106,7 +106,7 @@
                                                                     class="text-danger">*</span></label>
                                                             <input id="password" type="password"
                                                                 class="form-control @error('password') is-invalid @enderror"
-                                                                name="password" required autocomplete="new-password">
+                                                                name="password" required  placeholder="Enter Password" autocomplete="new-password">
                                                             @error('password')
                                                                 <span class="text-danger">
                                                                     <strong>{{ $message }}</strong>
@@ -120,7 +120,7 @@
                                                                 Password&nbsp;<span class="text-danger">*</span></label>
                                                             <input id="password-confirm" type="password"
                                                                 class="form-control" name="password_confirmation" required
-                                                                autocomplete="new-password">
+                                                                autocomplete="new-password" placeholder="Confirm Password">
                                                         </div>
                                                     </div>
                                                 </div>

@@ -60,4 +60,8 @@ class AssetType extends Model
         return $this->hasMany(Procurement::class);
     }
 
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'user_asset_types');
+    }
 }
