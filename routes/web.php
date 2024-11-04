@@ -541,11 +541,6 @@ Route::group([
         Route::get('orders', [VendorController::class, 'orders'])->name('orders');
         Route::get('products', [VendorController::class, 'products'])->name('products');
 
-        // Create Product
-        Route::post('products/create', [VendorController::class, 'productCreate'])->name('productcreate');
-        Route::post('update-product', [VendorController::class, 'productUpdate'])->name('productupdate');
-        Route::put('delete-product', [VendorController::class, 'productDelete'])->name('productdelete');
-
         // Make Quotation on Order page
         Route::post('quotation/store', [VendorController::class, 'storeQuotation'])->name('quotationsStore');
         Route::get('getproductdetails', [VendorController::class, 'getProductDetails'])->name('getProductDetails');

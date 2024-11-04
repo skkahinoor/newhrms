@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
-use App\Models\AssetType;
 use App\Models\Procurement;
 use App\Models\ProcurementItem;
 use App\Models\Quotation;
@@ -11,24 +10,23 @@ use App\Models\User;
 use App\Models\VendorProduct;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
 
 class VendorController extends Controller
 {
+
     public function index()
     {
         $user = Auth::user();
         $getUserDetails = User::find($user->id);
-        
-        // if (!empty($getUserDetails->{"asset_type"})) { // Ensure asset-type is not null or empty
-            
-        //     $getUserDetails->decoded_asset_types = json_decode($getUserDetails->{"asset_type"}, true);
-        //     // dd('if');
-        // } else {
-        //     dd('else');
-        //     $getUserDetails->decoded_asset_types = [];
-        // }
-        // dd($getuserDetails);
+
+        if (!empty($getUserDetails->asset_type)) {
+            $assetTypeIds = json_decode($getUserDetails->asset_type, true);
+            $assetNames = \App\Models\AssetType::whereIn('id', $assetTypeIds)->pluck('name')->toArray();
+            $getUserDetails->decoded_asset_types = $assetNames;
+        } else {
+            $getUserDetails->decoded_asset_types = [];
+        }
+
         return view('vendor.dashboard', ['getUserDetails' => $getUserDetails]);
     }
 
@@ -53,7 +51,6 @@ class VendorController extends Controller
     {
         $user = Auth::user();
         $getUserDetails = User::find($user->id);
-        $getVendorProduct = VendorProduct::all();
         // dd($request->input('order_id'));
 
         $getOrder = ProcurementItem::where('asset_type_id', $getUserDetails->asset_type)->with(['users', 'role', 'company', 'assetType', 'brand'])->paginate(5);
@@ -61,25 +58,7 @@ class VendorController extends Controller
         $quotationOrder = ProcurementItem::where('asset_type_id', $getUserDetails->asset_type)->with(['users', 'role', 'company', 'assetType', 'brand'])->paginate(5);
 
         $completeOrder = ProcurementItem::where('asset_type_id', $getUserDetails->asset_type)->with(['users', 'role', 'company', 'assetType', 'brand'])->paginate(5);
-        return view('vendor.orders', ['getUserDetails' => $getUserDetails, 'getOrder' => $getOrder, 'completeOrder' => $completeOrder, 'getVendorProduct' => $getVendorProduct, 'quotationOrder' => $quotationOrder]);
-    }
-    public function getProductDetails(Request $request)
-    {
-        $productId = $request->input('product_id');
-        if (!$productId) {
-            return response()->json(['success' => false, 'message' => 'Product ID not provided'], 400);
-        }
-        $product = VendorProduct::find($productId);
-
-        if ($product) {
-            return response()->json([
-                'success' => true,
-                'salePrice' => $product->sale_price,
-
-            ]);
-        }
-
-        return response()->json(['success' => false], 404);
+        return view('vendor.orders', ['getUserDetails' => $getUserDetails, 'getOrder' => $getOrder, 'completeOrder' => $completeOrder, 'quotationOrder' => $quotationOrder]);
     }
 
     public function storeQuotation(Request $request)
@@ -108,68 +87,6 @@ class VendorController extends Controller
         }
 
         return response()->json(['message', 'Quotation Sent Successfully!'], 200);
-    }
-
-    public function products()
-    {
-        $user = Auth::user();
-        $getUserDetails = User::find($user->id);
-        $assetType = AssetType::all();
-        $fetchProduct = VendorProduct::all();
-        $fetchOrder = VendorProduct::where('vendor_id', $getUserDetails->id)->with(['asset_types']);
-        $getOrder = $fetchOrder->paginate(5);
-        return view('vendor.products', ['getUserDetails' => $getUserDetails, 'getOrder' => $getOrder, 'assetType' => $assetType, 'fetchProduct' => $fetchProduct]);
-    }
-
-    public function productCreate(Request $request)
-    {
-        $getUser = Auth::user();
-        $validator = Validator($request->all(), [
-            'product' => 'required',
-            'brand' => 'required|string|unique:vendor_products,product_brand',
-            'quantity' => 'required|integer',
-            'buyprice' => 'required|numeric',
-            'saleprice' => 'required|numeric',
-        ]);
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
-
-        VendorProduct::create([
-            'vendor_id' => $getUser->id,
-            'product_type' => $request->input('product'),
-            'product_brand' => $request->input('brand'),
-            'quantity' => $request->input('quantity'),
-            'buy_price' => $request->input('buyprice'),
-            'sale_price' => $request->input('saleprice'),
-            'margin' => $request->input('margin'),
-        ]);
-
-        return redirect()->back()->with('success', 'Product added successfully!');
-    }
-
-    public function productUpdate(Request $request)
-    {
-        $order = VendorProduct::find($request->order_id);
-        $order->product_brand = $request->input('product_brand');
-        $order->buy_price = $request->input('buy_price');
-        $order->sale_price = $request->input('sale_price');
-        $order->margin = $request->input('modalmargin');
-        $order->quantity = $request->input('quantity');
-        $order->save();
-
-        return redirect()->back()->with('success', 'Product updated successfully.');
-    }
-    public function productDelete(Request $request)
-    {
-        $orderId = $request->input('order_id');
-        $product = VendorProduct::find($orderId);
-        if ($product) {
-            $product->delete();
-            return redirect()->back()->with('success', 'Product deleted successfully.');
-        } else {
-            return redirect()->back()->with('error', 'Product not found.');
-        }
     }
 
 }

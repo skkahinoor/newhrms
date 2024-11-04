@@ -24,10 +24,17 @@
                     <h5>{{ $getUserDetails->name }}</h5>
                     <h6 class="text-secondary">{{ $getUserDetails->email }}</h6>
                 </div>
-                <p>Your Asset Type:&nbsp;<b class="text-primary"></b></p>
-                {{-- @foreach ($getUserDetails->assetTypes as $assetType)
-                    <li>{{ $assetType->name }}</li>
-                @endforeach --}}
+                <p class="h6">Your Asset Type:&nbsp;<br>
+                <ol>
+                    <b class="text-primary">
+                            @foreach ($getUserDetails->decoded_asset_types as $assetType)
+                                <li>{{ $assetType }}</li>
+                            @endforeach
+                        </b>
+                </ol>
+
+                </p>
+
                 <p>Number:&nbsp;<b class="text-primary">{{ $getUserDetails->phone }}</b></p>
 
             </div>

@@ -94,27 +94,9 @@ class VendorRegisterController extends Controller
             $this->vendorService->saveVendorDetails($data);
 
             return redirect()->route('admin.login')->with('success', 'Vendor registered successfully.');
-        } catch (\Throwable $th) {
-            return redirect()->back();
+        } catch (Exception $exception) {
+            return redirect()->back()->with('danger', $exception->getMessage());
         }
-    }
-
-    public function demostore(Request $request)
-    {
-        $validatedData = $request->validate([
-            'name' => ['required', 'string', 'max:25'],
-            'email' => ['required', 'string', 'email', 'max:255'],
-            'phone' => ['required', 'numeric'],
-            'password' => ['required', 'string', 'confirmed'],
-            'asset-type' => ['required', 'array'],
-        ]);
-
-        $user = User::create($validatedData);
-
-        // Sync the asset types to the user in the pivot table
-        $user->assetTypes()->sync($validatedData['asset-type']);
-
-        return redirect()->route('admin.login')->with('success', 'Vendor registered successfully.');
     }
 
 }

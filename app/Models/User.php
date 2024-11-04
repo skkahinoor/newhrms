@@ -125,23 +125,14 @@ class User extends Authenticatable
         return $this->belongsTo(User::class, 'created_by', 'id');
     }
 
-    public function assettype(): BelongsTo
+    public function assettypes(): BelongsTo
     {
         return $this->belongsTo(AssetType::class, 'asset_type', 'id');
     }
 
-    public function assetTypes()
+    public function assetType()
     {
-        return $this->belongsToMany(AssetType::class, 'user_asset_types');
-    }
-
-    // Cast the asset-type JSON attribute as an array
-    protected function assetTypeIds(): Attribute
-    {
-        return Attribute::make(
-            get: fn ($value) => json_decode($value, true),
-            set: fn ($value) => json_encode($value)
-        );
+        return $this->belongsTo(AssetType::class, 'asset_type', 'id');
     }
 
     public function updatedBy(): BelongsTo
