@@ -63,13 +63,7 @@
                                                 Order Number</th>
                                             <th
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                Requirement</th>
-                                            <th
-                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                Quantity</th>
-                                            <th
-                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                Brand</th>
+                                                Procurement Item</th>
                                             <th
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                                 Requested Date</th>
@@ -87,7 +81,6 @@
                                     <tbody>
                                         @foreach ($getOrder as $key => $order)
                                             <tr>
-
                                                 <td class="align-middle text-center">
                                                     <span
                                                         class="text-secondary text-xs font-weight-bold">{{ $getOrder->firstItem() + $key }}</span>
@@ -97,35 +90,40 @@
                                                         class="text-secondary text-xs font-weight-bold">{{ $order->procurement_number ?? 'N/A' }}</span>
                                                 </td>
                                                 <td class="align-middle text-center">
-                                                    <span
-                                                        class="text-secondary text-xs font-weight-bold">{{ $order->asset_types->name ?? 'N/A' }}</span>
+                                                    <a href="javascript:void(0);" class="text-secondary text-xs font-weight-bold view-asset" data-bs-toggle="modal" data-id="{{ $order->id }}"
+                                                        data-bs-target="#assetModal">View 
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="1.4rem"
+                                                            height="1.4rem" viewBox="0 0 24 24">
+                                                            <g fill="none">
+                                                                <path fill="#ff3366" fill-opacity="0.25" fill-rule="evenodd"
+                                                                    d="M2.455 11.116C3.531 9.234 6.555 5 12 5c5.444 0 8.469 4.234 9.544 6.116c.221.386.331.58.32.868c-.013.288-.143.476-.402.852C20.182 14.694 16.706 19 12 19s-8.182-4.306-9.462-6.164c-.26-.376-.39-.564-.401-.852c-.013-.288.098-.482.318-.868M12 15a3 3 0 1 0 0-6a3 3 0 0 0 0 6"
+                                                                    clip-rule="evenodd" />
+                                                                <path stroke="#ff3366" stroke-width="1.2"
+                                                                    d="M12 5c-5.444 0-8.469 4.234-9.544 6.116c-.221.386-.331.58-.32.868c.013.288.143.476.402.852C3.818 14.694 7.294 19 12 19s8.182-4.306 9.462-6.164c.26-.376.39-.564.401-.852s-.098-.482-.319-.868C20.47 9.234 17.444 5 12 5Z" />
+                                                                <circle cx="12" cy="12" r="3" stroke="#ff3366"
+                                                                    stroke-width="1.2" />
+                                                            </g>
+                                                        </svg>
+                                                    </a>
+                                                </td>
                                                 </td>
                                                 <td class="align-middle text-center">
                                                     <span
-                                                        class="text-secondary text-xs font-weight-bold">{{ $order->quantity ?? 'N/A' }}&nbsp;Pcs</span>
+                                                        class="text-secondary text-xs font-weight-bold">{{ $order->request_date ?? 'N/A' }}</span>
                                                 </td>
                                                 <td class="align-middle text-center">
                                                     <span
-                                                        class="text-secondary text-xs font-weight-bold">{{ $order->brands->name ?? 'N/A' }}</span>
+                                                        class="text-secondary text-xs font-weight-bold">{{ $order->delivery_date ?? 'N/A' }}</span>
                                                 </td>
-                                                <td class="align-middle text-center">
-                                                    <span
-                                                        class="text-secondary text-xs font-weight-bold">{{ $order->request_date ?? 'N/A'}}</span>
-                                                </td>
-                                                <td class="align-middle text-center">
-                                                    <span
-                                                        class="text-secondary text-xs font-weight-bold">{{ $order->delivery_date ?? 'N/A'}}</span>
-                                                </td>
-                                                {{-- <td class="align-middle text-center text-sm">
+                                                <td class="align-middle text-center text-sm">
                                                     <span class="badge badge-sm btn-{{ $changeColor[$order->status] }}"
                                                         style="color: {{ $changeTextColor[$order->status] }};">{{ $changeStatusValue[$order->status] ?? 'null' }}</span>
-                                                </td> --}}
+                                                </td>
                                                 <td class="align-middle text-center">
                                                     <a href="javascript:void(0);"
-                                                        class="text-secondary font-weight-bold text-xs make-quotation-btn"
-                                                        data-id="{{ $order->id }}"
-                                                        data-quantity="{{ $order->quantity }}" data-toggle="tooltip"
-                                                        data-original-title="Make Quotation">
+                                                        class="text-light p-2 btn-info font-weight-bold text-xs make-quotation-btn" style="border-radius: 7px;"
+                                                        data-id="{{ $order->id }}" data-quantity="{{ $order->quantity }}"
+                                                        data-toggle="tooltip" data-original-title="Make Quotation">
                                                         Make Quotation
                                                     </a>
                                                 </td>
@@ -216,16 +214,16 @@
                                                 </td>
                                                 <td class="align-middle text-center">
                                                     <span
-                                                        class="text-secondary text-xs font-weight-bold">{{ $qorder->request_date ?? 'N/A'}}</span>
+                                                        class="text-secondary text-xs font-weight-bold">{{ $qorder->request_date ?? 'N/A' }}</span>
                                                 </td>
                                                 <td class="align-middle text-center">
                                                     <span
-                                                        class="text-secondary text-xs font-weight-bold">{{ $qorder->delivery_date ?? 'N/A'}}</span>
+                                                        class="text-secondary text-xs font-weight-bold">{{ $qorder->delivery_date ?? 'N/A' }}</span>
                                                 </td>
-                                                {{-- <td class="align-middle text-center text-sm">
+                                                <td class="align-middle text-center text-sm">
                                                     <span class="badge badge-sm btn-{{ $changeColor[$qorder->status] }}"
                                                         style="color: {{ $changeTextColor[$qorder->status] }};">{{ $changeStatusValue[$qorder->status] ?? 'null' }}</span>
-                                                </td> --}}
+                                                </td>
 
                                                 <td class="align-middle text-center">
                                                     <a href="javascript:;" class="text-secondary font-weight-bold text-xs"
@@ -307,8 +305,12 @@
                                                         class="text-secondary text-xs font-weight-bold">{{ $corder->procurement_number ?? 'N/A' }}</span>
                                                 </td>
                                                 <td class="align-middle text-center">
-                                                    <span
-                                                        class="text-secondary text-xs font-weight-bold">{{ $corder->asset_types->name ?? 'N/A' }}</span>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="1.4rem"
+                                                        height="1.4rem" viewBox="0 0 24 24">
+                                                        <path fill="none" stroke="#ff3366" stroke-width="2"
+                                                            d="M12 21c-5 0-11-5-11-9s6-9 11-9s11 5 11 9s-6 9-11 9Zm0-14a5 5 0 1 0 0 10a5 5 0 0 0 0-10Z">
+                                                        </path>
+                                                    </svg>
                                                 </td>
                                                 <td class="align-middle text-center">
                                                     <span
@@ -320,16 +322,16 @@
                                                 </td>
                                                 <td class="align-middle text-center">
                                                     <span
-                                                        class="text-secondary text-xs font-weight-bold">{{ $corder->request_date ?? 'N/A'}}</span>
+                                                        class="text-secondary text-xs font-weight-bold">{{ $corder->request_date ?? 'N/A' }}</span>
                                                 </td>
                                                 <td class="align-middle text-center">
                                                     <span
-                                                        class="text-secondary text-xs font-weight-bold">{{ $corder->delivery_date ?? 'N/A'}}</span>
+                                                        class="text-secondary text-xs font-weight-bold">{{ $corder->delivery_date ?? 'N/A' }}</span>
                                                 </td>
-                                                {{-- <td class="align-middle text-center text-sm">
+                                                <td class="align-middle text-center text-sm">
                                                     <span
                                                         class="badge badge-sm bg-gradient-success">{{ $corder->status == 3 ? 'Delivered' : 'Error' }}</span>
-                                                </td> --}}
+                                                </td>
 
                                                 <td class="align-middle text-center">
                                                     <a href="javascript:;" class="text-secondary font-weight-bold text-xs"
@@ -420,10 +422,7 @@
                                         style="border: 1px solid #d2d6da !important; padding-left: 5px !important;"
                                         required>
                                         <option value="">Select Product</option>
-                                        @foreach ($getVendorProduct as $product)
-                                            <option value="{{ $product->id }}">{{ $product->product_brand }}&nbsp;(
-                                                {{ $product->quantity }}&nbsp;Pcs)</option>
-                                        @endforeach
+
                                     </select>
                                 </div>
                                 <div class="col-md-3">
@@ -492,6 +491,78 @@
                                 <button type="submit" class="btn btn-primary">Send Quotation</button>
                             </div>
                         </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal for Asset view -->
+        <div class="modal fade" id="assetModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-6" id="exampleModalLabel">Requirement</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="table-responsive p-0">
+                            <table class="table align-items-center mb-0">
+                                <thead>
+                                    <tr>
+                                        <th
+                                            class="text-uppercase text-center text-secondary text-xs font-weight-bolder opacity-7">
+                                            #</th>
+                                        <th
+                                            class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
+                                            Type</th>
+                                        <th
+                                            class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
+                                            Brand</th>
+                                        <th
+                                            class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
+                                            Quantity</th>
+                                        <th
+                                            class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
+                                            Specification</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($getOrder as $key => $corder)
+                                        <tr>
+                                            <td class="align-middle text-center">
+                                                <span
+                                                    class="text-secondary text-xs font-weight-bold">{{ $getOrder->firstItem() + $key }}</span>
+                                            </td>
+
+                                            <td class="align-middle text-center">
+                                                <span
+                                                    class="text-secondary text-xs font-weight-bold">{{ $order->procurement_number ?? 'N/A' }}</span>
+                                            </td>
+                                            <td class="align-middle text-center">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="1.4rem" height="1.4rem"
+                                                    viewBox="0 0 24 24">
+                                                    <path fill="none" stroke="#ff3366" stroke-width="2"
+                                                        d="M12 21c-5 0-11-5-11-9s6-9 11-9s11 5 11 9s-6 9-11 9Zm0-14a5 5 0 1 0 0 10a5 5 0 0 0 0-10Z">
+                                                    </path>
+                                                </svg>
+                                            </td>
+                                            <td class="align-middle text-center">
+                                                <span
+                                                    class="text-secondary text-xs font-weight-bold">{{ $order->quantity ?? 'N/A' }}&nbsp;Pcs</span>
+                                            </td>
+                                            <td class="align-middle text-center">
+                                                <span
+                                                    class="text-secondary text-xs font-weight-bold">{{ $order->brands->name ?? 'N/A' }}</span>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        {{-- <button type="button" class="btn btn-primary">Save changes</button> --}}
                     </div>
                 </div>
             </div>

@@ -76,19 +76,33 @@
         // Initialize margin calculation on page load if values are pre-filled
         calculateMargin();
 
-        // Delete Product modal code 
-        $(document).ready(function() {
-            // Trigger delete modal and populate with order id
-            $(document).on('click', '.deleteProduct', function() {
-                var orderId = $(this).data('id');
-                // Set the order id in the modal's hidden input field
-                $('#delete_order_id').val(orderId);
 
-                // Show the delete confirmation modal
-                $('#deleteProductModal').modal('show');
+        // View Asset On Modal 
+        $(document).ready(function() {
+            $(document).on('click', '.view-asset', function() {
+                const ProcurementId = $(this).data('id');
+                console.log("Procurement ID is: ", ProcurementId);
+                if (ProcurementId) {
+                    $.ajax({
+                        url: '{{ route('vendor.getAssetDetails', ['id' => ':id']) }}'.replace(':id', ProcurementId),
+                        type: 'GET',
+                        data: {
+                            procurement_id: ProcurementId
+                        },
+                        success: function(response) {
+                            console.log(response);
+                        },
+                        error: function() {
+                            Swal.fire('Error!',
+                                'Could not fetch product details.',
+                                'error');
+                        }
+                    });
+                } else {
+                    console.log("ProcurementId Not found or error");
+                }
             });
         });
-
 
 
 
@@ -107,40 +121,7 @@
                     const productId = $(this).val();
                     console.log("Vendor Product Id", productId);
                     if (productId) {
-                        $.ajax({
-                            url: '{{ route('vendor.getProductDetails') }}',
-                            type: 'GET',
-                            data: {
-                                product_id: productId
-                            },
-                            success: function(response) {
-                                console.log("AJAX Response:", response);
-                                if (response.success) {
-
-                                    const vendorProductSalePrice = response
-                                        .salePrice;
-                                    const procurementQuantity = quantity;
-
-
-                                    const totalCost =
-                                        vendorProductSalePrice *
-                                        procurementQuantity;
-
-
-                                    $('#calculatedamount').val(totalCost
-                                        .toFixed(2));
-                                } else {
-                                    console.error(
-                                        'Failed to retrieve product details.'
-                                    );
-                                }
-                            },
-                            error: function() {
-                                Swal.fire('Error!',
-                                    'Could not fetch product details.',
-                                    'error');
-                            }
-                        });
+                       
                     } else {
                         $('#calculatedamount').val(
                             '');

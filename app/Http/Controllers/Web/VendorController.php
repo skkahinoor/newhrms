@@ -19,6 +19,7 @@ class VendorController extends Controller
         $user = Auth::user();
         $getUserDetails = User::find($user->id);
 
+        // Fetch Asset Name as Array
         if (!empty($getUserDetails->asset_type)) {
             $assetTypeIds = json_decode($getUserDetails->asset_type, true);
             $assetNames = \App\Models\AssetType::whereIn('id', $assetTypeIds)->pluck('name')->toArray();
@@ -35,6 +36,15 @@ class VendorController extends Controller
         $user = Auth::user();
         $getUserDetails = User::find($user->id);
 
+        // Fetch Asset Name as Array
+        if (!empty($getUserDetails->asset_type)) {
+            $assetTypeIds = json_decode($getUserDetails->asset_type, true);
+            $assetNames = \App\Models\AssetType::whereIn('id', $assetTypeIds)->pluck('name')->toArray();
+            $getUserDetails->decoded_asset_types = $assetNames;
+        } else {
+            $getUserDetails->decoded_asset_types = [];
+        }
+
         return view('vendor.profile', ['getUserDetails' => $getUserDetails]);
     }
 
@@ -42,7 +52,15 @@ class VendorController extends Controller
     {
         $user = Auth::user();
         $getUserDetails = User::find($user->id);
-        // dd('hi');
+
+        // Fetch Asset Name as Array
+        if (!empty($getUserDetails->asset_type)) {
+            $assetTypeIds = json_decode($getUserDetails->asset_type, true);
+            $assetNames = \App\Models\AssetType::whereIn('id', $assetTypeIds)->pluck('name')->toArray();
+            $getUserDetails->decoded_asset_types = $assetNames;
+        } else {
+            $getUserDetails->decoded_asset_types = [];
+        }
 
         return view('vendor.billing', ['getUserDetails' => $getUserDetails]);
     }
@@ -53,12 +71,30 @@ class VendorController extends Controller
         $getUserDetails = User::find($user->id);
         // dd($request->input('order_id'));
 
-        $getOrder = ProcurementItem::where('asset_type_id', $getUserDetails->asset_type)->with(['users', 'role', 'company', 'assetType', 'brand'])->paginate(5);
+        // Fetch Asset Name as Array
+        if (!empty($getUserDetails->asset_type)) {
+            $assetTypeIds = json_decode($getUserDetails->asset_type, true);
+            $assetNames = \App\Models\AssetType::whereIn('id', $assetTypeIds)->pluck('name')->toArray();
+            $getUserDetails->decoded_asset_types = $assetNames;
+        } else {
+            $getUserDetails->decoded_asset_types = [];
+        }
+
+        $getOrder = Procurement::where('status', 1)->with(['users', 'role', 'company', 'asset_types', 'brands', 'items'])->paginate(5);
+
+        // $getAsset = ProcurementItem::find($getOrder->id);
+        // dd($getAsset);
 
         $quotationOrder = ProcurementItem::where('asset_type_id', $getUserDetails->asset_type)->with(['users', 'role', 'company', 'assetType', 'brand'])->paginate(5);
 
         $completeOrder = ProcurementItem::where('asset_type_id', $getUserDetails->asset_type)->with(['users', 'role', 'company', 'assetType', 'brand'])->paginate(5);
         return view('vendor.orders', ['getUserDetails' => $getUserDetails, 'getOrder' => $getOrder, 'completeOrder' => $completeOrder, 'quotationOrder' => $quotationOrder]);
+    }
+
+    public function getAssetDetails($procurement_id)
+    {
+        $getAsset = ProcurementItem::where('procurement_id', $procurement_id)->get();
+        return response()->json($getAsset);
     }
 
     public function storeQuotation(Request $request)
