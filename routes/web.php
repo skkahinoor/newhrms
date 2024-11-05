@@ -424,6 +424,7 @@ Route::group([
         Route::post('procurement/{id}/change-status', [ProcurementController::class, 'changeStatus'])->name('change-status');
         Route::post('procurement/{id}/pause-status', [ProcurementController::class, 'pauseStatus'])->name('pause-status');
         Route::post('procurement/{id}/resume-status', [ProcurementController::class, 'resumeStatus'])->name('resume-status');
+        Route::get('getQuotationDetails/{id}', [ProcurementController::class, 'getQuotationDetails'])->name('getQuotationDetails');
 
         /** Salary Component route */
         Route::resource('salary-components', SalaryComponentController::class, [
@@ -544,6 +545,7 @@ Route::group([
         // Make Quotation on Order page
         Route::post('quotation/store', [VendorController::class, 'storeQuotation'])->name('quotationsStore');
         Route::get('getAssetDetails/{id}', [VendorController::class, 'getAssetDetails'])->name('getAssetDetails');
+        Route::get('sendquotation/{id}', [VendorController::class, 'sendquotation'])->name('sendquotation');
         
 
         

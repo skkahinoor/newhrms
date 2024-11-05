@@ -198,7 +198,7 @@
 
                                             <!-- Approval Options -->
                                             @if ($isAdmin)
-                                                @if ($value->status != 1 && $value->status != 4)
+                                                @if ($value->status != 1 && $value->status != 4 && $value->status != 2 && $value->status != 3)
                                                     <li>
                                                         <a class="dropdown-item deleteLeadEnquiryLink" href="#"
                                                             data-id="{{ $value->id }}" data-toggle="modal"
@@ -261,9 +261,9 @@
                                             <!-- Quotation List -->
                                             @if ($isAdmin)
                                                 <li>
-                                                    <a class="dropdown-item pauseOrder" href="#"
-                                                        data-id="{{ $value->id }}" data-toggle="modal"
-                                                        data-target="#pausedModal" style="font-weight:bold;">
+                                                    <a class="dropdown-item viewlist" href="javascript:void(0);"
+                                                        data-id="{{ $value->id }}" data-bs-toggle="modal"
+                                                        data-bs-target="#viewlist" style="font-weight:bold;">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="1.4rem"
                                                             height="1.4rem" viewBox="0 0 24 24">
                                                             <path fill="#ff3366" fill-rule="evenodd"
@@ -304,6 +304,42 @@
     <script>
         CKEDITOR.replace('ckeditor');
     </script>
+
+    {{-- Quotation List  --}}
+    <!-- Modal -->
+    <div class="modal fade" id="viewlist" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" style="top: 0% !important;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="myModalLabel">Quotation List</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered mt-3">
+                            <thead>
+                                <tr class="bg-danger bg-gradient text-center">
+                                    <th style="color: white !important; font-weight:bold;">Type</th>
+                                    <th style="color: white !important; font-weight:bold;">Brand</th>
+                                    <th style="color: white !important; font-weight:bold;">Quantity</th>
+                                    <th style="color: white !important; font-weight:bold;">Specification</th>
+                                    <th style="color: white !important; font-weight:bold;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="approve-list">
+                                {{-- append data will be here  --}}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     {{-- Change Status Modal  --}}
     <!-- Modal -->
@@ -538,10 +574,13 @@
         });
     </script>
 
+
+
 @endsection
 
 @section('scripts')
     <!-- @include('admin.assetManagement.assetAssignment.scripts') -->
     @include('admin.procurement.script')
+    @include('admin.procurement.common.script')
     <!-- @include('admin.assetManagement.types.common.scripts') -->
 @endsection

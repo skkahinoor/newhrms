@@ -109,4 +109,6 @@
             $('#procurement_items').val(JSON.stringify(procurementItems));
         });
     });
+
+    
 </script>

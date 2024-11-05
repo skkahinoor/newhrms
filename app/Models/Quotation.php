@@ -13,12 +13,16 @@ class Quotation extends Model
 
     protected $fillable = [
         'procurement_id',
-        'vendor_product_id',
-        'calculated_amount',
-        'discounted_amount',
-        'final_amount',
+        // 'product_per_price',
+        // 'discount_price',
+        // 'total_amount',
+        'items',
         'remark',
         'final_delivery_date',
         'quotation_status',
+    ];
+
+    protected $casts = [
+        'items' => 'array',
     ];
 }

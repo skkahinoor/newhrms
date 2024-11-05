@@ -7,7 +7,6 @@ use App\Models\Procurement;
 use App\Models\ProcurementItem;
 use App\Models\Quotation;
 use App\Models\User;
-use App\Models\VendorProduct;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -69,7 +68,6 @@ class VendorController extends Controller
     {
         $user = Auth::user();
         $getUserDetails = User::find($user->id);
-        // dd($request->input('order_id'));
 
         // Fetch Asset Name as Array
         if (!empty($getUserDetails->asset_type)) {
@@ -82,10 +80,9 @@ class VendorController extends Controller
 
         $getOrder = Procurement::where('status', 1)->with(['users', 'role', 'company', 'asset_types', 'brands', 'items'])->paginate(5);
 
-        // $getAsset = ProcurementItem::find($getOrder->id);
-        // dd($getAsset);
+        $quotationOrder = Procurement::where('status', 2)->with(['users', 'role', 'company', 'asset_types', 'brands', 'items'])->paginate(5);
 
-        $quotationOrder = ProcurementItem::where('asset_type_id', $getUserDetails->asset_type)->with(['users', 'role', 'company', 'assetType', 'brand'])->paginate(5);
+        // $quotationOrder = ProcurementItem::where('asset_type_id', $getUserDetails->asset_type)->with(['users', 'role', 'company', 'assetType', 'brand'])->paginate(5);
 
         $completeOrder = ProcurementItem::where('asset_type_id', $getUserDetails->asset_type)->with(['users', 'role', 'company', 'assetType', 'brand'])->paginate(5);
         return view('vendor.orders', ['getUserDetails' => $getUserDetails, 'getOrder' => $getOrder, 'completeOrder' => $completeOrder, 'quotationOrder' => $quotationOrder]);
@@ -93,36 +90,46 @@ class VendorController extends Controller
 
     public function getAssetDetails($procurement_id)
     {
-        $getAsset = ProcurementItem::where('procurement_id', $procurement_id)->get();
+        $getAsset = ProcurementItem::where('procurement_id', $procurement_id)->with(['brand', 'assettype'])->get();
         return response()->json($getAsset);
+    }
+
+    public function sendquotation($order_id)
+    {
+        $assetdetails = ProcurementItem::where('procurement_id', $order_id)->with(['brand', 'assettype'])->get();
+        return response()->json($assetdetails);
     }
 
     public function storeQuotation(Request $request)
     {
         $request->validate([
             'order_id' => 'required',
-            'vendorproduct' => 'required',
-            'calculatedamount' => 'required|numeric',
-            'givediscountamount' => 'required|numeric',
-            'finalamount' => 'required|numeric',
+            'amountperproduct.*' => 'required|numeric|min:0',
+            'givediscount.*' => 'nullable|numeric|min:0',
+            'finalamount.*' => 'required|numeric|min:0',
         ]);
-        Quotation::create([
+
+        $items = [];
+        foreach ($request->amountperproduct as $index => $amountPerProduct) {
+            $items[] = [
+                'product_per_price' => $amountPerProduct,
+                'discount_price' => $request->givediscount[$index] ?? 0,
+                'total_amount' => $request->finalamount[$index],
+            ];
+        }
+        $quotation = Quotation::create([
             'procurement_id' => $request->order_id,
-            'vendor_product_id' => $request->vendorproduct,
-            'calculated_amount' => $request->calculatedamount,
-            'discounted_amount' => $request->givediscountamount,
-            'final_amount' => $request->finalamount,
+            'items' => $items,
             'remark' => $request->remark,
             'final_delivery_date' => $request->delivery_date,
             'quotation_status' => 0,
         ]);
-        $procurement = Procurement::find($request->order_id);
-        if ($procurement) {
+        if ($procurement = Procurement::find($request->order_id)) {
             $procurement->status = 2;
             $procurement->save();
         }
 
-        return response()->json(['message', 'Quotation Sent Successfully!'], 200);
+        return response()->json(['message' => 'Quotation Sent Successfully!'], 200);
     }
 
 }

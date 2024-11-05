@@ -24,9 +24,9 @@ class ProcurementItem extends Model
         return $this->belongsTo(Procurement::class);
     }
 
-    public function assetType()
+    public function assettype()
     {
-        return $this->belongsTo(AssetType::class);
+        return $this->belongsTo(AssetType::class, 'asset_type_id', 'id');
     }
 
     public function brand()

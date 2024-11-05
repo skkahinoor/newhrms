@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Asset;
 use App\Models\Procurement;
 use App\Models\ProcurementItem;
+use App\Models\Quotation;
 use App\Models\User;
 use App\Repositories\AssetAssignmentRepository;
 use App\Repositories\BrandRepository;
@@ -322,6 +323,12 @@ class ProcurementController extends Controller
         }
 
         return response()->json(['success' => false, 'message' => 'Procurement not found']);
+    }
+
+    public function getQuotationDetails($procurement_id)
+    {
+        $getquotation = Quotation::where('procurement_id', $procurement_id)->get();
+        return response()->json($getquotation);
     }
 
 }
