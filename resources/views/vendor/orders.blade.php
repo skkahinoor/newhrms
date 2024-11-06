@@ -377,6 +377,16 @@
                                 {{-- Append Data will here  --}}
                             </div>
                             <br>
+                            <div class="row"
+                                style="display: flex;flex-direction: column;align-content: center;justify-content: center;">
+                                <div class="col-md-6 text-center">
+                                    <label for="finalamount" class="text-primary fs-10">Total Calculated Amount</label>
+                                    <input type="number" step="0.01" class="form-control text-center p-1"
+                                        id="totalcalculateamount" name="totalcalculateamount" readonly
+                                        placeholder="Total calculate amount">
+                                </div>
+                            </div>
+                            <br>
                             <div class="row">
                                 <div class="col-md-4">
                                     <label for="promise" class="text-primary"

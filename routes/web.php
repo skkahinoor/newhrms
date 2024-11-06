@@ -425,6 +425,7 @@ Route::group([
         Route::post('procurement/{id}/pause-status', [ProcurementController::class, 'pauseStatus'])->name('pause-status');
         Route::post('procurement/{id}/resume-status', [ProcurementController::class, 'resumeStatus'])->name('resume-status');
         Route::get('getQuotationDetails/{id}', [ProcurementController::class, 'getQuotationDetails'])->name('getQuotationDetails');
+        Route::post('approveStatusQuotation/{id}', [ProcurementController::class, 'approveStatusQuotation'])->name('approveStatusQuotation');
 
         /** Salary Component route */
         Route::resource('salary-components', SalaryComponentController::class, [

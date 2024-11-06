@@ -126,120 +126,119 @@
 
 
         // Make quotation code
-        $(document).ready(function() {
-            $(document).on('click', '.make-quotation-btn', function() {
-                var orderId = $(this).data('id');
-                console.log("Procurement ID is:", orderId);
+        $(document).ready(function () {
+    $(document).on('click', '.make-quotation-btn', function () {
+        const orderId = $(this).data('id');
+        console.log("Procurement ID is:", orderId);
 
-                $('#order_id').val(orderId);
-                $('#quotationModal').modal('show');
+        $('#order_id').val(orderId);
+        $('#quotationModal').modal('show');
 
-                if (orderId) {
-                    $.ajax({
-                        url: '{{ route('vendor.sendquotation', ['id' => ':id']) }}'
-                            .replace(':id', orderId),
-                        type: 'GET',
-                        data: {
-                            order_id: orderId
-                        },
-                        success: function(response) {
-                            console.log(response);
-                            const divBody = $('#append-asset');
-                            divBody.empty();
+        if (orderId) {
+            $.ajax({
+                url: '{{ route('vendor.sendquotation', ['id' => ':id']) }}'.replace(':id', orderId),
+                type: 'GET',
+                data: { order_id: orderId },
+                success: function (response) {
+                    console.log(response);
+                    const divBody = $('#append-asset');
+                    divBody.empty();
 
-                            response.forEach((item, index) => {
-                                const row = `
-                        <div class="col-md-2">
-                            <label class="text-primary" style="font-size: 11px;font-weight:bold;">Product<span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" name="productType[${index}]" readonly value="${item.assettype ? item.assettype.name : 'N/A'}" style="border: 1px solid #d2d6da !important; padding-left: 5px !important;">
-                        </div>
-                        <div class="col-md-2">
-                            <label class="text-primary" style="font-size: 11px;font-weight:bold;">Brand<span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" name="productBrand[${index}]" readonly value="${item.brand ? item.brand.name : 'N/A'}" style="border: 1px solid #d2d6da !important; padding-left: 5px !important;">
-                        </div>
-                        <div class="col-md-2">
-                            <label class="text-primary" style="font-size: 11px;font-weight:bold;">Quantity<span class="text-danger">*</span></label>
-                            <input type="number" class="form-control productQuantity" name="productQuantity[${index}]" readonly value="${item.quantity}" style="border: 1px solid #d2d6da !important; padding-left: 5px !important;">
-                        </div>
-                        <div class="col-md-2">
-                            <label class="text-primary" style="font-size: 11px;font-weight:bold;">Product per price<span class="text-danger">*</span></label>
-                            <input type="number" step="0.01" class="form-control amountperproduct" id="amountperproduct_${index}" name="amountperproduct[${index}]" required style="border: 1px solid #d2d6da !important; padding-left: 5px !important;">
-                        </div>
-                        <div class="col-md-2">
-                            <label class="text-primary" style="font-size: 11px;font-weight:bold;">Discount Price</label>
-                            <input type="number" step="0.01" class="form-control givediscount" id="givediscount_${index}" name="givediscount[${index}]" required style="border: 1px solid #d2d6da !important; padding-left: 5px !important;">
-                        </div>
-                        <div class="col-md-2">
-                            <label class="text-primary" style="font-size: 11px;font-weight:bold;">Total Amount<span class="text-danger">*</span></label>
-                            <input type="number" step="0.01" class="form-control finalamount" id="finalamount_${index}" name="finalamount[${index}]" readonly required style="border: 1px solid #d2d6da !important; padding-left: 5px !important;">
-                        </div>
-                    `;
-                                divBody.append(row);
-                            });
-
-                            // Show the div and add event listeners for calculation
-                            $('#append-asset').show();
-
-                            // Attach event listeners to calculate total amount
-                            attachCalculationListeners();
-                        },
-                        error: function() {
-                            console.log("Could not fetch product details.");
-                        }
+                    response.forEach((item, index) => {
+                        const row = `
+                            <div class="col-md-2">
+                                <label class="text-primary" style="font-size: 11px;font-weight:bold;">Product<span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="productType[${index}]" readonly value="${item.assettype ? item.assettype.name : 'N/A'}" style="border: 1px solid #d2d6da !important; padding-left: 5px !important;">
+                            </div>
+                            <div class="col-md-2">
+                                <label class="text-primary" style="font-size: 11px;font-weight:bold;">Brand<span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="productBrand[${index}]" readonly value="${item.brand ? item.brand.name : 'N/A'}" style="border: 1px solid #d2d6da !important; padding-left: 5px !important;">
+                            </div>
+                            <div class="col-md-2">
+                                <label class="text-primary" style="font-size: 11px;font-weight:bold;">Quantity<span class="text-danger">*</span></label>
+                                <input type="number" class="form-control productQuantity" name="productQuantity[${index}]" readonly value="${item.quantity}" style="border: 1px solid #d2d6da !important; padding-left: 5px !important;">
+                            </div>
+                            <div class="col-md-2">
+                                <label class="text-primary" style="font-size: 11px;font-weight:bold;">Product per price<span class="text-danger">*</span></label>
+                                <input type="number" step="0.01" class="form-control amountperproduct" id="amountperproduct_${index}" name="amountperproduct[${index}]" required style="border: 1px solid #d2d6da !important; padding-left: 5px !important;">
+                            </div>
+                            <div class="col-md-2">
+                                <label class="text-primary" style="font-size: 11px;font-weight:bold;">Discount Price</label>
+                                <input type="number" step="0.01" class="form-control givediscount" id="givediscount_${index}" name="givediscount[${index}]" required style="border: 1px solid #d2d6da !important; padding-left: 5px !important;">
+                            </div>
+                            <div class="col-md-2">
+                                <label class="text-primary" style="font-size: 11px;font-weight:bold;">Total Amount<span class="text-danger">*</span></label>
+                                <input type="number" step="0.01" class="form-control finalamount" id="finalamount_${index}" name="finalamount[${index}]" readonly required style="border: 1px solid #d2d6da !important; padding-left: 5px !important;">
+                            </div>
+                        `;
+                        divBody.append(row);
                     });
-                } else {
-                    console.log("OrderId Not found or error");
+
+                    $('#append-asset').show();
+                    attachCalculationListeners();
+                },
+                error: function () {
+                    console.log("Could not fetch product details.");
                 }
             });
+        } else {
+            console.log("OrderId Not found or error");
+        }
+    });
 
-            function attachCalculationListeners() {
-                // Event listener for any change in `amountperproduct` or `givediscount`
-                $('#append-asset').on('input', '.amountperproduct, .givediscount', function() {
-                    const index = $(this).attr('id').split('_')[
-                    1]; // Extract the index from the ID
+    function attachCalculationListeners() {
+        // Event listener for changes in amountperproduct or givediscount
+        $('#append-asset').on('input', '.amountperproduct, .givediscount', function () {
+            const index = $(this).attr('id').split('_')[1];
+            const quantity = parseFloat($(`[name="productQuantity[${index}]"]`).val()) || 0;
+            const pricePerProduct = parseFloat($(`#amountperproduct_${index}`).val()) || 0;
+            const discount = parseFloat($(`#givediscount_${index}`).val()) || 0;
 
-                    // Select elements by index
-                    const quantity = parseFloat($(`[name="productQuantity[${index}]"]`)
-                    .val()) || 0;
-                    const pricePerProduct = parseFloat($(`#amountperproduct_${index}`).val()) ||
-                        0;
-                    const discount = parseFloat($(`#givediscount_${index}`).val()) || 0;
+            // Calculate and set total for this row
+            const totalAmount = (quantity * pricePerProduct) - discount;
+            $(`#finalamount_${index}`).val(totalAmount.toFixed(2));
 
-                    // Calculate total
-                    const totalAmount = (quantity * pricePerProduct) - discount;
-
-                    // Set the final amount
-                    $(`#finalamount_${index}`).val(totalAmount.toFixed(2));
-                });
-            }
-
-
-
-
-
-
-            $('#quotationForm').on('submit', function(e) {
-                e.preventDefault();
-                var formData = $(this).serialize();
-                $.ajax({
-                    url: '{{ route('vendor.quotationsStore') }}',
-                    type: 'POST',
-                    data: formData,
-                    success: function(response) {
-                        $('#quotationModal').modal('hide');
-                        Swal.fire('Success!', 'Quotation created successfully!',
-                                'success')
-                            .then(() => location.reload());
-                    },
-                    error: function(xhr) {
-                        Swal.fire('Error!',
-                                'Failed to create quotation. Please try again!',
-                                'error')
-                            .then(() => location.reload());
-                    }
-                });
-            });
+            // Calculate and update overall total
+            calculateTotalAmount();
         });
+    }
+
+    // Function to calculate total of all finalamount fields
+    function calculateTotalAmount() {
+        let grandTotal = 0;
+
+        // Loop through each finalamount input to sum values
+        $('.finalamount').each(function () {
+            const amount = parseFloat($(this).val()) || 0;
+            grandTotal += amount;
+        });
+
+        // Set the grand total in the total calculate amount field
+        $('#totalcalculateamount').val(grandTotal.toFixed(2));
+    }
+
+    // Form submission with AJAX
+    $('#quotationForm').on('submit', function (e) {
+        e.preventDefault();
+        const formData = $(this).serialize();
+
+        $.ajax({
+            url: '{{ route('vendor.quotationsStore') }}',
+            type: 'POST',
+            data: formData,
+            success: function (response) {
+                $('#quotationModal').modal('hide');
+                Swal.fire('Success!', 'Quotation created successfully!', 'success')
+                    .then(() => location.reload());
+            },
+            error: function (xhr) {
+                Swal.fire('Error!', 'Failed to create quotation. Please try again!', 'error')
+                    .then(() => location.reload());
+            }
+        });
+    });
+});
+
 
 
 

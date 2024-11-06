@@ -327,8 +327,19 @@ class ProcurementController extends Controller
 
     public function getQuotationDetails($procurement_id)
     {
-        $getquotation = Quotation::where('procurement_id', $procurement_id)->get();
+        $getquotation = Quotation::where('procurement_id', $procurement_id)->with(['vendor'])->get();
+        // $isapproved = Quotation::where('procurement_id');
         return response()->json($getquotation);
+    }
+
+    public function approveStatusQuotation($id)
+    {
+        // $getapprove = Quotation::where('procurement_id', $id)->with(['vendor'])->get();
+        $getapprove = Quotation::find($id);
+        $getapprove->update([
+            'is_approved' => 1,
+        ]);
+        return response()->json($getapprove);
     }
 
 }

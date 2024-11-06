@@ -262,7 +262,7 @@
                                             @if ($isAdmin)
                                                 <li>
                                                     <a class="dropdown-item viewlist" href="javascript:void(0);"
-                                                        data-id="{{ $value->id }}" data-bs-toggle="modal"
+                                                        data-id="{{ $value->id }}" data-bs-title="View List" data-bs-toggle="modal"
                                                         data-bs-target="#viewlist" style="font-weight:bold;">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="1.4rem"
                                                             height="1.4rem" viewBox="0 0 24 24">
@@ -307,8 +307,8 @@
 
     {{-- Quotation List  --}}
     <!-- Modal -->
-    <div class="modal fade" id="viewlist" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog" style="top: 0% !important;">
+    <div class="modal fade" id="viewlist" tabindex="-1" aria-labelledby="myModalLabel" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-bysk" style="top: 0% !important;">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="myModalLabel">Quotation List</h5>
@@ -319,11 +319,12 @@
                         <table class="table mt-3">
                             <thead>
                                 <tr class="bg-danger bg-gradient text-center">
-                                    <th scope="col" style="color: white !important; font-weight:bold;">Type</th>
-                                    <th scope="col" style="color: white !important; font-weight:bold;">Brand</th>
-                                    <th scope="col" style="color: white !important; font-weight:bold;">Quantity</th>
-                                    <th scope="col" style="color: white !important; font-weight:bold;">Specification</th>
-                                    <th scope="col" style="color: white !important; font-weight:bold;">Actions</th>
+                                    <th scope="col" style="color: white !important; font-weight:bold;font-size: 6px;">#</th>
+                                    <th scope="col" style="color: white !important; font-weight:bold;font-size: 6px;">Vendor Name</th>
+                                    <th scope="col" style="color: white !important; font-weight:bold;font-size: 6px;">Vendor Price</th>
+                                    <th scope="col" style="color: white !important; font-weight:bold;font-size: 6px;">Expected Delivery Date</th>
+                                    <th scope="col" style="color: white !important; font-weight:bold;font-size: 6px;">Remark</th>
+                                    <th scope="col" style="color: white !important; font-weight:bold;font-size: 6px;">Actions</th>
                                 </tr>
                             </thead>
                             <tbody id="approve-list">
@@ -334,12 +335,12 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
                 </div>
             </div>
         </div>
     </div>
 
+    
 
     {{-- Change Status Modal  --}}
     <!-- Modal -->

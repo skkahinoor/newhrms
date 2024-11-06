@@ -102,11 +102,16 @@ class VendorController extends Controller
 
     public function storeQuotation(Request $request)
     {
+        $user = Auth::user();
+        $getUserid = User::find($user->id);
+        // dd($getUserid->id);
+
         $request->validate([
             'order_id' => 'required',
             'amountperproduct.*' => 'required|numeric|min:0',
             'givediscount.*' => 'nullable|numeric|min:0',
             'finalamount.*' => 'required|numeric|min:0',
+            'totalcalculateamount' => 'required|numeric|min:0',
         ]);
 
         $items = [];
@@ -119,7 +124,9 @@ class VendorController extends Controller
         }
         $quotation = Quotation::create([
             'procurement_id' => $request->order_id,
+            'vendor_id' => $getUserid->id,
             'items' => $items,
+            'total_item_price' => $request->totalcalculateamount,
             'remark' => $request->remark,
             'final_delivery_date' => $request->delivery_date,
             'quotation_status' => 0,

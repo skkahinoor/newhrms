@@ -53,4 +53,10 @@ class Procurement extends Model
     {
         return $this->hasMany(ProcurementItem::class);
     }
+    public function quotation()
+    {
+        return $this->hasMany(Quotation::class);
+    }
+
+    
 }
