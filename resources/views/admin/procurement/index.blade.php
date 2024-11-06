@@ -316,14 +316,14 @@
                 </div>
                 <div class="modal-body">
                     <div class="table-responsive">
-                        <table class="table table-bordered mt-3">
+                        <table class="table mt-3">
                             <thead>
                                 <tr class="bg-danger bg-gradient text-center">
-                                    <th style="color: white !important; font-weight:bold;">Type</th>
-                                    <th style="color: white !important; font-weight:bold;">Brand</th>
-                                    <th style="color: white !important; font-weight:bold;">Quantity</th>
-                                    <th style="color: white !important; font-weight:bold;">Specification</th>
-                                    <th style="color: white !important; font-weight:bold;">Actions</th>
+                                    <th scope="col" style="color: white !important; font-weight:bold;">Type</th>
+                                    <th scope="col" style="color: white !important; font-weight:bold;">Brand</th>
+                                    <th scope="col" style="color: white !important; font-weight:bold;">Quantity</th>
+                                    <th scope="col" style="color: white !important; font-weight:bold;">Specification</th>
+                                    <th scope="col" style="color: white !important; font-weight:bold;">Actions</th>
                                 </tr>
                             </thead>
                             <tbody id="approve-list">
