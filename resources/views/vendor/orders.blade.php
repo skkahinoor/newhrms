@@ -179,7 +179,6 @@
                                             <th
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                                 Status</th>
-
                                             <th
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                                 Action</th>
@@ -224,14 +223,20 @@
                                                     <span
                                                         class="text-secondary text-xs font-weight-bold">{{ $qorder->delivery_date ?? 'N/A' }}</span>
                                                 </td>
-                                                <td class="align-middle text-center text-sm">
-                                                    <span class="badge badge-sm btn-{{ $changeColor[$qorder->status] }}"
-                                                        style="color: {{ $changeTextColor[$qorder->status] }};">{{ $changeStatusValue[$qorder->status] ?? 'null' }}</span>
-                                                </td>
-
+                                                
+                                                    <td class="align-middle text-center text-sm">
+                                                        <span
+                                                            class="badge badge-sm btn-{{ $changeColor[$qorder->status] ?? 'secondary' }}"
+                                                            style="color: {{ $changeTextColor[$qorder->status] ?? '#fff' }};">
+                                                            {{ $changeStatusValue[$qorder->status] ?? 'Unknown Status' }}
+                                                        </span>
+                                                    </td>
+                                                
                                                 <td class="align-middle text-center">
-                                                    <a href="javascript:;" class="text-secondary font-weight-bold text-xs"
-                                                        data-toggle="tooltip" data-original-title="Edit user">
+                                                    <a href="javascript:;" data-id="{{ $qorder->id }}"
+                                                        class="text-secondary font-weight-bold text-xs viewQuotation"
+                                                        data-bs-toggle="modal" data-bs-target="#viewQuotation"
+                                                        data-original-title="View Quotation">
                                                         View Quotation
                                                     </a>
                                                 </td>
@@ -247,6 +252,8 @@
                 </div>
             </div>
         </div>
+
+        {{-- Table for Complete ORder  --}}
         <div class="row">
             <div class="col-12">
                 <div class="card my-4">
@@ -357,9 +364,9 @@
         </div>
 
 
+        {{-- All Modals are here  --}}
 
-
-        {{-- Modal Code is here  --}}
+        {{-- Create Quotation Modal Code is here  --}}
         <div class="modal fade" id="quotationModal" tabindex="-1" role="dialog" aria-labelledby="quotationModalLabel"
             aria-hidden="true">
             <div class="modal-dialog modal-wide" role="document">
@@ -429,6 +436,79 @@
             </div>
         </div>
 
+        <!-- Modal for View Quotation -->
+        <div class="modal fade" id="viewQuotation" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-6" id="exampleModalLabel">View Quotation For <span class="text-primary" id="show-no"></span></h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="table-responsive p-0">
+                            <table class="table align-items-center mb-0">
+                                <thead>
+                                    <tr class="bg-primary bg-gradient text-center ">
+                                        <th class="text-uppercase text-center text-light text-xs font-weight-bolder">
+                                            #</th>
+                                        <th class="text-center text-uppercase text-light text-xs font-weight-bolder">
+                                            Procurement No</th>
+                                        <th class="text-center text-uppercase text-light text-xs font-weight-bolder">
+                                            Total Item Price</th>
+                                        <th class="text-center text-uppercase text-light text-xs font-weight-bolder">
+                                            Final Delivery Date</th>
+                                        <th class="text-center text-uppercase text-light text-xs font-weight-bolder">
+                                            Remark</th>
+                                        <th class="text-center text-uppercase text-light text-xs font-weight-bolder">
+                                            Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="quotation-view">
+                                    {{-- table append data  --}}
+                                </tbody>
+                            </table>
+                        </div>
+                        <br>
+                        <div class="modal-header text-dark">
+                            <h6 class="modal-title text-primary">Your Quotation Items</h6>
+                        </div>
+                        <div class="modal-body">
+                            <div class="table-responsive p-0">
+                                <table class="table align-items-center mb-0">
+                                    <thead>
+                                        <tr class="bg-primary bg-gradient text-center ">
+                                            <th class="text-uppercase text-center text-light text-xs font-weight-bolder">
+                                                #</th>
+                                            <th class="text-center text-uppercase text-light text-xs font-weight-bolder">
+                                                Product Type</th>
+                                            <th class="text-center text-uppercase text-light text-xs font-weight-bolder">
+                                                Product Brand</th>
+                                            <th class="text-center text-uppercase text-light text-xs font-weight-bolder">
+                                                Quantity</th>
+                                            <th class="text-center text-uppercase text-light text-xs font-weight-bolder">
+                                                Product Per Price</th>
+                                            <th class="text-center text-uppercase text-light text-xs font-weight-bolder">
+                                                Discount Price</th>
+                                            <th class="text-center text-uppercase text-light text-xs font-weight-bolder">
+                                                Total amount</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="show-loop-items">
+                                        {{-- table append data  --}}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        {{-- <button type="button" class="btn btn-primary">Save changes</button> --}}
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Modal for Asset view -->
         <div class="modal fade" id="assetModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
@@ -441,7 +521,7 @@
                         <div class="table-responsive p-0">
                             <table class="table align-items-center mb-0">
                                 <thead>
-                                    <tr class="bg-danger bg-gradient text-center ">
+                                    <tr class="bg-primary bg-gradient text-center ">
                                         <th class="text-uppercase text-center text-light text-xs font-weight-bolder">
                                             #</th>
                                         <th class="text-center text-uppercase text-light text-xs font-weight-bolder">

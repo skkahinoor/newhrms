@@ -68,6 +68,8 @@ class VendorController extends Controller
     {
         $user = Auth::user();
         $getUserDetails = User::find($user->id);
+        // $procurement_id = Procurement::where
+        $getquotestatus = Quotation::where('vendor_id', $getUserDetails->id)->first();
 
         // Fetch Asset Name as Array
         if (!empty($getUserDetails->asset_type)) {
@@ -80,18 +82,28 @@ class VendorController extends Controller
 
         $getOrder = Procurement::where('status', 1)->with(['users', 'role', 'company', 'asset_types', 'brands', 'items'])->paginate(5);
 
-        $quotationOrder = Procurement::where('status', 2)->with(['users', 'role', 'company', 'asset_types', 'brands', 'items'])->paginate(5);
-
-        // $quotationOrder = ProcurementItem::where('asset_type_id', $getUserDetails->asset_type)->with(['users', 'role', 'company', 'assetType', 'brand'])->paginate(5);
-
+        $quotationOrder = Procurement::where('status', 2)->with(['quotation','users', 'role', 'company', 'asset_types', 'brands', 'items'])->paginate(5)->through(function($item){
+            foreach($item->quotation as $quotation){
+                $item->quotation_status = $quotation->is_approved;
+            }
+            unset($item->quotation);
+            return $item;
+        });
+        
         $completeOrder = ProcurementItem::where('asset_type_id', $getUserDetails->asset_type)->with(['users', 'role', 'company', 'assetType', 'brand'])->paginate(5);
-        return view('vendor.orders', ['getUserDetails' => $getUserDetails, 'getOrder' => $getOrder, 'completeOrder' => $completeOrder, 'quotationOrder' => $quotationOrder]);
+        return view('vendor.orders', ['getUserDetails' => $getUserDetails, 'getOrder' => $getOrder, 'completeOrder' => $completeOrder, 'quotationOrder' => $quotationOrder, 'getquotestatus' => $getquotestatus]);
     }
 
     public function getAssetDetails($procurement_id)
     {
         $getAsset = ProcurementItem::where('procurement_id', $procurement_id)->with(['brand', 'assettype'])->get();
         return response()->json($getAsset);
+    }
+
+    public function getQuotationDetails($id)
+    {
+        $getQuote = Quotation::where('procurement_id', $id)->with(['procurement'])->get();
+        return response()->json($getQuote);
     }
 
     public function sendquotation($order_id)
@@ -108,6 +120,11 @@ class VendorController extends Controller
 
         $request->validate([
             'order_id' => 'required',
+
+            'productType.*' => 'required',
+            'productBrand.*' => 'required',
+            'productQuantity.*' => 'required',
+
             'amountperproduct.*' => 'required|numeric|min:0',
             'givediscount.*' => 'nullable|numeric|min:0',
             'finalamount.*' => 'required|numeric|min:0',
@@ -117,6 +134,10 @@ class VendorController extends Controller
         $items = [];
         foreach ($request->amountperproduct as $index => $amountPerProduct) {
             $items[] = [
+                'productType' => $request->productType[$index],
+                'productBrand' => $request->productBrand[$index],
+                'productQuantity' => $request->productQuantity[$index],
+
                 'product_per_price' => $amountPerProduct,
                 'discount_price' => $request->givediscount[$index] ?? 0,
                 'total_amount' => $request->finalamount[$index],

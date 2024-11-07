@@ -543,10 +543,11 @@ Route::group([
         Route::get('orders', [VendorController::class, 'orders'])->name('orders');
         Route::get('products', [VendorController::class, 'products'])->name('products');
 
-        // Make Quotation on Order page
+        // on Order page
         Route::post('quotation/store', [VendorController::class, 'storeQuotation'])->name('quotationsStore');
         Route::get('getAssetDetails/{id}', [VendorController::class, 'getAssetDetails'])->name('getAssetDetails');
         Route::get('sendquotation/{id}', [VendorController::class, 'sendquotation'])->name('sendquotation');
+        Route::get('getQuotationDetails/{id}', [VendorController::class, 'getQuotationDetails'])->name('getQuotationDetails');
         
 
         

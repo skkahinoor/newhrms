@@ -562,5 +562,8 @@
         
         {{-- Vendor Footer here  --}}
         @include('vendor.section.vendorfooter')
+        
+        {{-- Common Scripts code  --}}
+        @include('vendor.common.script')
     </div>
 @endsection

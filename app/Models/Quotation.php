@@ -34,4 +34,14 @@ class Quotation extends Model
     {
         return $this->belongsTo(User::class, 'vendor_id', 'id');
     }
+
+    public function procurement()
+    {
+        return $this->belongsTo(Procurement::class, 'procurement_id', 'id');
+    }
+
+    public function items()
+    {
+        return $this->hasMany(ProcurementItem::class);
+    }
 }

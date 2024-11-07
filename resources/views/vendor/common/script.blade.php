@@ -104,7 +104,7 @@
                                 <td class="text-center">${getAsset.assettype ? getAsset.assettype.name : 'N/A'}</td>
                                 <td class="text-center">${getAsset.brand.name}</td>
                                 <td class="text-center">${getAsset.quantity}</td>
-                                <td class="text-center"><textarea name="specification" class="form-control p-1" cols="30" rows="2" readonly >${getAsset.specification}</textarea></td>
+                                <td class="text-center"><textarea name="specification" class="form-control text-center p-1" cols="30" rows="2" readonly >${getAsset.specification}</textarea></td>
                             </tr>
                         `;
                                 tableBody.append(row);
@@ -126,26 +126,29 @@
 
 
         // Make quotation code
-        $(document).ready(function () {
-    $(document).on('click', '.make-quotation-btn', function () {
-        const orderId = $(this).data('id');
-        console.log("Procurement ID is:", orderId);
+        $(document).ready(function() {
+            $(document).on('click', '.make-quotation-btn', function() {
+                const orderId = $(this).data('id');
+                console.log("Procurement ID is:", orderId);
 
-        $('#order_id').val(orderId);
-        $('#quotationModal').modal('show');
+                $('#order_id').val(orderId);
+                $('#quotationModal').modal('show');
 
-        if (orderId) {
-            $.ajax({
-                url: '{{ route('vendor.sendquotation', ['id' => ':id']) }}'.replace(':id', orderId),
-                type: 'GET',
-                data: { order_id: orderId },
-                success: function (response) {
-                    console.log(response);
-                    const divBody = $('#append-asset');
-                    divBody.empty();
+                if (orderId) {
+                    $.ajax({
+                        url: '{{ route('vendor.sendquotation', ['id' => ':id']) }}'
+                            .replace(':id', orderId),
+                        type: 'GET',
+                        data: {
+                            order_id: orderId
+                        },
+                        success: function(response) {
+                            console.log(response);
+                            const divBody = $('#append-asset');
+                            divBody.empty();
 
-                    response.forEach((item, index) => {
-                        const row = `
+                            response.forEach((item, index) => {
+                                const row = `
                             <div class="col-md-2">
                                 <label class="text-primary" style="font-size: 11px;font-weight:bold;">Product<span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" name="productType[${index}]" readonly value="${item.assettype ? item.assettype.name : 'N/A'}" style="border: 1px solid #d2d6da !important; padding-left: 5px !important;">
@@ -171,73 +174,173 @@
                                 <input type="number" step="0.01" class="form-control finalamount" id="finalamount_${index}" name="finalamount[${index}]" readonly required style="border: 1px solid #d2d6da !important; padding-left: 5px !important;">
                             </div>
                         `;
-                        divBody.append(row);
-                    });
+                                divBody.append(row);
+                            });
 
-                    $('#append-asset').show();
-                    attachCalculationListeners();
-                },
-                error: function () {
-                    console.log("Could not fetch product details.");
+                            $('#append-asset').show();
+                            attachCalculationListeners();
+                        },
+                        error: function() {
+                            console.log("Could not fetch product details.");
+                        }
+                    });
+                } else {
+                    console.log("OrderId Not found or error");
                 }
             });
-        } else {
-            console.log("OrderId Not found or error");
-        }
-    });
 
-    function attachCalculationListeners() {
-        // Event listener for changes in amountperproduct or givediscount
-        $('#append-asset').on('input', '.amountperproduct, .givediscount', function () {
-            const index = $(this).attr('id').split('_')[1];
-            const quantity = parseFloat($(`[name="productQuantity[${index}]"]`).val()) || 0;
-            const pricePerProduct = parseFloat($(`#amountperproduct_${index}`).val()) || 0;
-            const discount = parseFloat($(`#givediscount_${index}`).val()) || 0;
+            function attachCalculationListeners() {
+                // Event listener for changes in amountperproduct or givediscount
+                $('#append-asset').on('input', '.amountperproduct, .givediscount', function() {
+                    const index = $(this).attr('id').split('_')[1];
+                    const quantity = parseFloat($(`[name="productQuantity[${index}]"]`)
+                        .val()) || 0;
+                    const pricePerProduct = parseFloat($(`#amountperproduct_${index}`).val()) ||
+                        0;
+                    const discount = parseFloat($(`#givediscount_${index}`).val()) || 0;
 
-            // Calculate and set total for this row
-            const totalAmount = (quantity * pricePerProduct) - discount;
-            $(`#finalamount_${index}`).val(totalAmount.toFixed(2));
+                    // Calculate and set total for this row
+                    const totalAmount = (quantity * pricePerProduct) - discount;
+                    $(`#finalamount_${index}`).val(totalAmount.toFixed(2));
 
-            // Calculate and update overall total
-            calculateTotalAmount();
-        });
-    }
-
-    // Function to calculate total of all finalamount fields
-    function calculateTotalAmount() {
-        let grandTotal = 0;
-
-        // Loop through each finalamount input to sum values
-        $('.finalamount').each(function () {
-            const amount = parseFloat($(this).val()) || 0;
-            grandTotal += amount;
-        });
-
-        // Set the grand total in the total calculate amount field
-        $('#totalcalculateamount').val(grandTotal.toFixed(2));
-    }
-
-    // Form submission with AJAX
-    $('#quotationForm').on('submit', function (e) {
-        e.preventDefault();
-        const formData = $(this).serialize();
-
-        $.ajax({
-            url: '{{ route('vendor.quotationsStore') }}',
-            type: 'POST',
-            data: formData,
-            success: function (response) {
-                $('#quotationModal').modal('hide');
-                Swal.fire('Success!', 'Quotation created successfully!', 'success')
-                    .then(() => location.reload());
-            },
-            error: function (xhr) {
-                Swal.fire('Error!', 'Failed to create quotation. Please try again!', 'error')
-                    .then(() => location.reload());
+                    // Calculate and update overall total
+                    calculateTotalAmount();
+                });
             }
+
+            // Function to calculate total of all finalamount fields
+            function calculateTotalAmount() {
+                let grandTotal = 0;
+
+                // Loop through each finalamount input to sum values
+                $('.finalamount').each(function() {
+                    const amount = parseFloat($(this).val()) || 0;
+                    grandTotal += amount;
+                });
+
+                // Set the grand total in the total calculate amount field
+                $('#totalcalculateamount').val(grandTotal.toFixed(2));
+            }
+
+            // Form submission with AJAX
+            $('#quotationForm').on('submit', function(e) {
+                e.preventDefault();
+                const formData = $(this).serialize();
+
+                $.ajax({
+                    url: '{{ route('vendor.quotationsStore') }}',
+                    type: 'POST',
+                    data: formData,
+                    success: function(response) {
+                        $('#quotationModal').modal('hide');
+                        Swal.fire('Success!', 'Quotation created successfully!',
+                                'success')
+                            .then(() => location.reload());
+                    },
+                    error: function(xhr) {
+                        Swal.fire('Error!',
+                                'Failed to create quotation. Please try again!',
+                                'error')
+                            .then(() => location.reload());
+                    }
+                });
+            });
         });
-    });
-});
+
+
+        // View Quotation Modal 
+        $(document).ready(function() {
+            $(document).on('click', '.viewQuotation', function() {
+                const proId = $(this).data('id');
+                console.log("Procurement Id: ", proId);
+
+                if (proId) {
+                    $.ajax({
+                        url: '{{ route('vendor.getQuotationDetails', ['id' => ':id']) }}'
+                            .replace(':id', proId),
+                        type: 'GET',
+                        data: {
+                            id: proId
+                        },
+                        success: function(response) {
+                            console.log(response); // Log response to inspect structure
+
+                            const spanshow = $('#show-no');
+                            // spanshow.text(response);
+                            spanshow.empty();
+                            response.forEach((no) => {
+                                const pno = `
+                                ${no.procurement.procurement_number}
+                                `;
+                                spanshow.append(pno);
+                            });
+
+                            const tbody = $('#quotation-view');
+                            tbody.empty();
+                            let count = 1;
+
+                            response.forEach((list) => {
+                                const approvedStatus = list.is_approved ==
+                                    1 ? 'Approved By Admin' : 'Rejected';
+
+                                const row = `
+                            <tr class="text-center">
+                                <td>${count}</td>
+                                <td>${list.procurement.procurement_number}</td>
+                                <td>₹ ${list.total_item_price}</td>
+                                <td>${list.final_delivery_date || 'You Delivered on Time'}</td>
+                                <td>${list.remark}</td>
+                                <td>${approvedStatus}</td>
+                            </tr>
+                        `;
+                                tbody.append(row);
+                                count++;
+                            });
+
+                            // Display items in a more structured format
+                            const divitems = $('#show-loop-items');
+                            divitems.empty();
+
+                            response.forEach((qitems) => {
+                                try {
+                                    // Parse items only if it's a string (i.e., JSON)
+                                    const itemsArray = typeof qitems
+                                        .items === 'string' ? JSON.parse(
+                                            qitems.items) : qitems.items;
+
+                                    itemsArray.forEach((item, index) => {
+                                        const itemRow = `
+                                    <tr class="text-center">
+                                <td>${index + 1}</td>
+                                <td>${item.productType}</td>
+                                <td>${item.productBrand}</td>
+                                <td>${item.productQuantity} PCS</td>
+                                <td>₹${item.product_per_price}</td>
+                                <td>₹${item.discount_price}</td>
+                                <td>₹${item.total_amount}</td>
+                            </tr>
+                                `;
+                                        divitems.append(itemRow);
+                                    });
+                                } catch (error) {
+                                    console.error("Error parsing items:",
+                                        error);
+                                }
+                            });
+                        },
+                        error: function() {
+                            Swal.fire('Error!',
+                                'Problem to fetch Quotation orders!', 'error');
+                        }
+                    });
+                } else {
+                    console.log("Procurement ID is not fetched or there was an error!");
+                }
+            });
+        });
+
+
+
 
 
 
