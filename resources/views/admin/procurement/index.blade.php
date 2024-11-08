@@ -56,7 +56,7 @@
 
         <div class="card">
             <div class="card-body">
-                <div class="table-responsive" style="overflow-x: clip !important;">
+                <div class="table-responsive">
                     <table id="dataTableExample" class="table">
                         <thead>
                             <tr>
@@ -103,11 +103,22 @@
                             <tr>
                                 <td>{{ ++$key }}</td>
                                 <td class="text-center">
-                                    {{ $value->procurement_number ?? 'Null' }}
+                                    <a href="javascript:void(0);" data-no="{{ $value->procurement_number }}"
+                                        id="Procurement-no-copy"
+                                        style="text-decoration: none; font-weight:bold; color: #E82E5F !important;">{{ $value->procurement_number ?? 'Null' }}</a>
                                 </td>
-                                <td>{{ $value->users->name ?? 'Null' }}</td>
+                                <td>{{ $value->users->name ?? 'Null' }}
+                                    @if ($value->user_id == $getUserId)
+                                        <span
+                                            style="display: inline-block;padding: 0.35em 0.60em;font-size: 0.7em;font-weight: 500;line-height: 1;text-align: center;white-space: nowrap;vertical-align: baseline;border-radius: 10px; background-color: rgb(250, 6, 88) !important; color: white;">You</span>
+                                    @elseif ($value->user_id != $getUserId)
+                                        <span
+                                            style="display: inline-block;padding: 0.35em 0.60em;font-size: 0.7em;font-weight: 500;line-height: 1;text-align: center;white-space: nowrap;vertical-align: baseline;border-radius: 10px; background-color: rgb(250, 6, 88) !important; color: white;">User</span>
+                                    @else
+                                    @endif
+                                </td>
                                 <td class="text-center">
-                                    {{ $value->email }}
+                                    <a href="mailto:{{ $value->email }}" class="text-danger">{{ $value->email }}</a>
                                 </td>
                                 <td class="text-center">
                                     {{ $value->request_date ?? 'Null' }}
@@ -185,8 +196,8 @@
                                                     <a class="dropdown-item deleteLeadEnquiryLink"
                                                         href="{{ route('admin.procurement.delete', $value->id) }}"
                                                         style="cursor: pointer; font-weight:bold;">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="1.4rem" height="1.4rem"
-                                                            viewBox="0 0 24 24">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="1.4rem"
+                                                            height="1.4rem" viewBox="0 0 24 24">
                                                             <path fill="#ff3366" d="M8 9h8v10H8z" opacity="0.3" />
                                                             <path fill="#ff3366"
                                                                 d="m15.5 4l-1-1h-5l-1 1H5v2h14V4zM6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6zM8 9h8v10H8z" />
@@ -262,8 +273,9 @@
                                             @if ($isAdmin)
                                                 <li>
                                                     <a class="dropdown-item viewlist" href="javascript:void(0);"
-                                                        data-id="{{ $value->id }}" data-bs-title="View List" data-bs-toggle="modal"
-                                                        data-bs-target="#viewlist" style="font-weight:bold;">
+                                                        data-id="{{ $value->id }}" data-bs-title="View List"
+                                                        data-bs-toggle="modal" data-bs-target="#viewlist"
+                                                        style="font-weight:bold;">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="1.4rem"
                                                             height="1.4rem" viewBox="0 0 24 24">
                                                             <path fill="#ff3366" fill-rule="evenodd"
@@ -307,7 +319,8 @@
 
     {{-- Quotation List  --}}
     <!-- Modal -->
-    <div class="modal fade" id="viewlist" tabindex="-1" aria-labelledby="myModalLabel" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
+    <div class="modal fade" id="viewlist" tabindex="-1" aria-labelledby="myModalLabel" data-bs-backdrop="static"
+        data-bs-keyboard="false" aria-hidden="true">
         <div class="modal-dialog modal-dialog-bysk" style="top: 0% !important;">
             <div class="modal-content">
                 <div class="modal-header">
@@ -319,12 +332,18 @@
                         <table class="table mt-3">
                             <thead>
                                 <tr class="bg-danger bg-gradient text-center">
-                                    <th scope="col" style="color: white !important; font-weight:bold;font-size: 6px;">#</th>
-                                    <th scope="col" style="color: white !important; font-weight:bold;font-size: 6px;">Vendor Name</th>
-                                    <th scope="col" style="color: white !important; font-weight:bold;font-size: 6px;">Vendor Price</th>
-                                    <th scope="col" style="color: white !important; font-weight:bold;font-size: 6px;">Expected Delivery Date</th>
-                                    <th scope="col" style="color: white !important; font-weight:bold;font-size: 6px;">Remark</th>
-                                    <th scope="col" style="color: white !important; font-weight:bold;font-size: 6px;">Actions</th>
+                                    <th scope="col" style="color: white !important; font-weight:bold;font-size: 6px;">#
+                                    </th>
+                                    <th scope="col" style="color: white !important; font-weight:bold;font-size: 6px;">
+                                        Vendor Name</th>
+                                    <th scope="col" style="color: white !important; font-weight:bold;font-size: 6px;">
+                                        Vendor Price</th>
+                                    <th scope="col" style="color: white !important; font-weight:bold;font-size: 6px;">
+                                        Expected Delivery Date</th>
+                                    <th scope="col" style="color: white !important; font-weight:bold;font-size: 6px;">
+                                        Remark</th>
+                                    <th scope="col" style="color: white !important; font-weight:bold;font-size: 6px;">
+                                        Actions</th>
                                 </tr>
                             </thead>
                             <tbody id="approve-list">
@@ -340,7 +359,7 @@
         </div>
     </div>
 
-    
+
 
     {{-- Change Status Modal  --}}
     <!-- Modal -->

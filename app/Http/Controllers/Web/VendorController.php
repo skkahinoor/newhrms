@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Models\AssetType;
 use App\Models\Procurement;
 use App\Models\ProcurementItem;
 use App\Models\Quotation;
@@ -21,7 +22,7 @@ class VendorController extends Controller
         // Fetch Asset Name as Array
         if (!empty($getUserDetails->asset_type)) {
             $assetTypeIds = json_decode($getUserDetails->asset_type, true);
-            $assetNames = \App\Models\AssetType::whereIn('id', $assetTypeIds)->pluck('name')->toArray();
+            $assetNames = AssetType::whereIn('id', $assetTypeIds)->pluck('name')->toArray();
             $getUserDetails->decoded_asset_types = $assetNames;
         } else {
             $getUserDetails->decoded_asset_types = [];
@@ -38,7 +39,7 @@ class VendorController extends Controller
         // Fetch Asset Name as Array
         if (!empty($getUserDetails->asset_type)) {
             $assetTypeIds = json_decode($getUserDetails->asset_type, true);
-            $assetNames = \App\Models\AssetType::whereIn('id', $assetTypeIds)->pluck('name')->toArray();
+            $assetNames = AssetType::whereIn('id', $assetTypeIds)->pluck('name')->toArray();
             $getUserDetails->decoded_asset_types = $assetNames;
         } else {
             $getUserDetails->decoded_asset_types = [];
@@ -55,7 +56,7 @@ class VendorController extends Controller
         // Fetch Asset Name as Array
         if (!empty($getUserDetails->asset_type)) {
             $assetTypeIds = json_decode($getUserDetails->asset_type, true);
-            $assetNames = \App\Models\AssetType::whereIn('id', $assetTypeIds)->pluck('name')->toArray();
+            $assetNames = AssetType::whereIn('id', $assetTypeIds)->pluck('name')->toArray();
             $getUserDetails->decoded_asset_types = $assetNames;
         } else {
             $getUserDetails->decoded_asset_types = [];
@@ -70,11 +71,11 @@ class VendorController extends Controller
         $getUserDetails = User::find($user->id);
         // $procurement_id = Procurement::where
         $getquotestatus = Quotation::where('vendor_id', $getUserDetails->id)->first();
-
+        // $deliverystatusvalue = Quotation::where('procurement_id', )
         // Fetch Asset Name as Array
         if (!empty($getUserDetails->asset_type)) {
             $assetTypeIds = json_decode($getUserDetails->asset_type, true);
-            $assetNames = \App\Models\AssetType::whereIn('id', $assetTypeIds)->pluck('name')->toArray();
+            $assetNames = AssetType::whereIn('id', $assetTypeIds)->pluck('name')->toArray();
             $getUserDetails->decoded_asset_types = $assetNames;
         } else {
             $getUserDetails->decoded_asset_types = [];
@@ -82,14 +83,16 @@ class VendorController extends Controller
 
         $getOrder = Procurement::where('status', 1)->with(['users', 'role', 'company', 'asset_types', 'brands', 'items'])->paginate(5);
 
-        $quotationOrder = Procurement::where('status', 2)->with(['quotation','users', 'role', 'company', 'asset_types', 'brands', 'items'])->paginate(5)->through(function($item){
-            foreach($item->quotation as $quotation){
+        $quotationOrder = Procurement::where('status', 2)->with(['quotation', 'users', 'role', 'company', 'asset_types', 'brands', 'items'])->paginate(5)->through(function ($item) {
+            foreach ($item->quotation as $quotation) {
                 $item->quotation_status = $quotation->is_approved;
+                $item->deliver_status = $quotation->quotation_status;
             }
             unset($item->quotation);
             return $item;
+            //
         });
-        
+        // dd($quotationOrder->toArray());
         $completeOrder = ProcurementItem::where('asset_type_id', $getUserDetails->asset_type)->with(['users', 'role', 'company', 'assetType', 'brand'])->paginate(5);
         return view('vendor.orders', ['getUserDetails' => $getUserDetails, 'getOrder' => $getOrder, 'completeOrder' => $completeOrder, 'quotationOrder' => $quotationOrder, 'getquotestatus' => $getquotestatus]);
     }
@@ -110,6 +113,37 @@ class VendorController extends Controller
     {
         $assetdetails = ProcurementItem::where('procurement_id', $order_id)->with(['brand', 'assettype'])->get();
         return response()->json($assetdetails);
+    }
+
+    public function setDeliver($status)
+    {
+        $setDeliver = Quotation::where('procurement_id', $status)->update([
+            'quotation_status' => 1,
+        ]);
+        return response()->json($setDeliver);
+    }
+
+    public function uploadBill(Request $request)
+    {
+        $request->validate([
+            'billFile' => 'required|mimes:pdf|max:2048', // Only PDF files under 2MB
+        ]);
+
+        if ($request->hasFile('billFile')) {
+            $file = $request->file('billFile');
+            $fileName = time() . '_' . $file->getClientOriginalName(); // Unique file name
+            $file->move(public_path('assets/uploads/vendor/bill'), $fileName);
+
+            // Assuming you have the quotation ID available; update the relevant quotation
+            // Replace with actual logic for setting $quotation
+            $quotation = Quotation::find($request->quotation_id);
+            $quotation->bill_file = $fileName;
+            $quotation->save();
+
+            return response()->json(['success' => true, 'fileName' => $fileName]);
+        }
+
+        return response()->json(['success' => false, 'message' => 'Failed to upload file.']);
     }
 
     public function storeQuotation(Request $request)

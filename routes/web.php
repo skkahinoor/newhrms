@@ -548,6 +548,8 @@ Route::group([
         Route::get('getAssetDetails/{id}', [VendorController::class, 'getAssetDetails'])->name('getAssetDetails');
         Route::get('sendquotation/{id}', [VendorController::class, 'sendquotation'])->name('sendquotation');
         Route::get('getQuotationDetails/{id}', [VendorController::class, 'getQuotationDetails'])->name('getQuotationDetails');
+        Route::post('setDeliver/{id}', [VendorController::class, 'setDeliver'])->name('setDeliver');
+        Route::post('uploadBill', [VendorController::class, 'uploadBill'])->name('uploadBill');
         
 
         

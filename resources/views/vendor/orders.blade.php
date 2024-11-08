@@ -203,14 +203,17 @@
                                                         data-bs-target="#assetModal">View
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="1.4rem"
                                                             height="1.4rem" viewBox="0 0 24 24">
+                                                            <title>View Assets</title>
                                                             <g fill="none">
-                                                                <path fill="#ff3366" fill-opacity="0.25" fill-rule="evenodd"
-                                                                    d="M2.455 11.116C3.531 9.234 6.555 5 12 5c5.444 0 8.469 4.234 9.544 6.116c.221.386.331.58.32.868c-.013.288-.143.476-.402.852C20.182 14.694 16.706 19 12 19s-8.182-4.306-9.462-6.164c-.26-.376-.39-.564-.401-.852c-.013-.288.098-.482.318-.868M12 15a3 3 0 1 0 0-6a3 3 0 0 0 0 6"
-                                                                    clip-rule="evenodd" />
-                                                                <path stroke="#ff3366" stroke-width="1.2"
-                                                                    d="M12 5c-5.444 0-8.469 4.234-9.544 6.116c-.221.386-.331.58-.32.868c.013.288.143.476.402.852C3.818 14.694 7.294 19 12 19s8.182-4.306 9.462-6.164c.26-.376.39-.564.401-.852s-.098-.482-.319-.868C20.47 9.234 17.444 5 12 5Z" />
-                                                                <circle cx="12" cy="12" r="3" stroke="#ff3366"
-                                                                    stroke-width="1.2" />
+                                                                <path fill="#ff3366" fill-rule="evenodd"
+                                                                    d="M12 5C7.336 5 3.6 7.903 2 12c1.6 4.097 5.336 7 10 7s8.4-2.903 10-7c-1.6-4.097-5.336-7-10-7m0 10a3 3 0 1 0 0-6a3 3 0 0 0 0 6"
+                                                                    clip-rule="evenodd" opacity="0.16" />
+                                                                <path stroke="#ff3366" stroke-linecap="round"
+                                                                    stroke-linejoin="round" stroke-width="2"
+                                                                    d="M15 12a3 3 0 1 1-6 0a3 3 0 0 1 6 0" />
+                                                                <path stroke="#ff3366" stroke-linecap="round"
+                                                                    stroke-linejoin="round" stroke-width="2"
+                                                                    d="M2 12c1.6-4.097 5.336-7 10-7s8.4 2.903 10 7c-1.6 4.097-5.336 7-10 7s-8.4-2.903-10-7" />
                                                             </g>
                                                         </svg>
                                                     </a>
@@ -223,22 +226,60 @@
                                                     <span
                                                         class="text-secondary text-xs font-weight-bold">{{ $qorder->delivery_date ?? 'N/A' }}</span>
                                                 </td>
-                                                
-                                                    <td class="align-middle text-center text-sm">
+
+                                                <td class="align-middle text-center text-sm">
+                                                    @if ($qorder->quotation_status === 1)
+                                                        <span class="badge badge-sm btn-success"
+                                                            style="color: #fff;">Quotation Approved</span>
+                                                    @else
                                                         <span
                                                             class="badge badge-sm btn-{{ $changeColor[$qorder->status] ?? 'secondary' }}"
                                                             style="color: {{ $changeTextColor[$qorder->status] ?? '#fff' }};">
                                                             {{ $changeStatusValue[$qorder->status] ?? 'Unknown Status' }}
                                                         </span>
-                                                    </td>
-                                                
+                                                    @endif
+
+                                                </td>
+
                                                 <td class="align-middle text-center">
                                                     <a href="javascript:;" data-id="{{ $qorder->id }}"
                                                         class="text-secondary font-weight-bold text-xs viewQuotation"
                                                         data-bs-toggle="modal" data-bs-target="#viewQuotation"
                                                         data-original-title="View Quotation">
-                                                        View Quotation
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="1.4rem"
+                                                            height="1.4rem" viewBox="0 0 24 24">
+                                                            <title>View Quotation</title>
+                                                            <g fill="none">
+                                                                <path fill="#ff3366" fill-rule="evenodd"
+                                                                    d="M12 5C7.336 5 3.6 7.903 2 12c1.6 4.097 5.336 7 10 7s8.4-2.903 10-7c-1.6-4.097-5.336-7-10-7m0 10a3 3 0 1 0 0-6a3 3 0 0 0 0 6"
+                                                                    clip-rule="evenodd" opacity="0.16" />
+                                                                <path stroke="#ff3366" stroke-linecap="round"
+                                                                    stroke-linejoin="round" stroke-width="2"
+                                                                    d="M15 12a3 3 0 1 1-6 0a3 3 0 0 1 6 0" />
+                                                                <path stroke="#ff3366" stroke-linecap="round"
+                                                                    stroke-linejoin="round" stroke-width="2"
+                                                                    d="M2 12c1.6-4.097 5.336-7 10-7s8.4 2.903 10 7c-1.6 4.097-5.336 7-10 7s-8.4-2.903-10-7" />
+                                                            </g>
+                                                        </svg>
                                                     </a>
+                                                    @if ($qorder->deliver_status === 1)
+                                                        <a href="javascript:;" data-billId="{{ $qorder->id }}"
+                                                            class="generate-bill" data-bs-toggle="modal"
+                                                            data-bs-target="#generate-bill">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="1.4rem"
+                                                                height="1.4rem" viewBox="0 0 24 24">
+                                                                <title>Generate Bill</title>
+                                                                <g fill="none" fill-rule="evenodd">
+                                                                    <path
+                                                                        d="m12.594 23.258l-.012.002l-.071.035l-.02.004l-.014-.004l-.071-.036q-.016-.004-.024.006l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.016-.018m.264-.113l-.014.002l-.184.093l-.01.01l-.003.011l.018.43l.005.012l.008.008l.201.092q.019.005.029-.008l.004-.014l-.034-.614q-.005-.019-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.003-.011l.018-.43l-.003-.012l-.01-.01z" />
+                                                                    <path fill="#ff3366"
+                                                                        d="M18 3a3 3 0 0 1 2.995 2.824L21 6v14a1 1 0 0 1-1.405.914l-.12-.062l-2.725-1.678l-2.726 1.678a1 1 0 0 1-.938.058l-.11-.058l-2.726-1.678l-2.726 1.678a1 1 0 0 1-1.517-.732L6 20v-6H4a1 1 0 0 1-.993-.883L3 13V5.5a2.5 2.5 0 0 1 2.336-2.495L5.5 3zm-3 9h-4a1 1 0 1 0 0 2h4a1 1 0 1 0 0-2M5.5 5a.5.5 0 0 0-.5.5V12h1V5.5a.5.5 0 0 0-.5-.5M16 8h-5a1 1 0 0 0-.117 1.993L11 10h5a1 1 0 0 0 .117-1.993z" />
+                                                                </g>
+                                                            </svg>
+                                                        </a>
+                                                    @else
+                                                    @endif
+
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -442,34 +483,20 @@
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-6" id="exampleModalLabel">View Quotation For <span class="text-primary" id="show-no"></span></h1>
+                        <h1 class="modal-title fs-6" id="exampleModalLabel">View Quotation For <span class="text-primary"
+                                id="show-no"></span></h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <div class="table-responsive p-0">
-                            <table class="table align-items-center mb-0">
-                                <thead>
-                                    <tr class="bg-primary bg-gradient text-center ">
-                                        <th class="text-uppercase text-center text-light text-xs font-weight-bolder">
-                                            #</th>
-                                        <th class="text-center text-uppercase text-light text-xs font-weight-bolder">
-                                            Procurement No</th>
-                                        <th class="text-center text-uppercase text-light text-xs font-weight-bolder">
-                                            Total Item Price</th>
-                                        <th class="text-center text-uppercase text-light text-xs font-weight-bolder">
-                                            Final Delivery Date</th>
-                                        <th class="text-center text-uppercase text-light text-xs font-weight-bolder">
-                                            Remark</th>
-                                        <th class="text-center text-uppercase text-light text-xs font-weight-bolder">
-                                            Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="quotation-view">
-                                    {{-- table append data  --}}
-                                </tbody>
-                            </table>
+                        <div class="card mt-3">
+                            <div style="padding: 15px !important;">
+                                <h5 class="text-primary" style="border-bottom: solid #e3e3e3 2px;padding: 2px;">Quotation
+                                    Details</h5>
+                            </div>
+                            <div class="card-body" id="quotation-view">
+                                {{-- data will append here  --}}
+                            </div>
                         </div>
-                        <br>
                         <div class="modal-header text-dark">
                             <h6 class="modal-title text-primary">Your Quotation Items</h6>
                         </div>
@@ -503,7 +530,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        {{-- <button type="button" class="btn btn-primary">Save changes</button> --}}
+                        <button type="button" id="set-deliver" class="btn btn-success">Set To Deliver</button>
                     </div>
                 </div>
             </div>
@@ -547,6 +574,36 @@
                 </div>
             </div>
         </div>
+
+        {{-- Modal for Generate Bill  --}}
+        {{-- Modal for Generate Bill --}}
+        <div class="modal fade" id="generate-bill" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-6" id="exampleModalLabel">Generate Bill</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="uploadBillForm" enctype="multipart/form-data">
+                            @csrf
+                            <div class="mb-3">
+                                <label for="billFile" class="form-label">Select PDF File</label>
+                                <input type="file" class="form-control" id="billFile" name="billFile"
+                                    accept="application/pdf" required>
+                            </div>
+                            <div id="fileName" class="text-secondary mt-2"></div> <!-- Display file name -->
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" id="uploadButton" class="btn btn-primary">Upload Bill</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
 
         <script>

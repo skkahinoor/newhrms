@@ -24,6 +24,7 @@ class Quotation extends Model
         'final_delivery_date',
         'is_approved',
         'quotation_status',
+        'bill_file',
     ];
 
     protected $casts = [

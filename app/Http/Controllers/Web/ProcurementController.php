@@ -8,6 +8,7 @@ use App\Models\Asset;
 use App\Models\Procurement;
 use App\Models\ProcurementItem;
 use App\Models\Quotation;
+use App\Models\Role;
 use App\Models\User;
 use App\Repositories\AssetAssignmentRepository;
 use App\Repositories\BrandRepository;
@@ -43,6 +44,8 @@ class ProcurementController extends Controller
         $this->authorize('view_procurement');
         try {
             $getUser = Auth::user();
+            $getUserId = $getUser->id;
+            // dd($getUserId);
             $getProcurement = Procurement::all();
             $filterParameters = [
                 'procurement_number' => $request->procurement_number ?? null,
@@ -58,7 +61,11 @@ class ProcurementController extends Controller
             ];
             if (auth()->user()->role_id == $getUser->id) { // is Admin
                 $isAdmin = true;
+                // dd($getUser->id);
                 $isUser = false;
+                // $getRollId = $getUser->role_id;
+                // dd($getRollId);
+                // $rolesname = Role::whereIn('id', $getRollId)->pluck('slug');
                 $select = ['*'];
                 $with = ['users', 'asset_types', 'brands'];
                 $where = ['user_id', $getUser->id];
@@ -74,6 +81,7 @@ class ProcurementController extends Controller
                 }
             } else { // For other users
                 $isAdmin = false;
+                // dd($getUser->id);
                 $isUser = true;
                 $otheruser = User::where('id', $getUser->id)->first();
                 $select = ['*'];
@@ -85,7 +93,7 @@ class ProcurementController extends Controller
                 $requests = $query->paginate(5);
             }
 
-            return view($this->view . 'index', compact('requests', 'assetType', 'filterParameters', 'brands', 'getProcurement', 'isAdmin', 'isUser'));
+            return view($this->view . 'index', compact('requests', 'assetType', 'filterParameters', 'brands', 'getProcurement', 'isAdmin', 'isUser', 'getUserId'));
         } catch (\Exception $exception) {
             return redirect()->back()->with('danger', $exception->getMessage());
         }

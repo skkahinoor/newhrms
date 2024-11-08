@@ -56,11 +56,11 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         const approveId = $(this).data(
-                        'id'); 
-                        console.log("Quotation ID: ",approveId);
+                            'id');
+                        console.log("Quotation ID: ", approveId);
                         $.ajax({
                             url: '{{ route('admin.approveStatusQuotation', ['id' => ':id']) }}'
-                        .replace(':id', approveId),
+                                .replace(':id', approveId),
                             type: 'POST',
                             data: {
                                 id: approveId,
@@ -73,7 +73,7 @@
                                     'success'
                                 ).then(() => {
                                     location
-                                .reload();
+                                        .reload();
                                 });
                             },
                             error: function(xhr) {
@@ -88,6 +88,20 @@
                 });
             });
 
+        });
+
+
+        // Click to Procurement no copy
+        $(document).on('click', '#Procurement-no-copy', function() {
+            const procurementNumber = $(this).data('no');
+            console.log(procurementNumber);
+
+            navigator.clipboard.writeText(procurementNumber).then(function() {
+                Swal.fire('Success!', 'Procurement Number copied to your Clipboard!',
+                    'success');
+            }).catch(function(error) {
+                Swal.fire('Error!', 'Failed to copy text: ' + error, 'error');
+            });
         });
     });
 </script>
