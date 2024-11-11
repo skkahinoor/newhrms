@@ -10,6 +10,7 @@ use App\Models\Quotation;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class VendorController extends Controller
 {
@@ -71,8 +72,6 @@ class VendorController extends Controller
 
         $getUserDetails = User::find($user->id);
         $getId = $getUserDetails->id;
-        // dd($getId);
-        // $procurement_id = Procurement::where
         $getquotestatus = Quotation::where('vendor_id', $getUserDetails->id)->first();
         // $deliverystatusvalue = Quotation::where('procurement_id', )
         // Fetch Asset Name as Array
@@ -84,8 +83,22 @@ class VendorController extends Controller
             $getUserDetails->decoded_asset_types = [];
         }
 
-        $getOrder = Procurement::where('status', 1)->with(['users', 'role', 'company', 'asset_types', 'brands', 'items'])->paginate(5);
+        $getOrder = Procurement::where('status', '!=', 0)->with(['users', 'role', 'company', 'asset_types', 'brands', 'items'])->paginate(5);
+        // $getOrders = collect();
+        // foreach ($procurementOrder as $procurement) {
+        //     foreach ($procurement->items as $value) {
+        //         $assetTypes = json_decode($getUserDetails->asset_type, true);
+                
+        //         foreach ($assetTypes as $assetType) {
+        //             if (in_array($value->asset_type_id, $assetType)) {
+        //                 $getOrders->push($procurement->toArray());
+        //                 break;
+        //             }
+        //         }
+        //     }
+        // }
 
+        // dd($getOrders);
         $quotationOrder = Procurement::where('status', 2)->with(['quotation', 'users', 'role', 'company', 'asset_types', 'brands', 'items'])->paginate(5)->through(function ($item) {
             foreach ($item->quotation as $quotation) {
                 $item->quotation_status = $quotation->is_approved;
@@ -123,24 +136,6 @@ class VendorController extends Controller
         $assetdetails = ProcurementItem::where('procurement_id', $order_id)->with(['brand', 'assettype'])->get();
         return response()->json($assetdetails);
     }
-
-    // public function checkDeliverStatuss($id)
-    // {
-    //     $checkDeliver = Quotation::where('procurement_id', $id)->get();
-    //     // dd($checkDeliver);
-    //     return response()->json($checkDeliver);
-    // }
-
-    // public function checkDeliverStatus($id)
-    // {
-    //     $quotation = Quotation::where('procurement_id', $id)->get();
-
-    //     if ($quotation) {
-    //         return response()->json(['delivery_status' => $quotation->delivery_status]); // Adjust this field as needed
-    //     }
-
-    //     return response()->json(['error' => 'Quotation not found'], 404); // If no quotation is found
-    // }
 
     public function setDeliver($status)
     {

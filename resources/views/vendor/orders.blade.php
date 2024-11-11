@@ -79,6 +79,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+
                                         @foreach ($getOrder as $key => $order)
                                             <tr>
                                                 <td class="align-middle text-center">

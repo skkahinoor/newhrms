@@ -438,20 +438,18 @@
                         success: function(response) {
                             console.log(response);
                             if (response.success) {
-                                Swal.fire('Success!',
-                                    'Bill uploaded successfully.',
-                                    'success');
-                                $('#generate-bill').modal(
-                                    'hide');
+                                Swal.fire('Success!', 'Bill uploaded successfully.',
+                                    'success').then(function() {
+                                    location.load();
+                                });
+                                $('#generate-bill').modal('hide');
                             } else {
-                                Swal.fire('Error!', response
-                                    .message, 'error');
+                                Swal.fire('Error!', response.message, 'error');
                             }
                         },
                         error: function(response) {
                             console.log(response);
-                            Swal.fire('Error!',
-                                'An error occurred while uploading.',
+                            Swal.fire('Error!', 'An error occurred while uploading.',
                                 'error');
                         }
                     });
