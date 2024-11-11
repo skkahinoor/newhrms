@@ -56,7 +56,8 @@
 
         <div class="card">
             <div class="card-body">
-                <div class="table-responsive">
+                <div class="table-responsive" style="
+                    height: 380px !important;">
                     <table id="dataTableExample" class="table">
                         <thead>
                             <tr>
@@ -101,7 +102,7 @@
                             <tr>
                                 @forelse($requests as $key => $value)
                             <tr>
-                                <td>{{ ++$key }}</td>
+                                <td>{{$requests->firstItem() + $key }}</td>
                                 <td class="text-center">
                                     <a href="javascript:void(0);" data-no="{{ $value->procurement_number }}"
                                         id="Procurement-no-copy"
@@ -303,9 +304,9 @@
 
                         </tbody>
                     </table>
-                    <br>
-                    <div class="row" style="padding-left: 7px !important;">{{ $requests->links() }}</div>
                 </div>
+                <br>
+                    <div class="row" style="padding-left: 7px !important;">{{ $requests->links() }}</div>
             </div>
         </div>
 
@@ -342,6 +343,8 @@
                                         Expected Delivery Date</th>
                                     <th scope="col" style="color: white !important; font-weight:bold;font-size: 6px;">
                                         Remark</th>
+                                    <th scope="col" style="color: white !important; font-weight:bold;font-size: 6px;">
+                                        Bill Status</th>
                                     <th scope="col" style="color: white !important; font-weight:bold;font-size: 6px;">
                                         Actions</th>
                                 </tr>

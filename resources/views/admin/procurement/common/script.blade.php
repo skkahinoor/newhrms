@@ -27,6 +27,7 @@
                                 <td class="text-center text-secondary fs-12">₹ ${getAsset.total_item_price}</td>
                                 <td class="text-center text-secondary">${getAsset.final_delivery_date ?? 'Timely Delivered'}</td>
                                 <td class="text-center text-secondary"><textarea name="specification" class="form-control text-center p-1" cols="30" rows="2" readonly >${getAsset.remark}</textarea></td>
+                                <td class="text-center">${getAsset.bill_file || 'Bill Not Generated'}</td>
                                 <td class="text-center">${status}</td>
                             </tr>
                         `;

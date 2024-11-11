@@ -255,65 +255,58 @@
                 console.log("Procurement Id: ", proId);
 
                 if (proId) {
+                    // Fetch Quotation Details
                     $.ajax({
                         url: '{{ route('vendor.getQuotationDetails', ['id' => ':id']) }}'
                             .replace(':id', proId),
                         type: 'GET',
-                        data: {
-                            id: proId
-                        },
                         success: function(response) {
-                            console.log(
-                                response); // Log response to inspect structure
+                            console.log("Quotation Details Response:", response);
 
+                            // Display procurement number
                             const spanshow = $('#show-no');
-                            // spanshow.text(response);
                             spanshow.empty();
-                            response.forEach((no) => {
-                                const pno = `
-                                ${no.procurement.procurement_number}
-                                `;
-                                spanshow.append(pno);
-                            });
+                            spanshow.text(response[0]?.procurement
+                                .procurement_number || 'N/A');
 
+                            // Populate Quotation Details
                             const tbody = $('#quotation-view');
                             tbody.empty();
                             response.forEach((list) => {
                                 const approvedStatus = list.is_approved ==
                                     1 ? 'Approved By Admin' : 'Rejected';
 
+                                const checkqstatus = list.quotation_status;
+
                                 const row = `
-                            <p class="text-dark"><b class="text-dark">Procurement No: </b>${list.procurement.procurement_number || 'N/A'}</p>
-                                <p class="text-dark"><b class="text-dark">Total Item Price: </b>₹ ${list.total_item_price || 'Not Set'}</p>
-                                <p class="text-dark"><b class="text-dark">Final Delivery Date: </b>${list.final_delivery_date || 'You Delivered on Time'}</p>
-                                <p class="text-dark"><b class="text-dark">Remark: </b>${list.remark || 'Not Provided'}</p>
-                                <p class="text-dark"><b class="text-dark">Status: </b>${approvedStatus}</p>
+                            <p class="text-dark"><b>Procurement No: </b>${list.procurement.procurement_number || 'N/A'}</p>
+                            <p class="text-dark"><b>Total Item Price: </b>₹ ${list.total_item_price || 'Not Set'}</p>
+                            <p class="text-dark"><b>Final Delivery Date: </b>${list.final_delivery_date || 'You Delivered on Time'}</p>
+                            <p class="text-dark"><b>Remark: </b>${list.remark || 'Not Provided'}</p>
+                            <p class="text-dark"><b>Status: </b>${approvedStatus}</p>
                         `;
                                 tbody.append(row);
                             });
 
-                            // Display items in a more structured format
+                            // Display Quotation Items
                             const divitems = $('#show-loop-items');
                             divitems.empty();
-
                             response.forEach((qitems) => {
                                 try {
-                                    // Parse items only if it's a string (i.e., JSON)
                                     const itemsArray = typeof qitems
                                         .items === 'string' ? JSON.parse(
                                             qitems.items) : qitems.items;
-
                                     itemsArray.forEach((item, index) => {
                                         const itemRow = `
                                     <tr class="text-center">
-                                <td>${index + 1}</td>
-                                <td>${item.productType}</td>
-                                <td>${item.productBrand}</td>
-                                <td>${item.productQuantity} PCS</td>
-                                <td>₹${item.product_per_price}</td>
-                                <td>₹${item.discount_price}</td>
-                                <td>₹${item.total_amount}</td>
-                            </tr>
+                                        <td>${index + 1}</td>
+                                        <td>${item.productType}</td>
+                                        <td>${item.productBrand}</td>
+                                        <td>${item.productQuantity} PCS</td>
+                                        <td>₹${item.product_per_price}</td>
+                                        <td>₹${item.discount_price}</td>
+                                        <td>₹${item.total_amount}</td>
+                                    </tr>
                                 `;
                                         divitems.append(itemRow);
                                     });
@@ -322,94 +315,152 @@
                                         error);
                                 }
                             });
+
+                            // Check deliver status
+                            const deliveryStatus = response[0].quotation_status ||
+                                'Unknown';
+
+                            const deliverydiv = $('#setdeliverybutton');
+                            deliverydiv.empty();
+                            if (deliveryStatus === 1) {
+                                const givdata = `
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" id="set-deliver" class="btn btn-success" disabled>Already Delivered</button>
+                                    `;
+                                deliverydiv.append(givdata);
+                            } else {
+                                const givdata = `
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" id="set-deliver" class="btn btn-success">Set To Deliver</button>
+                                    `;
+                                deliverydiv.append(givdata);
+                            }
+
+                            // Set to deliver the order
+                            $(document).on('click', '#set-deliver', function() {
+                                const qID = proId;
+                                console.log(
+                                    "Another Procurement which Set to Deliver iD: ",
+                                    qID);
+
+                                Swal.fire({
+                                    title: 'Are you sure?',
+                                    text: "Are you ready to mark this order as delivered?",
+                                    icon: 'warning',
+                                    showCancelButton: true,
+                                    confirmButtonColor: '#3085d6',
+                                    cancelButtonColor: '#d33',
+                                    confirmButtonText: 'Yes, deliver it!',
+                                    cancelButtonText: 'No, cancel'
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        $.ajax({
+                                            url: '{{ route('vendor.setDeliver', ['id' => ':id']) }}'
+                                                .replace(
+                                                    ':id',
+                                                    qID),
+                                            method: 'POST',
+                                            data: {
+                                                status: qID
+                                            },
+                                            success: function(
+                                                response
+                                            ) {
+                                                Swal.fire(
+                                                        'Delivered!',
+                                                        'The order has been marked as delivered.',
+                                                        'success'
+                                                    )
+                                                    .then(
+                                                        function() {
+                                                            location
+                                                                .reload();
+                                                        }
+                                                    );
+                                            },
+                                            error: function(
+                                                error) {
+                                                Swal.fire(
+                                                    'Error!',
+                                                    'Failed to update delivery status.',
+                                                    'error'
+                                                );
+                                            }
+                                        });
+                                    }
+                                });
+                            });
+
                         },
                         error: function() {
                             Swal.fire('Error!',
-                                'Problem to fetch Quotation orders!', 'error');
+                                'Problem fetching Quotation orders!', 'error');
                         }
                     });
                 } else {
-                    console.log("Procurement ID is not fetched or there was an error!");
+                    console.log("Procurement ID is not available!");
                 }
+            });
+        });
 
 
 
-                $(document).on('click', '#set-deliver', function() {
-                    const qID = proId;
-                    console.log("Another Procurement which Set to Deliver iD: ", qID);
 
-                    Swal.fire({
-                        title: 'Are you sure?',
-                        text: "Are you ready to mark this order as delivered?",
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'Yes, deliver it!',
-                        cancelButtonText: 'No, cancel'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            $.ajax({
-                                url: '{{ route('vendor.setDeliver', ['id' => ':id']) }}'
-                                    .replace(':id', qID),
-                                method: 'POST',
-                                data: {
-                                    status: qID
-                                },
-                                success: function(response) {
-                                    Swal.fire('Delivered!',
-                                        'The order has been marked as delivered.',
-                                        'success').then(
-                                        function() {
-                                            location.reload();
-                                        });
-                                },
-                                error: function(error) {
-                                    Swal.fire('Error!',
-                                        'Failed to update delivery status.',
-                                        'error');
-                                }
-                            });
+
+        $(document).on('click', '.generate-bill', function() {
+            const qbill = $(this).data('bill');
+            console.log('Checking existing bill data for quotation ID:', qbill);
+
+            // Display file name when a file is selected
+            document.getElementById('billFile').addEventListener('change',
+                function() {
+                    const file = this.files[0];
+                    if (file) {
+                        document.getElementById('fileName').innerText =
+                            `Selected file: ${file.name}`;
+                    }
+                });
+
+            // Upload file when the "Upload Bill" button is clicked
+            document.getElementById('uploadButton').addEventListener('click',
+                function() {
+                    const formData = new FormData(document.getElementById(
+                        'uploadBillForm'));
+                    formData.append('id', qbill);
+
+                    $.ajax({
+                        url: '{{ route('vendor.uploadBill', ['id' => ':id']) }}'.replace(
+                            ':id', qbill),
+                        method: 'POST',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function(response) {
+                            console.log(response);
+                            if (response.success) {
+                                Swal.fire('Success!',
+                                    'Bill uploaded successfully.',
+                                    'success');
+                                $('#generate-bill').modal(
+                                    'hide');
+                            } else {
+                                Swal.fire('Error!', response
+                                    .message, 'error');
+                            }
+                        },
+                        error: function(response) {
+                            console.log(response);
+                            Swal.fire('Error!',
+                                'An error occurred while uploading.',
+                                'error');
                         }
                     });
                 });
-            });
         });
 
 
-        // Display file name when a file is selected
-        document.getElementById('billFile').addEventListener('change', function() {
-            const file = this.files[0];
-            if (file) {
-                document.getElementById('fileName').innerText = `Selected file: ${file.name}`;
-            }
-        });
 
-        // Upload file when the "Upload Bill" button is clicked
-        document.getElementById('uploadButton').addEventListener('click', function() {
-            const formData = new FormData(document.getElementById('uploadBillForm'));
 
-            $.ajax({
-                url: '{{ route('vendor.uploadBill') }}',
-                method: 'POST',
-                data: formData,
-                processData: false,
-                contentType: false,
-                
-                success: function(response) {
-                    if (response.success) {
-                        Swal.fire('Success!', 'Bill uploaded successfully.', 'success');
-                        $('#generate-bill').modal('hide'); 
-                    } else {
-                        Swal.fire('Error!', response.message, 'error');
-                    }
-                },
-                error: function() {
-                    // console.log(response);
-                    Swal.fire('Error!', 'An error occurred while uploading.', 'error');
-                }
-            });
-        });
 
 
 

@@ -68,7 +68,10 @@ class VendorController extends Controller
     public function orders(Request $request)
     {
         $user = Auth::user();
+
         $getUserDetails = User::find($user->id);
+        $getId = $getUserDetails->id;
+        // dd($getId);
         // $procurement_id = Procurement::where
         $getquotestatus = Quotation::where('vendor_id', $getUserDetails->id)->first();
         // $deliverystatusvalue = Quotation::where('procurement_id', )
@@ -90,10 +93,10 @@ class VendorController extends Controller
             }
             unset($item->quotation);
             return $item;
-            //
         });
-        // dd($quotationOrder->toArray());
+
         $completeOrder = ProcurementItem::where('asset_type_id', $getUserDetails->asset_type)->with(['users', 'role', 'company', 'assetType', 'brand'])->paginate(5);
+
         return view('vendor.orders', ['getUserDetails' => $getUserDetails, 'getOrder' => $getOrder, 'completeOrder' => $completeOrder, 'quotationOrder' => $quotationOrder, 'getquotestatus' => $getquotestatus]);
     }
 
@@ -106,7 +109,13 @@ class VendorController extends Controller
     public function getQuotationDetails($id)
     {
         $getQuote = Quotation::where('procurement_id', $id)->with(['procurement'])->get();
-        return response()->json($getQuote);
+        // return response()->json($getQuote);
+        if ($getQuote) {
+            // return response()->json(['delivery_status' => $getQuote->quotation_status, 'getQuote' => $getQuote]);
+            return response()->json($getQuote);
+        }
+
+        return response()->json(['error' => 'Quotation not found'], 404);
     }
 
     public function sendquotation($order_id)
@@ -114,6 +123,24 @@ class VendorController extends Controller
         $assetdetails = ProcurementItem::where('procurement_id', $order_id)->with(['brand', 'assettype'])->get();
         return response()->json($assetdetails);
     }
+
+    // public function checkDeliverStatuss($id)
+    // {
+    //     $checkDeliver = Quotation::where('procurement_id', $id)->get();
+    //     // dd($checkDeliver);
+    //     return response()->json($checkDeliver);
+    // }
+
+    // public function checkDeliverStatus($id)
+    // {
+    //     $quotation = Quotation::where('procurement_id', $id)->get();
+
+    //     if ($quotation) {
+    //         return response()->json(['delivery_status' => $quotation->delivery_status]); // Adjust this field as needed
+    //     }
+
+    //     return response()->json(['error' => 'Quotation not found'], 404); // If no quotation is found
+    // }
 
     public function setDeliver($status)
     {
@@ -123,7 +150,19 @@ class VendorController extends Controller
         return response()->json($setDeliver);
     }
 
-    public function uploadBill(Request $request)
+    public function checkBillData($id)
+    {
+
+        $quotation = Quotation::where('procurement_id', $id)->get();
+
+        if ($quotation->bill_file != null) {
+            return response()->json(['exists' => true]); // Bill data exists
+        }
+
+        return response()->json(['exists' => false]); // No bill data
+    }
+
+    public function uploadBill(Request $request, $id)
     {
         $request->validate([
             'billFile' => 'required|mimes:pdf|max:2048', // Only PDF files under 2MB
@@ -136,11 +175,14 @@ class VendorController extends Controller
 
             // Assuming you have the quotation ID available; update the relevant quotation
             // Replace with actual logic for setting $quotation
-            $quotation = Quotation::find($request->quotation_id);
-            $quotation->bill_file = $fileName;
-            $quotation->save();
+            $quotation = Quotation::where('procurement_id', $id)->update([
+                'bill_file' => $fileName,
+            ]);
+            // dd($quotation);
+            // $quotation->bill_file = $fileName;
+            // $quotation->save();
 
-            return response()->json(['success' => true, 'fileName' => $fileName]);
+            return response()->json(['success' => true, 'fileName' => $fileName, $quotation]);
         }
 
         return response()->json(['success' => false, 'message' => 'Failed to upload file.']);

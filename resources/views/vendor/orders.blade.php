@@ -263,18 +263,14 @@
                                                         </svg>
                                                     </a>
                                                     @if ($qorder->deliver_status === 1)
-                                                        <a href="javascript:;" data-billId="{{ $qorder->id }}"
+                                                        <a href="javascript:;" data-bill="{{ $qorder->id }}"
                                                             class="generate-bill" data-bs-toggle="modal"
                                                             data-bs-target="#generate-bill">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="1.4rem"
                                                                 height="1.4rem" viewBox="0 0 24 24">
-                                                                <title>Generate Bill</title>
-                                                                <g fill="none" fill-rule="evenodd">
-                                                                    <path
-                                                                        d="m12.594 23.258l-.012.002l-.071.035l-.02.004l-.014-.004l-.071-.036q-.016-.004-.024.006l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.016-.018m.264-.113l-.014.002l-.184.093l-.01.01l-.003.011l.018.43l.005.012l.008.008l.201.092q.019.005.029-.008l.004-.014l-.034-.614q-.005-.019-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.003-.011l.018-.43l-.003-.012l-.01-.01z" />
-                                                                    <path fill="#ff3366"
-                                                                        d="M18 3a3 3 0 0 1 2.995 2.824L21 6v14a1 1 0 0 1-1.405.914l-.12-.062l-2.725-1.678l-2.726 1.678a1 1 0 0 1-.938.058l-.11-.058l-2.726-1.678l-2.726 1.678a1 1 0 0 1-1.517-.732L6 20v-6H4a1 1 0 0 1-.993-.883L3 13V5.5a2.5 2.5 0 0 1 2.336-2.495L5.5 3zm-3 9h-4a1 1 0 1 0 0 2h4a1 1 0 1 0 0-2M5.5 5a.5.5 0 0 0-.5.5V12h1V5.5a.5.5 0 0 0-.5-.5M16 8h-5a1 1 0 0 0-.117 1.993L11 10h5a1 1 0 0 0 .117-1.993z" />
-                                                                </g>
+                                                                <title>Upload Bill</title>
+                                                                <path fill="#ff3366"
+                                                                    d="M19.35 10.04A7.49 7.49 0 0 0 12 4C9.11 4 6.6 5.64 5.35 8.04A5.994 5.994 0 0 0 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5c0-2.64-2.05-4.78-4.65-4.96M14 13v4h-4v-4H7l5-5l5 5z" />
                                                             </svg>
                                                         </a>
                                                     @else
@@ -528,9 +524,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" id="set-deliver" class="btn btn-success">Set To Deliver</button>
+                    <div class="modal-footer" id="setdeliverybutton">
+                        {{-- Append close and Deliver button here  --}}
                     </div>
                 </div>
             </div>
