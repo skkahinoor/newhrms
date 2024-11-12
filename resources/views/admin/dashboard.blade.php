@@ -19,6 +19,49 @@ $viewCheckOut = $checkOutAt ? \App\Helpers\AttendanceHelper::changeTimeFormatFor
             background: url({{ asset('assets/images/clock.jpg') }}) no-repeat;
             background-size: 100%;
         }
+
+        #hour1 {
+            position: absolute;
+            background: black;
+            border-radius: 10px;
+            transform-origin: bottom;
+            width: 3%;
+            height: 25%;
+            top: 23%;
+            left: 48.85%;
+            opacity: 0.8;
+        }
+
+        #minute1 {
+            width: 1.6%;
+            height: 30%;
+            top: 19%;
+            left: 48.9%;
+            opacity: 0.8;
+            position: absolute;
+            background: black;
+            border-radius: 10px;
+            transform-origin: bottom;
+        }
+
+        #second1 {
+            width: 1%;
+            height: 40%;
+            top: 9%;
+            left: 49.25%;
+            opacity: 0.8;
+            position: absolute;
+            background: red;
+            border-radius: 10px;
+            transform-origin: bottom;
+        }
+
+        #hour1,
+        #minute1,
+        #second1 {
+            transition: transform 0.5s ease;
+            /* Smooth rotation */
+        }
     </style>
 @endsection
 
@@ -298,12 +341,12 @@ $viewCheckOut = $checkOutAt ? \App\Helpers\AttendanceHelper::changeTimeFormatFor
                         <div class="card-body text-center clock-display">
                             <div id="clockContainer" class="mb-3"
                                 style="background: url({{ asset('assets/images/clock.jpg') }}) no-repeat;background-size: 100%;">
-                                <div id="hour"></div>
-                                <div id="minute"></div>
-                                <div id="second"></div>
+                                <div id="hour1"></div>
+                                <div id="minute1"></div>
+                                <div id="second1"></div>
                             </div>
 
-                            <p id="date" class="text-primary fw-bolder mb-3"></p>
+                            <p id="dated" class="text-primary fw-bolder mb-3"></p>
 
                             <div class="punch-btn mb-2 d-flex align-items-center justify-content-around">
                                 <button href="{{ route('admin.dashboard.takeAttendance', 'checkIn') }}"

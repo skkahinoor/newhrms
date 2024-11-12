@@ -344,7 +344,7 @@
                                     <th scope="col" style="color: white !important; font-weight:bold;font-size: 6px;">
                                         Remark</th>
                                     <th scope="col" style="color: white !important; font-weight:bold;font-size: 6px;">
-                                        Bill Status</th>
+                                        Bill</th>
                                     <th scope="col" style="color: white !important; font-weight:bold;font-size: 6px;">
                                         Actions</th>
                                 </tr>

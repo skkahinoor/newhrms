@@ -10,7 +10,6 @@ use App\Models\Quotation;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 
 class VendorController extends Controller
 {
@@ -83,12 +82,13 @@ class VendorController extends Controller
             $getUserDetails->decoded_asset_types = [];
         }
 
-        $getOrder = Procurement::where('status', '!=', 0)->with(['users', 'role', 'company', 'asset_types', 'brands', 'items'])->paginate(5);
+        $getOrder = Procurement::where('status', 1)->where('status', '!=', 4)->with(['users', 'role', 'company', 'asset_types', 'brands', 'items'])->paginate(5);
+
         // $getOrders = collect();
         // foreach ($procurementOrder as $procurement) {
         //     foreach ($procurement->items as $value) {
         //         $assetTypes = json_decode($getUserDetails->asset_type, true);
-                
+
         //         foreach ($assetTypes as $assetType) {
         //             if (in_array($value->asset_type_id, $assetType)) {
         //                 $getOrders->push($procurement->toArray());
@@ -99,7 +99,8 @@ class VendorController extends Controller
         // }
 
         // dd($getOrders);
-        $quotationOrder = Procurement::where('status', 2)->with(['quotation', 'users', 'role', 'company', 'asset_types', 'brands', 'items'])->paginate(5)->through(function ($item) {
+
+        $quotationOrder = Procurement::whereIn('status', [2, 3])->with(['quotation', 'users', 'role', 'company', 'asset_types', 'brands', 'items'])->paginate(5)->through(function ($item) {
             foreach ($item->quotation as $quotation) {
                 $item->quotation_status = $quotation->is_approved;
                 $item->deliver_status = $quotation->quotation_status;
@@ -108,9 +109,9 @@ class VendorController extends Controller
             return $item;
         });
 
-        $completeOrder = ProcurementItem::where('asset_type_id', $getUserDetails->asset_type)->with(['users', 'role', 'company', 'assetType', 'brand'])->paginate(5);
+        // $completeOrder = ProcurementItem::where('asset_type_id', $getUserDetails->asset_type)->with(['users', 'role', 'company', 'assetType', 'brand'])->paginate(5);
 
-        return view('vendor.orders', ['getUserDetails' => $getUserDetails, 'getOrder' => $getOrder, 'completeOrder' => $completeOrder, 'quotationOrder' => $quotationOrder, 'getquotestatus' => $getquotestatus]);
+        return view('vendor.orders', ['getUserDetails' => $getUserDetails, 'getOrder' => $getOrder, 'quotationOrder' => $quotationOrder, 'getquotestatus' => $getquotestatus]);
     }
 
     public function getAssetDetails($procurement_id)
@@ -139,10 +140,28 @@ class VendorController extends Controller
 
     public function setDeliver($status)
     {
+        // Update the Quotation's status
         $setDeliver = Quotation::where('procurement_id', $status)->update([
             'quotation_status' => 1,
         ]);
-        return response()->json($setDeliver);
+
+        // Update the Procurement's status
+        $setDeliverProcurement = Procurement::where('id', $status)->update([
+            'status' => 3,
+        ]);
+
+        // Check if both updates were successful
+        if ($setDeliver && $setDeliverProcurement) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Delivery status updated successfully.',
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to update delivery status.',
+            ], 500);
+        }
     }
 
     public function checkBillData($id)

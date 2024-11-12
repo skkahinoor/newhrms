@@ -30,18 +30,19 @@
         $changeStatusValue = [
             0 => 'Pending',
             1 => 'Active',
-            2 => 'In Process',
+            2 => 'Quotation Submited',
             3 => 'Delivered',
             4 => 'Pause',
         ];
         ?>
 
+        {{-- Active orders  --}}
         <div class="row">
             <div class="col-12">
                 <div class="card my-4">
                     <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                         <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
-                            <h6 class="text-white text-capitalize ps-3">Active Orders</h6>
+                            <h6 class="text-white text-capitalize ps-3">Orders</h6>
                         </div>
                     </div>
                     <div class="card-body px-0 pb-2">
@@ -119,10 +120,20 @@
                                                         class="text-secondary text-xs font-weight-bold">{{ $order->delivery_date ?? 'N/A' }}</span>
                                                 </td>
                                                 <td class="align-middle text-center text-sm">
-                                                    <span class="badge badge-sm btn-{{ $changeColor[$order->status] }}"
-                                                        style="color: {{ $changeTextColor[$order->status] }};">{{ $changeStatusValue[$order->status] ?? 'null' }}</span>
+                                                    @if ($order->quotation_status === 1)
+                                                        <span class="badge badge-sm btn-success"
+                                                            style="color: #fff;">Quotation Approved</span>
+                                                    @else
+                                                        <span
+                                                            class="badge badge-sm btn-{{ $changeColor[$order->status] ?? 'secondary' }}"
+                                                            style="color: {{ $changeTextColor[$order->status] ?? '#fff' }};">
+                                                            {{ $changeStatusValue[$order->status] ?? 'Unknown Status' }}
+                                                        </span>
+                                                    @endif
+
                                                 </td>
-                                                <td class="align-middle text-center">
+                                                <td class="align-middle text-center" id="checkQuotations"
+                                                    data-proqID="{{ $order->id }}">
                                                     <a href="javascript:void(0);"
                                                         class="text-light p-2 btn-info font-weight-bold text-xs make-quotation-btn"
                                                         style="border-radius: 7px;" data-id="{{ $order->id }}"
@@ -143,6 +154,7 @@
                 </div>
             </div>
         </div>
+
         <div class="row">
             <div class="col-12">
                 <div class="card my-4">
@@ -291,115 +303,8 @@
             </div>
         </div>
 
-        {{-- Table for Complete ORder  --}}
-        <div class="row">
-            <div class="col-12">
-                <div class="card my-4">
-                    <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-                        <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
-                            <h6 class="text-white text-capitalize ps-3">Completed Orders</h6>
-                        </div>
-                    </div>
-                    <div class="card-body px-0 pb-2">
-                        @if ($completeOrder->isEmpty())
-                            <br>
-                            <p class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">No
-                                Complete
-                                Orders found ...</p>
-                        @else
-                            <div class="table-responsive p-0">
-                                <table class="table align-items-center mb-0">
-                                    <thead>
-                                        <tr>
-                                            <th
-                                                class="text-uppercase text-center text-secondary text-xxs font-weight-bolder opacity-7">
-                                                #</th>
-                                            <th
-                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                Order Number</th>
-                                            <th
-                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                Requirement</th>
-                                            <th
-                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                Quantity</th>
-                                            <th
-                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                Brand</th>
-                                            <th
-                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                Requested Date</th>
-                                            <th
-                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                Delivery Date</th>
-                                            <th
-                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                Status</th>
 
-                                            <th
-                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($completeOrder as $key => $corder)
-                                            <tr>
-                                                <td class="align-middle text-center">
-                                                    <span
-                                                        class="text-secondary text-xs font-weight-bold">{{ $completeOrder->firstItem() + $key }}</span>
-                                                </td>
 
-                                                <td class="align-middle text-center">
-                                                    <span
-                                                        class="text-secondary text-xs font-weight-bold">{{ $corder->procurement_number ?? 'N/A' }}</span>
-                                                </td>
-                                                <td class="align-middle text-center">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="1.4rem"
-                                                        height="1.4rem" viewBox="0 0 24 24">
-                                                        <path fill="none" stroke="#ff3366" stroke-width="2"
-                                                            d="M12 21c-5 0-11-5-11-9s6-9 11-9s11 5 11 9s-6 9-11 9Zm0-14a5 5 0 1 0 0 10a5 5 0 0 0 0-10Z">
-                                                        </path>
-                                                    </svg>
-                                                </td>
-                                                <td class="align-middle text-center">
-                                                    <span
-                                                        class="text-secondary text-xs font-weight-bold">{{ $corder->quantity ?? 'N/A' }}&nbsp;Pcs</span>
-                                                </td>
-                                                <td class="align-middle text-center">
-                                                    <span
-                                                        class="text-secondary text-xs font-weight-bold">{{ $corder->brands->name ?? 'N/A' }}</span>
-                                                </td>
-                                                <td class="align-middle text-center">
-                                                    <span
-                                                        class="text-secondary text-xs font-weight-bold">{{ $corder->request_date ?? 'N/A' }}</span>
-                                                </td>
-                                                <td class="align-middle text-center">
-                                                    <span
-                                                        class="text-secondary text-xs font-weight-bold">{{ $corder->delivery_date ?? 'N/A' }}</span>
-                                                </td>
-                                                <td class="align-middle text-center text-sm">
-                                                    <span
-                                                        class="badge badge-sm bg-gradient-success">{{ $corder->status == 3 ? 'Delivered' : 'Error' }}</span>
-                                                </td>
-
-                                                <td class="align-middle text-center">
-                                                    <a href="javascript:;" class="text-secondary font-weight-bold text-xs"
-                                                        data-toggle="tooltip" data-original-title="Edit user">
-                                                        View Quotation
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                            <br>
-                            <div class="row">{{ $completeOrder->links() }}</div>
-                        @endif
-                    </div>
-                </div>
-            </div>
-        </div>
 
 
         {{-- All Modals are here  --}}
@@ -571,7 +476,6 @@
             </div>
         </div>
 
-        {{-- Modal for Generate Bill  --}}
         {{-- Modal for Generate Bill --}}
         <div class="modal fade" id="generate-bill" tabindex="-1" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
@@ -582,15 +486,30 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form id="uploadBillForm" enctype="multipart/form-data">
-                            @csrf
-                            <div class="mb-3">
-                                <label for="billFile" class="form-label">Select PDF File</label>
-                                <input type="file" class="form-control" id="billFile" name="billFile"
-                                    accept="application/pdf" required>
+                        <div class="row py-4">
+                            <div class="col-lg-6 mx-auto">
+                                <form id="uploadBillForm" enctype="multipart/form-data">
+                                    @csrf
+                                    <!-- Upload image input-->
+                                    <div class="input-group mb-3 px-2 py-2 rounded-pill bg-white shadow-sm">
+                                        <input id="billFile" type="file" name="billFile" onchange="readURL(this);"
+                                            class="form-control border-0" accept="application/pdf" required>
+
+                                        <div class="input-group-append">
+                                            <label for="upload" class="btn btn-light m-0 rounded-pill px-4"> <i
+                                                    class="fa fa-cloud-upload mr-2 text-muted"></i><small
+                                                    class="text-uppercase font-weight-bold text-muted">Choose
+                                                    file</small></label>
+                                        </div>
+                                    </div>
+
+                                    <!-- Uploaded image area-->
+                                    <div class="image-area mt-4"><img id="imageResult" src="#" alt=""
+                                            class="img-fluid rounded shadow-sm mx-auto d-block"></div>
+                                </form>
                             </div>
-                            <div id="fileName" class="text-secondary mt-2"></div> <!-- Display file name -->
-                        </form>
+                        </div>
+                        
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -616,6 +535,38 @@
                     // If 'No' is checked, show the Final Delivery Date section
                     deliveryDateSection.style.display = 'block';
                 }
+            }
+
+            function readURL(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function(e) {
+                        $('#imageResult')
+                            .attr('src', e.target.result);
+                    };
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+
+            $(function() {
+                $('#upload').on('change', function() {
+                    readURL(input);
+                });
+            });
+
+            /*  ==========================================
+                SHOW UPLOADED IMAGE NAME
+            * ========================================== */
+            var input = document.getElementById('upload');
+            var infoArea = document.getElementById('upload-label');
+
+            input.addEventListener('change', showFileName);
+
+            function showFileName(event) {
+                var input = event.srcElement;
+                var fileName = input.files[0].name;
+                infoArea.textContent = 'File name: ' + fileName;
             }
         </script>
 

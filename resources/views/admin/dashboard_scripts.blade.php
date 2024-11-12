@@ -30,24 +30,24 @@
             let sec_rotation = 6 * sec; // 6 degrees per second
 
             // Debug log to confirm the function is being called
-            // console.log('Clock is updating');
+            console.log('Clock is updating');
 
             // Rotate clock hands
-            document.getElementById('hour').style.transform = `rotate(${hr_rotation}deg)`;
-            document.getElementById('minute').style.transform = `rotate(${min_rotation}deg)`;
-            document.getElementById('second').style.transform = `rotate(${sec_rotation}deg)`;
+            document.getElementById('hour1').style.transform = `rotate(${hr_rotation}deg)`;
+            document.getElementById('minute1').style.transform = `rotate(${min_rotation}deg)`;
+            document.getElementById('second1').style.transform = `rotate(${sec_rotation}deg)`;
 
             // Display weekday and date
             const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
             const weekday = weekdays[now.getDay()];
             const date = now.toLocaleDateString();
-            document.getElementById('date').innerText = `${weekday}, ${date}`;
+            document.getElementById('dated').innerText = `${weekday}, ${date}`;
         }
 
         // Run clock every second
         setInterval(drawClock, 1000);
 
-       
+
 
 
         let tasksChart = new Chart(document.getElementById("tasksChart"), {

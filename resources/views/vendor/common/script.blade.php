@@ -127,6 +127,11 @@
 
         // Make quotation code
         $(document).ready(function() {
+            // const rootProID = $(this).data('proqID');
+            // console.log("Root Pro ID is: ",rootProID);
+
+
+
             $(document).on('click', '.make-quotation-btn', function() {
                 const orderId = $(this).data('id');
                 console.log("Procurement ID is:", orderId);
@@ -317,24 +322,34 @@
                             });
 
                             // Check deliver status
-                            const deliveryStatus = response[0].quotation_status ||
-                                'Unknown';
+                            // Check deliver status
+                            const deliveryStatus = response[0]?.quotation_status ??
+                                null;
+
+                            const approveStatus = response[0]?.is_approved ??
+                                null;
 
                             const deliverydiv = $('#setdeliverybutton');
                             deliverydiv.empty();
+
+                            let givdata = `
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+`;
+
                             if (deliveryStatus === 1) {
-                                const givdata = `
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" id="set-deliver" class="btn btn-success" disabled>Already Delivered</button>
-                                    `;
-                                deliverydiv.append(givdata);
+                                // Already delivered
+                                givdata +=
+                                    `<button type="button" id="set-deliver" class="btn btn-success" disabled>Already Delivered</button>`;
+                            } else if (approveStatus === 0) {
+                                // Pending delivery (no "Set to Deliver" button added here intentionally)
                             } else {
-                                const givdata = `
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" id="set-deliver" class="btn btn-success">Set To Deliver</button>
-                                    `;
-                                deliverydiv.append(givdata);
+                                // Unknown status or not delivered yet, so allow setting to deliver
+                                givdata +=
+                                    `<button type="button" id="set-deliver" class="btn btn-success">Set To Deliver</button>`;
                             }
+
+                            deliverydiv.append(givdata);
+
 
                             // Set to deliver the order
                             $(document).on('click', '#set-deliver', function() {
@@ -439,10 +454,9 @@
                             console.log(response);
                             if (response.success) {
                                 Swal.fire('Success!', 'Bill uploaded successfully.',
-                                    'success').then(function() {
-                                    location.load();
-                                });
+                                    'success');
                                 $('#generate-bill').modal('hide');
+                                location.reload();
                             } else {
                                 Swal.fire('Error!', response.message, 'error');
                             }

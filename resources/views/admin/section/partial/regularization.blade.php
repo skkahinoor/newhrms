@@ -5,9 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         /* Modal styles */
         .modal {
@@ -52,12 +53,13 @@
             cursor: pointer;
         }
 
-        /* h2 {
+        h2 {
             margin: 0;
             padding: 10px;
             text-align: center;
             color: #333;
-        } */
+        }
+
         .modal-heading {
             display: flex;
             justify-content: center;
@@ -87,7 +89,7 @@
         }
 
         #clockContainer {
-            background: url(http://127.0.0.1:8000/assets/images/clock.jpg) no-repeat;
+            background: url({{ asset('assets/images/clock.jpg') }});
             background-size: cover;
         }
     </style>
@@ -104,7 +106,7 @@
     <div id="myModal" class="modal">
 
         <!-- Modal content -->
-        <!-- <div class="modal-content"> -->
+
         <div class="col-xxl-3 col-xl-4 d-flex m-auto">
             <div class="card w-100">
                 <div class="modal-heading">
@@ -122,35 +124,81 @@
                     <p id="date" class="text-primary fw-bolder mb-3"></p>
 
 
-                    <div class="check-text  align-items-center justify-content-around">
-                        <span> Date:- <input type="date" name="date" id="get_date" onchange="checkAttendance(`{{ route('admin.ajaxRegularizationModal') }}`)"></span>
-
+                    <div class="row text-center">
+                        <div class="col-md-12">
+                            <label class="h6"> Date </label>
+                            <input type="date" class="form-control text-center" name="date" id="get_date"
+                                onchange="checkAttendance(`{{ route('admin.ajaxRegularizationModal') }}`)">
+                        </div>
                         <div class="form-container">
-                            <div class="form-group">
-                                <label for="checkin">Check In At</label>
-                                <input type="time" name="checkin" id="checkin_time">
+                            <br>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="checkin">Check In At</label>
+                                    <input type="time" class="form-control" name="checkin" id="checkin_time">
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label for="checkout">Check Out At</label>
-                                <input type="time" name="checkout" id="checkout_time">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="checkout">Check Out At</label>
+                                    <input type="time" class="form-control" name="checkout" id="checkout_time">
+                                </div>
                             </div>
                         </div>
-                        <span><textarea required name="reason" id="late_reason" cols="29" rows="3"></textarea></span>
+
+                        <div class="col-md-12">
+                            <br>
+                            <label class="h6"> Reason </label>
+                            <textarea required name="reason" class="form-control text-center" id="late_reason" cols="10" rows="3" placeholder="Enter the reason"></textarea>
+                        </div>
                     </div>
-                    <div class="punch-btn mt-2 mb-2 d-flex align-items-center justify-content-around">
-                        <button class="btn btn-lg btn-danger {{ ''}}" onclick="regularization(`{{ route('admin.createAjaxRegularization') }}`)" id="addRegularization" data-audio="{{asset('assets/audio/beep.mp3')}}">
+                    <div class="punch-btn mt-2 mb-2 d-flex align-items-center modal-footer justify-content-around">
+                        <button class="btn btn-lg btn-danger {{ '' }}"
+                            onclick="regularization(`{{ route('admin.createAjaxRegularization') }}`)"
+                            id="addRegularization" data-audio="{{ asset('assets/audio/beep.mp3') }}">
                             Regularize
                         </button>
                     </div>
-
                 </div>
             </div>
         </div>
-        <!-- </div> -->
+
 
     </div>
 
     <script>
+        $('document').ready(function() {
+            function drawClock() {
+                console.log("check it");
+                let now = new Date();
+                let hr = now.getHours();
+                let min = now.getMinutes();
+                let sec = now.getSeconds();
+                let hr_rotation = 30 * hr + min / 2; // 30 degrees per hour, 0.5 degrees per minute
+                let min_rotation = 6 * min; // 6 degrees per minute
+                let sec_rotation = 6 * sec; // 6 degrees per second
+
+                // Debug log to confirm the function is being called
+                console.log('Clock is updating');
+
+                // Rotate clock hands
+                document.getElementById('hour').style.transform = `rotate(${hr_rotation}deg)`;
+                document.getElementById('minute').style.transform = `rotate(${min_rotation}deg)`;
+                document.getElementById('second').style.transform = `rotate(${sec_rotation}deg)`;
+
+                // Display weekday and date
+                const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+                const weekday = weekdays[now.getDay()];
+                const date = now.toLocaleDateString();
+                document.getElementById('date').innerText = `${weekday}, ${date}`;
+            }
+
+            // Run clock every second
+            setInterval(drawClock, 1000);
+
+        });
+
+
         function checkAttendance(url) {
             let choose_date = document.getElementById('get_date').value
             console.log(choose_date);
