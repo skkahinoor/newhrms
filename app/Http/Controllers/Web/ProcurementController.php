@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\DataTables\ProcurementDataTable;
 use App\Exports\AssetAssignmentListExport;
 use App\Http\Controllers\Controller;
 use App\Models\Asset;
@@ -39,61 +40,63 @@ class ProcurementController extends Controller
         private BrandRepository $brandRepo
 
     ) {}
-    public function index(Request $request)
+    public function index(Request $request,ProcurementDataTable $table)
     {
         $this->authorize('view_procurement');
         try {
-            $getUser = Auth::user();
-            $getUserId = $getUser->id;
-            // dd($getUserId);
-            $getProcurement = Procurement::all();
-            $filterParameters = [
-                'procurement_number' => $request->procurement_number ?? null,
-                'user_id' => $request->user_id,
-                'email' => $request->email ?? null,
-                'asset_type_id' => $request->asset_type_id ?? null,
-                'quantity' => $request->quantity ?? null,
-                'amount' => $request->amount ?? null,
-                'request_date' => $request->request_date ?? null,
-                'delivery_date' => $request->delivery_date ?? null,
-                'brand_id' => $request->asset_type_id ?? null,
-                'download_excel' => $request->download_excel ?? null,
-            ];
-            if (auth()->user()->role_id == $getUser->id) { // is Admin
-                $isAdmin = true;
-                // dd($getUser->id);
-                $isUser = false;
-                // $getRollId = $getUser->role_id;
-                // dd($getRollId);
-                // $rolesname = Role::whereIn('id', $getRollId)->pluck('slug');
-                $select = ['*'];
-                $with = ['users', 'asset_types', 'brands'];
-                $where = ['user_id', $getUser->id];
-                $assetType = $this->assetTypeService->getAllAssetTypes(['id', 'name']);
-                $brands = $this->brandRepo->getBrandlist(['id', 'name']);
-                // $requests = $this->procurementRepo->getAllRequests($filterParameters, $select, $with);
-                $query = Procurement::with('users', 'asset_types', 'brands');
-                $requests = $query->paginate(5);
+            // $getUser = Auth::user();
+            // $getUserId = $getUser->id;
+            // $role = Role::where('slug','admin')->value('id');
+            // // dd($getUserId);
+            // $getProcurement = Procurement::all();
+            // $filterParameters = [
+            //     'procurement_number' => $request->procurement_number ?? null,
+            //     'user_id' => $request->user_id,
+            //     'email' => $request->email ?? null,
+            //     'asset_type_id' => $request->asset_type_id ?? null,
+            //     'quantity' => $request->quantity ?? null,
+            //     'amount' => $request->amount ?? null,
+            //     'request_date' => $request->request_date ?? null,
+            //     'delivery_date' => $request->delivery_date ?? null,
+            //     'brand_id' => $request->asset_type_id ?? null,
+            //     'download_excel' => $request->download_excel ?? null,
+            // ];
+            // if (auth()->user()->role_id == $role) { // is Admin
+            //     $isAdmin = true;
+            //     // dd($getUser->id);
+            //     $isUser = false;
+            //     // $getRollId = $getUser->role_id;
+            //     // dd($getRollId);
+            //     // $rolesname = Role::whereIn('id', $getRollId)->pluck('slug');
+            //     $select = ['*'];
+            //     $with = ['users', 'asset_types', 'brands'];
+            //     $where = ['user_id', $getUser->id];
+            //     $assetType = $this->assetTypeService->getAllAssetTypes(['id', 'name']);
+            //     $brands = $this->brandRepo->getBrandlist(['id', 'name']);
+            //     // $requests = $this->procurementRepo->getAllRequests($filterParameters, $select, $with);
+            //     $query = Procurement::with('users', 'asset_types', 'brands');
+            //     $requests = $query->paginate(5);
 
-                if ($filterParameters['download_excel']) {
-                    unset($filterParameters['download_excel']);
-                    return Excel::download(new AssetAssignmentListExport($filterParameters), 'Asset-assignment-report.xlsx');
-                }
-            } else { // For other users
-                $isAdmin = false;
-                // dd($getUser->id);
-                $isUser = true;
-                $otheruser = User::where('id', $getUser->id)->first();
-                $select = ['*'];
-                $with = ['users', 'asset_types', 'brands'];
-                $assetType = $this->assetTypeService->getAllAssetTypes(['id', 'name']);
-                $brands = $this->brandRepo->getBrandlist(['id', 'name']);
-                // $requests = $this->procurementRepo->getAllRequests($filterParameters, $select, $where, $with);
-                $query = Procurement::where('user_id', $getUser->id)->with('users', 'asset_types', 'brands');
-                $requests = $query->paginate(5);
-            }
+            //     if ($filterParameters['download_excel']) {
+            //         unset($filterParameters['download_excel']);
+            //         return Excel::download(new AssetAssignmentListExport($filterParameters), 'Asset-assignment-report.xlsx');
+            //     }
+            // } else { // For other users
+            //     $isAdmin = false;
+            //     // dd($getUser->id);
+            //     $isUser = true;
+            //     $otheruser = User::where('id', $getUser->id)->first();
+            //     $select = ['*'];
+            //     $with = ['users', 'asset_types', 'brands'];
+            //     $assetType = $this->assetTypeService->getAllAssetTypes(['id', 'name']);
+            //     $brands = $this->brandRepo->getBrandlist(['id', 'name']);
+            //     // $requests = $this->procurementRepo->getAllRequests($filterParameters, $select, $where, $with);
+            //     $query = Procurement::where('user_id', $getUser->id)->with('users', 'asset_types', 'brands');
+            //     $requests = $query->paginate(5);
+            // }
 
-            return view($this->view . 'index', compact('requests', 'assetType', 'filterParameters', 'brands', 'getProcurement', 'isAdmin', 'isUser', 'getUserId'));
+            // return view($this->view . 'index', compact('requests', 'assetType', 'filterParameters', 'brands', 'getProcurement', 'isAdmin', 'isUser', 'getUserId'));
+            return $table->render('admin.procurement.index');
         } catch (\Exception $exception) {
             return redirect()->back()->with('danger', $exception->getMessage());
         }

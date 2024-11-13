@@ -183,6 +183,7 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
         MilanTarami\NumberToWordsConverter\NumberToWordsServiceProvider::class,
+        Yajra\DataTables\DataTablesServiceProvider::class,
         /*
          * Package Service Providers...
          */
@@ -215,6 +216,7 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
+        'DataTables' => Yajra\DataTables\Facades\DataTables::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'Image' => 'Intervention\Image\Facades\Image',
         'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class,
