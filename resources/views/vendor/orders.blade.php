@@ -251,7 +251,6 @@
                                                             {{ $changeStatusValue[$qorder->status] ?? 'Unknown Status' }}
                                                         </span>
                                                     @endif
-
                                                 </td>
 
                                                 <td class="align-middle text-center">

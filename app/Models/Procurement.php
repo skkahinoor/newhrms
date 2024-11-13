@@ -58,5 +58,10 @@ class Procurement extends Model
         return $this->hasMany(Quotation::class);
     }
 
+    public function totalprice()
+    {
+        return $this->hasMany(Quotation::class);
+    }
+
     
 }

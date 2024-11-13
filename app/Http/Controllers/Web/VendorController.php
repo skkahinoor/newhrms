@@ -28,7 +28,26 @@ class VendorController extends Controller
             $getUserDetails->decoded_asset_types = [];
         }
 
-        return view('vendor.dashboard', ['getUserDetails' => $getUserDetails]);
+        // Display Complete Orders
+        $totalRow = Procurement::count();
+        $completeOrders = Procurement::where('status', 3)->with(['items', 'users', 'role', 'company', 'asset_types', 'brands', 'totalprice'])->paginate(5)
+        ->through(function ($prices) {
+                // dd($price->totalprice);
+                foreach($prices->totalprice as $price) {
+                    // dd($price->total_item_price);
+                    $prices->total_item_price = $price->total_item_price;
+                    $prices->bill_file = $price->bill_file;
+                }
+                unset($prices->totalprice);
+                return $prices;
+            })
+        ;
+
+        $calculateAmount = Quotation::where('procurement_id', $getUserDetails->id)->where('quotation_status', 1)->sum('total_item_price');
+// dd($calculateAmount);
+        // dd($completeOrders->toArray());
+
+        return view('vendor.dashboard', ['getUserDetails' => $getUserDetails, 'completeOrders' => $completeOrders, 'totalRow' => $totalRow, 'calculateAmount' => $calculateAmount]);
     }
 
     public function profile()

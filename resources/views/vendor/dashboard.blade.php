@@ -4,6 +4,33 @@
 @section('breadcrumbtitle', 'Vendor Dashboard')
 {{-- @section('navactivecolor', 'active bg-gradient-primary') --}}
 @section('main-content')
+
+    <?php
+    $changeColor = [
+        0 => 'warning',
+        1 => 'primary',
+        2 => 'info',
+        3 => 'success',
+        4 => 'danger',
+    
+        // null => 'danger'
+    ];
+    $changeTextColor = [
+        0 => '#000000',
+        1 => '#ffffff',
+        2 => '#ffffff',
+        3 => '#ffffff',
+        4 => '#ffffff',
+    ];
+    $changeStatusValue = [
+        0 => 'Pending',
+        1 => 'Active',
+        2 => 'Quotation Submited',
+        3 => 'Delivered',
+        4 => 'Pause',
+    ];
+    ?>
+
     <div class="container-fluid py-4">
         <div class="row">
             <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
@@ -15,7 +42,7 @@
                         </div>
                         <div class="text-end pt-1">
                             <p class="text-sm mb-0 text-capitalize">Today's Money</p>
-                            <h4 class="mb-0">$53k</h4>
+                            <h4 class="mb-0">₹53k</h4>
                         </div>
                     </div>
                     <hr class="dark horizontal my-0">
@@ -71,8 +98,8 @@
                             <i class="material-icons opacity-10">weekend</i>
                         </div>
                         <div class="text-end pt-1">
-                            <p class="text-sm mb-0 text-capitalize">Sales</p>
-                            <h4 class="mb-0">$103,430</h4>
+                            <p class="text-sm mb-0 text-capitalize">Total Sales</p>
+                            <h4 class="mb-0">₹{{ $calculateAmount }}</h4>
                         </div>
                     </div>
                     <hr class="dark horizontal my-0">
@@ -152,10 +179,10 @@
                     <div class="card-header pb-0">
                         <div class="row">
                             <div class="col-lg-6 col-7">
-                                <h6>Projects</h6>
+                                <h6>Complete Orders</h6>
                                 <p class="text-sm mb-0">
                                     <i class="fa fa-check text-info" aria-hidden="true"></i>
-                                    <span class="font-weight-bold ms-1">30 done</span> this month
+                                    <span class="font-weight-bold ms-1">{{ $totalRow }}</span> Orders Completed
                                 </p>
                             </div>
                             <div class="col-lg-6 col-5 my-auto text-end">
@@ -165,324 +192,101 @@
                                         <i class="fa fa-ellipsis-v text-secondary"></i>
                                     </a>
                                     <ul class="dropdown-menu px-2 py-3 ms-sm-n4 ms-n5" aria-labelledby="dropdownTable">
-                                        <li><a class="dropdown-item border-radius-md" href="javascript:;">Action</a>
+                                        <li><a class="dropdown-item border-radius-md"
+                                                href="{{ route('vendor.orders') }}">View All
+                                                Orders</a>
                                         </li>
-                                        <li><a class="dropdown-item border-radius-md" href="javascript:;">Another
-                                                action</a></li>
-                                        <li><a class="dropdown-item border-radius-md" href="javascript:;">Something
-                                                else here</a></li>
                                     </ul>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="card-body px-0 pb-2">
-                        <div class="table-responsive">
-                            <table class="table align-items-center mb-0">
-                                <thead>
-                                    <tr>
-                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                            Companies</th>
-                                        <th
-                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                            Members</th>
-                                        <th
-                                            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                            Budget</th>
-                                        <th
-                                            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                            Completion</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex px-2 py-1">
-                                                <div>
-                                                    <img src="{{ asset('assets/vendor/img/small-logos/logo-xd.svg') }}"
-                                                        class="avatar avatar-sm me-3" alt="xd">
-                                                </div>
-                                                <div class="d-flex flex-column justify-content-center">
-                                                    <h6 class="mb-0 text-sm">Material XD Version</h6>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="avatar-group mt-2">
-                                                <a href="javascript:;" class="avatar avatar-xs rounded-circle"
-                                                    data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                                    title="Ryan Tompson">
-                                                    <img src="{{ asset('assets/vendor/img/team-1.jpg') }}" alt="team1">
-                                                </a>
-                                                <a href="javascript:;" class="avatar avatar-xs rounded-circle"
-                                                    data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                                    title="Romina Hadid">
-                                                    <img src="{{ asset('assets/vendor/img/team-2.jpg') }}" alt="team2">
-                                                </a>
-                                                <a href="javascript:;" class="avatar avatar-xs rounded-circle"
-                                                    data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                                    title="Alexander Smith">
-                                                    <img src="{{ asset('assets/vendor/img/team-3.jpg') }}" alt="team3">
-                                                </a>
-                                                <a href="javascript:;" class="avatar avatar-xs rounded-circle"
-                                                    data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                                    title="Jessica Doe">
-                                                    <img src="{{ asset('assets/vendor/img/team-4.jpg') }}" alt="team4">
-                                                </a>
-                                            </div>
-                                        </td>
-                                        <td class="align-middle text-center text-sm">
-                                            <span class="text-xs font-weight-bold"> $14,000 </span>
-                                        </td>
-                                        <td class="align-middle">
-                                            <div class="progress-wrapper w-75 mx-auto">
-                                                <div class="progress-info">
-                                                    <div class="progress-percentage">
-                                                        <span class="text-xs font-weight-bold">60%</span>
+                        @if ($completeOrders->isEmpty())
+                            <p class="align-middle text-center font-weight-bolder opacity-7 text-secondary">
+                                No Complete Orders here
+                            </p>
+                        @else
+                            <div class="table-responsive">
+                                <table class="table align-items-center mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th
+                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Order No.</th>
+                                            <th
+                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                                Total Price</th>
+                                            <th
+                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Bill</th>
+                                            <th
+                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($completeOrders as $cOrders)
+                                            <tr>
+                                                <td>
+                                                    <div class="d-flex px-2 py-1" style="cursor: pointer;">
+                                                        <div>
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="1.2rem"
+                                                                height="1.2rem" viewBox="0 0 48 48">
+                                                                <title>Order Number {{ $cOrders->procurement_number ?? 'null'}}</title>
+                                                                <g fill="none" stroke-linejoin="round"
+                                                                    stroke-width="4">
+                                                                    <rect width="30" height="36" x="9" y="8"
+                                                                        fill="#2f88ff" stroke="#4c4c4c" rx="2" />
+                                                                    <path stroke="#000" stroke-linecap="round"
+                                                                        d="M18 4V10" />
+                                                                    <path stroke="#000" stroke-linecap="round"
+                                                                        d="M30 4V10" />
+                                                                    <path stroke="#fff" stroke-linecap="round"
+                                                                        d="M16 19L32 19" />
+                                                                    <path stroke="#fff" stroke-linecap="round"
+                                                                        d="M16 27L28 27" />
+                                                                    <path stroke="#fff" stroke-linecap="round"
+                                                                        d="M16 35H24" />
+                                                                </g>
+                                                            </svg>
+                                                        </div>
+                                                        <div class="d-flex flex-column justify-content-center">
+                                                            <h6 class="mb-0 text-sm text-secondary" id="copyOrder" data-procopy="{{ $cOrders->procurement_number}}" title="Click to copy">
+                                                                &nbsp;{{ $cOrders->procurement_number ?? 'Not Set' }}</h6>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="progress">
-                                                    <div class="progress-bar bg-gradient-info w-60" role="progressbar"
-                                                        aria-valuenow="60" aria-valuemin="0" aria-valuemax="100">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex px-2 py-1">
-                                                <div>
-                                                    <img src="{{ asset('assets/vendor/img/small-logos/logo-atlassian.svg') }}"
-                                                        class="avatar avatar-sm me-3" alt="atlassian">
-                                                </div>
-                                                <div class="d-flex flex-column justify-content-center">
-                                                    <h6 class="mb-0 text-sm">Add Progress Track</h6>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="avatar-group mt-2">
-                                                <a href="javascript:;" class="avatar avatar-xs rounded-circle"
-                                                    data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                                    title="Romina Hadid">
-                                                    <img src="{{ asset('assets/vendor/img/team-2.jpg') }}" alt="team5">
-                                                </a>
-                                                <a href="javascript:;" class="avatar avatar-xs rounded-circle"
-                                                    data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                                    title="Jessica Doe">
-                                                    <img src="{{ asset('assets/vendor/img/team-4.jpg') }}" alt="team6">
-                                                </a>
-                                            </div>
-                                        </td>
-                                        <td class="align-middle text-center text-sm">
-                                            <span class="text-xs font-weight-bold"> $3,000 </span>
-                                        </td>
-                                        <td class="align-middle">
-                                            <div class="progress-wrapper w-75 mx-auto">
-                                                <div class="progress-info">
-                                                    <div class="progress-percentage">
-                                                        <span class="text-xs font-weight-bold">10%</span>
-                                                    </div>
-                                                </div>
-                                                <div class="progress">
-                                                    <div class="progress-bar bg-gradient-info w-10" role="progressbar"
-                                                        aria-valuenow="10" aria-valuemin="0" aria-valuemax="100">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex px-2 py-1">
-                                                <div>
-                                                    <img src="{{ asset('assets/vendor/img/small-logos/logo-slack.svg') }}"
-                                                        class="avatar avatar-sm me-3" alt="team7">
-                                                </div>
-                                                <div class="d-flex flex-column justify-content-center">
-                                                    <h6 class="mb-0 text-sm">Fix Platform Errors</h6>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="avatar-group mt-2">
-                                                <a href="javascript:;" class="avatar avatar-xs rounded-circle"
-                                                    data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                                    title="Romina Hadid">
-                                                    <img src="{{ asset('assets/vendor/img/team-3.jpg') }}" alt="team8">
-                                                </a>
-                                                <a href="javascript:;" class="avatar avatar-xs rounded-circle"
-                                                    data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                                    title="Jessica Doe">
-                                                    <img src="{{ asset('assets/vendor/img/team-1.jpg') }}"
-                                                        alt="team9">
-                                                </a>
-                                            </div>
-                                        </td>
-                                        <td class="align-middle text-center text-sm">
-                                            <span class="text-xs font-weight-bold"> Not set </span>
-                                        </td>
-                                        <td class="align-middle">
-                                            <div class="progress-wrapper w-75 mx-auto">
-                                                <div class="progress-info">
-                                                    <div class="progress-percentage">
-                                                        <span class="text-xs font-weight-bold">100%</span>
-                                                    </div>
-                                                </div>
-                                                <div class="progress">
-                                                    <div class="progress-bar bg-gradient-success w-100" role="progressbar"
-                                                        aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex px-2 py-1">
-                                                <div>
-                                                    <img src="{{ asset('assets/vendor/img/small-logos/logo-spotify.svg') }}"
-                                                        class="avatar avatar-sm me-3" alt="spotify">
-                                                </div>
-                                                <div class="d-flex flex-column justify-content-center">
-                                                    <h6 class="mb-0 text-sm">Launch our Mobile App</h6>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="avatar-group mt-2">
-                                                <a href="javascript:;" class="avatar avatar-xs rounded-circle"
-                                                    data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                                    title="Ryan Tompson">
-                                                    <img src="{{ asset('assets/vendor/img/team-4.jpg') }}"
-                                                        alt="user1">
-                                                </a>
-                                                <a href="javascript:;" class="avatar avatar-xs rounded-circle"
-                                                    data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                                    title="Romina Hadid">
-                                                    <img src="{{ asset('assets/vendor/img/team-3.jpg') }}"
-                                                        alt="user2">
-                                                </a>
-                                                <a href="javascript:;" class="avatar avatar-xs rounded-circle"
-                                                    data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                                    title="Alexander Smith">
-                                                    <img src="{{ asset('assets/vendor/img/team-4.jpg') }}"
-                                                        alt="user3">
-                                                </a>
-                                                <a href="javascript:;" class="avatar avatar-xs rounded-circle"
-                                                    data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                                    title="Jessica Doe">
-                                                    <img src="{{ asset('assets/vendor/img/team-1.jpg') }}"
-                                                        alt="user4">
-                                                </a>
-                                            </div>
-                                        </td>
-                                        <td class="align-middle text-center text-sm">
-                                            <span class="text-xs font-weight-bold"> $20,500 </span>
-                                        </td>
-                                        <td class="align-middle">
-                                            <div class="progress-wrapper w-75 mx-auto">
-                                                <div class="progress-info">
-                                                    <div class="progress-percentage">
-                                                        <span class="text-xs font-weight-bold">100%</span>
-                                                    </div>
-                                                </div>
-                                                <div class="progress">
-                                                    <div class="progress-bar bg-gradient-success w-100" role="progressbar"
-                                                        aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex px-2 py-1">
-                                                <div>
-                                                    <img src="{{ asset('assets/vendor/img/small-logos/logo-jira.svg') }}"
-                                                        class="avatar avatar-sm me-3" alt="jira">
-                                                </div>
-                                                <div class="d-flex flex-column justify-content-center">
-                                                    <h6 class="mb-0 text-sm">Add the New Pricing Page</h6>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="avatar-group mt-2">
-                                                <a href="javascript:;" class="avatar avatar-xs rounded-circle"
-                                                    data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                                    title="Ryan Tompson">
-                                                    <img src="{{ asset('assets/vendor/img/team-4.jpg') }}"
-                                                        alt="user5">
-                                                </a>
-                                            </div>
-                                        </td>
-                                        <td class="align-middle text-center text-sm">
-                                            <span class="text-xs font-weight-bold"> $500 </span>
-                                        </td>
-                                        <td class="align-middle">
-                                            <div class="progress-wrapper w-75 mx-auto">
-                                                <div class="progress-info">
-                                                    <div class="progress-percentage">
-                                                        <span class="text-xs font-weight-bold">25%</span>
-                                                    </div>
-                                                </div>
-                                                <div class="progress">
-                                                    <div class="progress-bar bg-gradient-info w-25" role="progressbar"
-                                                        aria-valuenow="25" aria-valuemin="0" aria-valuemax="25">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex px-2 py-1">
-                                                <div>
-                                                    <img src="{{ asset('assets/vendor/img/small-logos/logo-invision.svg') }}"
-                                                        class="avatar avatar-sm me-3" alt="invision">
-                                                </div>
-                                                <div class="d-flex flex-column justify-content-center">
-                                                    <h6 class="mb-0 text-sm">Redesign New Online Shop</h6>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="avatar-group mt-2">
-                                                <a href="javascript:;" class="avatar avatar-xs rounded-circle"
-                                                    data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                                    title="Ryan Tompson">
-                                                    <img src="{{ asset('assets/vendor/img/team-1.jpg') }}"
-                                                        alt="user6">
-                                                </a>
-                                                <a href="javascript:;" class="avatar avatar-xs rounded-circle"
-                                                    data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                                    title="Jessica Doe">
-                                                    <img src="{{ asset('assets/vendor/img/team-4.jpg') }}"
-                                                        alt="user7">
-                                                </a>
-                                            </div>
-                                        </td>
-                                        <td class="align-middle text-center text-sm">
-                                            <span class="text-xs font-weight-bold"> $2,000 </span>
-                                        </td>
-                                        <td class="align-middle">
-                                            <div class="progress-wrapper w-75 mx-auto">
-                                                <div class="progress-info">
-                                                    <div class="progress-percentage">
-                                                        <span class="text-xs font-weight-bold">40%</span>
-                                                    </div>
-                                                </div>
-                                                <div class="progress">
-                                                    <div class="progress-bar bg-gradient-info w-40" role="progressbar"
-                                                        aria-valuenow="40" aria-valuemin="0" aria-valuemax="40">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                                                </td>
+                                                <td class="text-start text-sm">
+                                                    <span class="text-xs font-weight-bold">₹
+                                                        {{ $cOrders->total_item_price ?? 'Not Set' }} </span>
+                                                </td>
+                                                <td class="text-center text-sm">
+                                                    <span class="text-xs font-weight-bold">
+                                                        <a class="text-secondary" href="{{ $cOrders->bill_file ? asset('assets/uploads/vendor/bill/' . $cOrders->bill_file) : 'javascript:void(0);' }}"
+                                                            {{ $cOrders->bill_file ? 'download' : '' }}>
+                                                            {{ $cOrders->bill_file ?? '' }}
+                                                        </a>
+                                                    </span>
+
+                                                </td>
+                                                <td class="text-center">
+                                                    @if ($cOrders->status === 3)
+                                                        <span
+                                                            class="badge badge-sm btn-{{ $changeColor[$cOrders->status] ?? 'secondary' }}"
+                                                            style="color: {{ $changeTextColor[$cOrders->status] ?? '#fff' }};">
+                                                            {{ $changeStatusValue[$cOrders->status] ?? 'Unknown Status' }}
+                                                        </span>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                            <br>
+                            <div class="row">{{ $completeOrders->links() }}</div>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -559,10 +363,10 @@
                 </div>
             </div>
         </div>
-        
+
         {{-- Vendor Footer here  --}}
         @include('vendor.section.vendorfooter')
-        
+
         {{-- Common Scripts code  --}}
         @include('vendor.common.script')
     </div>

@@ -12,6 +12,17 @@
             }
         });
 
+        // Dashboard module coders here
+        $(document).on('click', '#copyOrder', function() {
+            const proCopy = $(this).data('procopy');
+            navigator.clipboard.writeText(proCopy).then(function() {
+                Swal.fire('Success!', 'Order Number copied to your Clipboard!',
+                    'success');
+            }).catch(function(error) {
+                Swal.fire('Error!', 'Failed to copy Order Number: ' + error, 'error');
+            });
+        });
+
         // Event listener for opening the Edit Product modal and populating it with data
         $(document).on('click', '.editProductBtn', function() {
             function calculateModalMargin() {

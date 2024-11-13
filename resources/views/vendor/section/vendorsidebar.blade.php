@@ -17,7 +17,7 @@
     <div class="collapse navbar-collapse  w-auto  max-height-vh-100" id="sidenav-collapse-main">
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link text-white active bg-gradient-primary" href="{{ route('vendor.dashboard') }}">
+                <a class="nav-link text-white {{ request()->routeIs('vendor.dashboard')  ? 'active bg-gradient-primary' : '' }}" href="{{ route('vendor.dashboard') }}">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="0 0 24 24">
                             <path fill="currentColor" d="M5 5h4v6H5zm10 8h4v6h-4zM5 17h4v2H5zM15 5h4v2h-4z"
@@ -30,7 +30,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white " href="{{ route('vendor.orders') }}">
+                <a class="nav-link text-white {{ request()->routeIs('vendor.orders')  ? 'active bg-gradient-primary' : '' }}" href="{{ route('vendor.orders') }}">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="0 0 16 16">
                             <path fill="none" stroke="currentColor" stroke-linejoin="round"
@@ -41,7 +41,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white " href="{{ route('vendor.billing') }}">
+                <a class="nav-link text-white {{ request()->routeIs('vendor.billing')  ? 'active bg-gradient-primary' : '' }}" href="{{ route('vendor.billing') }}">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="0 0 24 24">
                             <path fill="currentColor"
@@ -58,7 +58,7 @@
                 </h6>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white " href="{{ route('vendor.profile') }}">
+                <a class="nav-link text-white {{ request()->routeIs('vendor.profile')  ? 'active bg-gradient-primary' : '' }}" href="{{ route('vendor.profile') }}">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="0 0 24 24">
                             <g fill="none">
