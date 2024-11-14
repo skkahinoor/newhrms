@@ -41,20 +41,21 @@ class ProcurementDataTable extends DataTable
     {
         return datatables()
             ->eloquent($query)
+            ->addIndexColumn()
             ->editColumn('user_id', function ($procurement) {
-                return $procurement->users->name;
+                return $procurement->users->name ?? 'N/A';
             })
             ->editColumn('request_date', function ($procurement) {
-                return $procurement->request_date ? date('d-m-Y',strtotime($procurement->request_date))  : 'Not Set';
+                return $procurement->request_date ? date('d-m-Y', strtotime($procurement->request_date)) : 'Not Set';
             })
             ->editColumn('delivery_date', function ($procurement) {
-                return $procurement->delivery_date ?  date('d-m-Y',strtotime($procurement->delivery_date)) : 'Not Set';
+                return $procurement->delivery_date ? date('d-m-Y', strtotime($procurement->delivery_date)) : 'Not Set';
             })->addColumn('action', function ($procurement) {
             $role = Role::where('slug', 'admin')->value('id');
             $isAdmin = auth()->user()->role_id == $role ? true : false;
             $id = $procurement->id;
             $status = $procurement->status;
-            return view('admin.procurement.common.action',compact('isAdmin','id','status'));
+            return view('admin.procurement.common.action', compact('isAdmin', 'id', 'status'));
         });
     }
 
@@ -63,16 +64,26 @@ class ProcurementDataTable extends DataTable
     {
         return $this->builder()
             ->columns([
-                Column::make('procurement_number'),
-                Column::make('users.name')->title('Name'),
-                Column::make('request_date'),
-                Column::make('delivery_date'),
-                Column::computed('action')->exportable(false)->printable(false)->width(100)->addClass('text-center'),
+                Column::computed('DT_RowIndex')->title('#')->searchable(false)->orderable(false)->addClass('text-center'),
+                Column::make('procurement_number')->addClass('text-center'),
+                Column::make('users.name')->title('Name')->addClass('text-center'),
+                Column::make('request_date')->addClass('text-center'),
+                Column::make('delivery_date')->addClass('text-center'),
+                Column::make('status')->addClass('text-center'),
+                Column::computed('action')->exportable(true)->printable(false)->width(100)->addClass('text-center'),
             ])
             ->minifiedAjax()
+            ->dom('Bfrtip')
+            ->buttons(
+                'copy', 'csv', 'excel', 'pdf', 'print'
+            )
             ->parameters([
-                'dom' => 'Bfrtip',
-                'buttons' => ['excel', 'csv', 'pdf'],
+                'lengthMenu' => [10, 25, 50, 100],
+                'pageLength' => 10,
+                'language' => [
+                    'lengthMenu' => 'Show _MENU_ entries',
+                    'info' => 'Showing _START_ to _END_ of _TOTAL_ entries',
+                ],
             ]);
     }
 
@@ -80,18 +91,18 @@ class ProcurementDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-            //     Column::computed('action')
-            //         ->exportable(false)
-            //         ->printable(false)
-            //         ->width(60)
-            //         ->addClass('text-center'),
             Column::make('id'),
             Column::make('procurement_number'),
             Column::make('user_id'),
             Column::make('email'),
             Column::make('request_date'),
             Column::make('delivery_date'),
-            Column::computed('action'),
+            Column::make('status'),
+            Column::computed('action')
+                ->exportable(false)
+                ->printable(false)
+                ->width(100)
+                ->addClass('text-center'),
         ];
     }
 

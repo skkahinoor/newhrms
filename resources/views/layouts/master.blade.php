@@ -15,6 +15,9 @@
 
     @include('admin.section.head_links')
     <link href="{{ asset('assets/css/datatable.css') }}" rel="stylesheet">
+    {{-- <link href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" rel="stylesheet"> --}}
+    {{-- <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css"> --}}
+
 
     @yield('styles')
 </head>
@@ -48,9 +51,14 @@
     <script src="{{ asset('assets/vendors/select2/select2.min.js') }}"></script>
 
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.3/dist/cdn.min.js"></script>
+
+
     <!-- DataTables JS -->
-    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    {{-- <script src="https://code.jquery.com/jquery-3.5.1.js"></script> --}}
     <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+    {{-- <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script> --}}
+
+
     @yield('scripts')
     @yield('attendanceScripts')
 

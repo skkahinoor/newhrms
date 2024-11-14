@@ -82,7 +82,11 @@
 
         <div class="card">
             <div class="card-body">
-                {!! $dataTable->table() !!}
+                {{-- {!! $dataTable->table() !!} --}}
+                <div class="table-responsive">
+                    {!! $dataTable->table(['class' => 'table table-striped']) !!}
+                </div>
+
             </div>
         </div>
 
@@ -93,6 +97,19 @@
     <script>
         CKEDITOR.replace('ckeditor');
     </script>
+    <!-- DataTables JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+
+    <!-- DataTables Buttons CSS and JS -->
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
+<script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.print.min.js"></script>
+
+
 
     {{-- Quotation List  --}}
     <!-- Modal -->
@@ -137,243 +154,6 @@
             </div>
         </div>
     </div>
-
-
-
-    {{-- Change Status Modal  --}}
-    <!-- Modal -->
-    <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" style="top: 25% !important;">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="confirmModalLabel">Confirm Status Change</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    Are you sure you want to change the status?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" id="confirmStatusChange">Yes, Change Status</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    {{-- Pause Procurement modal  --}}
-    <div class="modal fade" id="pauseModal" tabindex="-1" role="dialog" aria-labelledby="pauseModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="pauseModalLabel">Confirm To Pause</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    Are you sure you want to Pause the Procurement?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" id="pauseStatusChange">Yes, Pause Now</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    {{-- Resume Procurement modal  --}}
-    <div class="modal fade" id="resumeModal" tabindex="-1" role="dialog" aria-labelledby="resumeModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="pauseModalLabel">Confirm To Resume</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    Are you sure you want to Resume the Procurement?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" id="resumeStatusChange">Yes, Resume Now</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // JS code to change status - approved
-        document.addEventListener('DOMContentLoaded', function() {
-
-            let procurementId = null;
-
-
-            document.querySelectorAll('.deleteLeadEnquiryLink').forEach(function(link) {
-                link.addEventListener('click', function() {
-
-                    procurementId = this.getAttribute(
-                        'data-id');
-                });
-            });
-
-            // Handle the modal confirmation
-            document.getElementById('confirmStatusChange').addEventListener('click', function() {
-                console.log(procurementId);
-
-                if (procurementId) {
-                    // Make AJAX request to change the status
-                    fetch(`procurement/${procurementId}/change-status`, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                            },
-                            body: JSON.stringify({
-                                status: 1
-                            })
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                $('#confirmModal').modal('hide');
-                                Swal.fire('Success!', 'Status updated successfully!',
-                                    'success').then(() => {
-                                    location
-                                        .reload();
-                                });
-                            } else {
-                                Swal.fire('Error!', 'Failed to update status!',
-                                    'error').then(() => {
-                                    location
-                                        .reload();
-                                });
-                            }
-                        })
-                        .catch(error => console.error('Error:', error));
-                }
-            });
-        });
-
-        // JS code to change status - pause
-        document.addEventListener('DOMContentLoaded', function() {
-
-            let procurementId = null;
-
-
-            document.querySelectorAll('.pauseOrder').forEach(function(link) {
-                link.addEventListener('click', function() {
-
-                    procurementId = this.getAttribute(
-                        'data-id');
-                });
-            });
-
-            // Handle the modal confirmation
-            document.getElementById('pauseStatusChange').addEventListener('click', function() {
-                console.log(procurementId);
-
-                if (procurementId) {
-                    // Make AJAX request to change the status
-                    fetch(`procurement/${procurementId}/pause-status`, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                            },
-                            body: JSON.stringify({
-                                status: 4
-                            })
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            // Close the modal regardless of success or error
-                            $('#pauseModal').modal('hide');
-
-                            if (data.success) {
-                                // Show success alert with SweetAlert2 and reload
-                                Swal.fire('Success!', 'Status updated successfully!', 'success')
-                                    .then(() => location.reload());
-                            } else {
-                                // Show error alert with SweetAlert2 and reload
-                                Swal.fire('Error!', 'Failed to update status!', 'error')
-                                    .then(() => location.reload());
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
-                            // Handle unexpected errors gracefully
-                            Swal.fire('Error!', 'An unexpected error occurred!', 'error')
-                                .then(() => location.reload());
-                        });
-                }
-            });
-
-        });
-
-        // JS code to change status - Resume
-        document.addEventListener('DOMContentLoaded', function() {
-
-            let procurementId = null;
-
-
-            document.querySelectorAll('.resumeOrder').forEach(function(link) {
-                link.addEventListener('click', function() {
-
-                    procurementId = this.getAttribute(
-                        'data-id');
-                });
-            });
-
-            // Handle the modal confirmation
-            document.getElementById('resumeStatusChange').addEventListener('click', function() {
-                console.log(procurementId);
-
-                if (procurementId) {
-                    // Make AJAX request to change the status
-                    fetch(`procurement/${procurementId}/resume-status`, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                            },
-                            body: JSON.stringify({
-                                status: 1
-                            })
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            // Close the modal regardless of success or error
-                            $('#resumeModal').modal('hide');
-
-                            if (data.success) {
-                                // Show success alert with SweetAlert2 and reload
-                                Swal.fire('Success!', 'Status updated successfully!', 'success')
-                                    .then(() => location.reload());
-                            } else {
-                                // Show error alert with SweetAlert2 and reload
-                                Swal.fire('Error!', 'Failed to update status!', 'error')
-                                    .then(() => location.reload());
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
-                            // Handle unexpected errors gracefully
-                            Swal.fire('Error!', 'An unexpected error occurred!', 'error')
-                                .then(() => location.reload());
-                        });
-                }
-            });
-
-        });
-    </script>
-
-
 
 @endsection
 

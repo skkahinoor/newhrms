@@ -421,9 +421,9 @@ Route::group([
         ]);
         Route::get('procurement/show/{id}', [ProcurementController::class, 'show'])->name('procurement.show');
         Route::get('procurement/delete/{id}', [ProcurementController::class, 'delete'])->name('procurement.delete');
-        Route::post('procurement/{id}/change-status', [ProcurementController::class, 'changeStatus'])->name('change-status');
-        Route::post('procurement/{id}/pause-status', [ProcurementController::class, 'pauseStatus'])->name('pause-status');
-        Route::post('procurement/{id}/resume-status', [ProcurementController::class, 'resumeStatus'])->name('resume-status');
+        Route::post('procurement/change-status/{id}', [ProcurementController::class, 'changeStatus'])->name('change-status-approve');
+        Route::post('procurement/pause-status/{id}', [ProcurementController::class, 'pauseStatus'])->name('pauseStatus');
+        Route::post('procurement/{id}/resume-status', [ProcurementController::class, 'resumeStatus'])->name('resumeStatus');
         Route::get('getQuotationDetails/{id}', [ProcurementController::class, 'getQuotationDetails'])->name('getQuotationDetails');
         Route::post('approveStatusQuotation/{id}', [ProcurementController::class, 'approveStatusQuotation'])->name('approveStatusQuotation');
 

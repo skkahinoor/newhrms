@@ -30,7 +30,7 @@
             let sec_rotation = 6 * sec; // 6 degrees per second
 
             // Debug log to confirm the function is being called
-            console.log('Clock is updating');
+            // console.log('Clock is updating');
 
             // Rotate clock hands
             document.getElementById('hour1').style.transform = `rotate(${hr_rotation}deg)`;

@@ -294,46 +294,37 @@ class ProcurementController extends Controller
         }
     }
 
-    public function changeStatus(Request $request, $id)
+    public function changeStatus(Request $request, $status)
     {
-        $procurement = Procurement::find($id);
+        $procurements = Procurement::find($status)->update([
+            'status' => 1,
+        ]);
 
-        if ($procurement) {
-            $procurement->status = $request->status;
-            $procurement->save();
+        // if ($procurement) {
+        //     $procurement->status = 1;
+        //     $procurement->save();
 
-            return response()->json(['success' => true]);
-        }
+        //     return response()->json(['success' => true]);
+        // }
 
-        return response()->json(['success' => false, 'message' => 'Procurement not found']);
+        return response()->json($procurements);
     }
 
-    public function pauseStatus(Request $request, $id)
+    public function pauseStatus(Request $request, $pstatus)
     {
-        $procurement = Procurement::find($id);
+        $procurement = Procurement::find($pstatus)->update([
+            'status' => 4,
+        ]);
 
-        if ($procurement) {
-            $procurement->status = $request->status;
-            $procurement->save();
-
-            return response()->json(['success' => true]);
-        }
-
-        return response()->json(['success' => false, 'message' => 'Procurement not found']);
+        return response()->json($procurement);
     }
 
-    public function resumeStatus(Request $request, $id)
+    public function resumeStatus(Request $request, $rstatus)
     {
-        $procurement = Procurement::find($id);
-
-        if ($procurement) {
-            $procurement->status = $request->status;
-            $procurement->save();
-
-            return response()->json(['success' => true]);
-        }
-
-        return response()->json(['success' => false, 'message' => 'Procurement not found']);
+        $procurement = Procurement::find($rstatus)->update([
+            'status' => 1,
+        ]);
+        return response()->json($procurement);
     }
 
     public function getQuotationDetails($procurement_id)

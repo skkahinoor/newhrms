@@ -108,7 +108,23 @@
         $('form').submit(function() {
             $('#procurement_items').val(JSON.stringify(procurementItems));
         });
-    });
 
-    
+
+
+        $(document).ready(function() {
+            $('#DataTableBuilder').DataTable({
+                lengthMenu: [10, 25, 50, 100],
+                displayLength: 10,
+                dom: 'Bfrtip', // B for buttons
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+                ],
+                language: {
+                    lengthMenu: "Show _MENU_ entries",
+                    info: "Showing _START_ to _END_ of _TOTAL_ entries",
+                }
+            });
+        });
+
+    });
 </script>

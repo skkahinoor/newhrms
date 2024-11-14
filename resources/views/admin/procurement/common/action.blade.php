@@ -65,7 +65,7 @@
         @if ($isAdmin)
             @if ($status != 1 && $status != 4 && $status != 2 && $status != 3)
                 <li>
-                    <a class="dropdown-item deleteLeadEnquiryLink" href="#" data-id="{{ $id }}"
+                    <a class="dropdown-item approveprocurementstatus" href="#" data-skk="{{ $id }}"
                         data-toggle="modal" data-target="#confirmModal" style="font-weight:bold;">
                         <svg xmlns="http://www.w3.org/2000/svg" width="1.4rem" height="1.4rem" viewBox="0 0 24 24">
                             <path fill="#ff3366"
@@ -80,7 +80,7 @@
         <!-- Pause and Resume Options -->
         @if ($status == 1)
             <li>
-                <a class="dropdown-item pauseOrder" href="#" data-id="{{ $id }}" data-toggle="modal"
+                <a class="dropdown-item pauseOrder" href="#" data-pid="{{ $id }}" data-toggle="modal"
                     data-target="#pauseModal" style="font-weight:bold;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="1.4rem" height="1.4rem" viewBox="0 0 24 24">
                         <g fill="none" stroke="#ff3366" stroke-dasharray="32" stroke-dashoffset="32"
@@ -103,7 +103,7 @@
 
         @if ($isAdmin && $status == 4)
             <li>
-                <a class="dropdown-item resumeOrder" href="#" data-id="{{ $id }}"
+                <a class="dropdown-item resumeOrder" href="#" data-rid="{{ $id }}"
                     data-toggle="modal" data-target="#resumeModal" style="font-weight:bold;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="1.4rem" height="1.4rem" viewBox="0 0 24 24">
                         <path fill="none" stroke="#ff3366" stroke-width="2" d="M1 20h5V4H1zm10-1l11-7l-11-7z" />
@@ -132,3 +132,74 @@
     </ul>
 
 </div>
+
+{{-- Change Status Modal  --}}
+<!-- Modal -->
+<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" style="top: 25% !important;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmModalLabel">Confirm Status Change</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to change the status?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" data-sk="{{ $id }}"
+                    id="confirmStatusChange">Yes, Change Status</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{-- Pause Procurement modal  --}}
+<div class="modal fade" id="pauseModal" tabindex="-1" role="dialog" aria-labelledby="pauseModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="pauseModalLabel">Confirm To Pause</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to Pause the Procurement?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" data-pid="{{ $id }}"
+                    id="pauseStatusChange">Yes, Pause Now</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{-- Resume Procurement modal  --}}
+<div class="modal fade" id="resumeModal" tabindex="-1" role="dialog" aria-labelledby="resumeModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="pauseModalLabel">Confirm To Resume</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to Resume the Procurement?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" data-rid="{{ $id }}"
+                    id="resumeStatusChange">Yes, Resume Now</button>
+            </div>
+        </div>
+    </div>
+</div>
+

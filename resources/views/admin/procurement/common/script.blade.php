@@ -1,5 +1,6 @@
 <script>
     $(document).ready(function() {
+
         $(document).on('click', '.viewlist', function() {
             const orderId = $(this).data('id');
             console.log("Order Id: ", orderId);
@@ -93,17 +94,133 @@
         });
 
 
-        // Click to Procurement no copy
-        $(document).on('click', '#Procurement-no-copy', function() {
-            const procurementNumber = $(this).data('no');
-            console.log(procurementNumber);
 
-            navigator.clipboard.writeText(procurementNumber).then(function() {
-                Swal.fire('Success!', 'Procurement Number copied to your Clipboard!',
-                    'success');
-            }).catch(function(error) {
-                Swal.fire('Error!', 'Failed to copy text: ' + error, 'error');
+        // Status Change on Procurement Page
+        $(document).ready(function() {
+            $(document).on('click', '.approveprocurementstatus', function() {
+                const procurementNumbers = $(this).data('skk');
+                console.log("Approved procurementId: ", procurementNumbers);
+                // Approve
+                $(document).on('click', '#confirmStatusChange', function() {
+                    console.log("DD: ", procurementNumbers);
+                    if (procurementNumbers) {
+                        $.ajax({
+                            url: '{{ route('admin.change-status-approve', ['id' => ':id']) }}'
+                                .replace(':id', procurementNumbers),
+                            method: 'POST',
+                            data: {
+                                status: procurementNumbers
+                            },
+                            contentType: 'application/json',
+                            success: function(response) {
+                                $('#confirmModal').modal('hide');
+                                Swal.fire('Success!',
+                                        'Status updated successfully!',
+                                        'success')
+                                    .then(() => {
+                                        location.reload();
+                                    });
+                            },
+                            error: function(xhr, status, error) {
+                                Swal.fire('Error!',
+                                    'Failed to update status!',
+                                    'error').then(
+                                    () => {
+                                        location.reload();
+                                    });
+                            }
+                        });
+                    } else {
+                        console.log("Procurement ID is not found");
+                    }
+                });
+            });
+
+
+            // Pause Status
+            $(document).on('click', '.pauseOrder', function() {
+                const pprocurementNumber = $(this).data('pid');
+                console.log("Pause procurementId: ", pprocurementNumber);
+
+                // pause
+                $(document).on('click', '#pauseStatusChange', function() {
+                    if (pprocurementNumber) {
+                        $.ajax({
+                            url: '{{ route('admin.pauseStatus', ['id' => ':id']) }}'
+                                .replace(':id', pprocurementNumber),
+                            method: 'POST',
+                            data: {
+                                pstatus: pprocurementNumber
+                            },
+                            contentType: 'application/json',
+                            success: function(response) {
+                                $('#pauseModal').modal('hide');
+                                Swal.fire('Success!',
+                                        'Status updated successfully!',
+                                        'success')
+                                    .then(() => {
+                                        location.reload();
+                                    });
+                            },
+                            error: function(xhr, status, error) {
+                                Swal.fire('Error!',
+                                    'Failed to update status!',
+                                    'error').then(
+                                    () => {
+                                        location.reload();
+                                    });
+                            }
+                        });
+                    } else {
+                        console.log("Procurement ID is not found");
+                    }
+                });
+            });
+
+            // Resume Status
+            $(document).on('click', '.resumeOrder', function() {
+                const rprocurementNumber = $(this).data('rid');
+                console.log("Resume procurementId: ", rprocurementNumber);
+
+                // Resume
+                $(document).on('click', '#resumeStatusChange', function() {
+                    if (rprocurementNumber) {
+                        $.ajax({
+                            url: '{{ route('admin.resumeStatus', ['id' => ':id']) }}'
+                                .replace(':id', rprocurementNumber),
+                            method: 'POST',
+                            data: {
+                                rstatus: rprocurementNumber
+                            },
+                            contentType: 'application/json',
+                            success: function(response) {
+                                $('#pauseModal').modal('hide');
+                                Swal.fire('Success!',
+                                        'Status updated successfully!',
+                                        'success')
+                                    .then(() => {
+                                        location.reload();
+                                    });
+                            },
+                            error: function(xhr, status, error) {
+                                Swal.fire('Error!',
+                                    'Failed to update status!',
+                                    'error').then(
+                                    () => {
+                                        location.reload();
+                                    });
+                            }
+                        });
+                    } else {
+                        console.log("Procurement ID is not found");
+                    }
+                });
             });
         });
+
+
+       
+
+
     });
 </script>
