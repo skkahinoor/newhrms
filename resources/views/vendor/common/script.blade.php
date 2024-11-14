@@ -432,7 +432,7 @@
 
 
 
-
+        // For upload bill
         $(document).on('click', '.generate-bill', function() {
             const qbill = $(this).data('bill');
             console.log('Checking existing bill data for quotation ID:', qbill);

@@ -26,11 +26,7 @@
                 </div>
                 <p class="h6">Your Asset Type:&nbsp;<br>
                 <ol>
-                    <b class="text-primary">
-                            @foreach ($getUserDetails->decoded_asset_types as $assetType)
-                                <li>{{ $assetType }}</li>
-                            @endforeach
-                        </b>
+                    
                 </ol>
 
                 </p>

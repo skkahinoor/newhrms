@@ -87,51 +87,45 @@ class VendorController extends Controller
     public function orders(Request $request)
     {
         $user = Auth::user();
-
         $getUserDetails = User::find($user->id);
-        $getId = $getUserDetails->id;
-        $getquotestatus = Quotation::where('vendor_id', $getUserDetails->id)->first();
-        // $deliverystatusvalue = Quotation::where('procurement_id', )
-        // Fetch Asset Name as Array
-        if (!empty($getUserDetails->asset_type)) {
-            $assetTypeIds = json_decode($getUserDetails->asset_type, true);
-            $assetNames = AssetType::whereIn('id', $assetTypeIds)->pluck('name')->toArray();
-            $getUserDetails->decoded_asset_types = $assetNames;
-        } else {
-            $getUserDetails->decoded_asset_types = [];
-        }
-
-        $getOrder = Procurement::where('status', 1)->where('status', '!=', 4)->with(['users', 'role', 'company', 'asset_types', 'brands', 'items'])->paginate(5);
-
-        // $getOrders = collect();
-        // foreach ($procurementOrder as $procurement) {
-        //     foreach ($procurement->items as $value) {
-        //         $assetTypes = json_decode($getUserDetails->asset_type, true);
-
-        //         foreach ($assetTypes as $assetType) {
-        //             if (in_array($value->asset_type_id, $assetType)) {
-        //                 $getOrders->push($procurement->toArray());
-        //                 break;
-        //             }
-        //         }
-        //     }
-        // }
-
-        // dd($getOrders);
-
-        $quotationOrder = Procurement::whereIn('status', [2, 3])->with(['quotation', 'users', 'role', 'company', 'asset_types', 'brands', 'items'])->paginate(5)->through(function ($item) {
-            foreach ($item->quotation as $quotation) {
-                $item->quotation_status = $quotation->is_approved;
-                $item->deliver_status = $quotation->quotation_status;
-            }
-            unset($item->quotation);
-            return $item;
-        });
-
-        // $completeOrder = ProcurementItem::where('asset_type_id', $getUserDetails->asset_type)->with(['users', 'role', 'company', 'assetType', 'brand'])->paginate(5);
-
-        return view('vendor.orders', ['getUserDetails' => $getUserDetails, 'getOrder' => $getOrder, 'quotationOrder' => $quotationOrder, 'getquotestatus' => $getquotestatus]);
+    
+        // Decode the vendor's asset types from the JSON field in the users table
+        $assetTypeIds = !empty($getUserDetails->asset_type) 
+            ? json_decode($getUserDetails->asset_type, true) 
+            : [];
+    
+        // Fetch procurements where the asset_type_id in procurement_items matches the vendor's asset types
+        $getOrder = Procurement::where('status', 1)
+            ->where('status', '!=', 4)
+            ->whereHas('items', function ($query) use ($assetTypeIds) {
+                $query->whereIn('asset_type_id', $assetTypeIds);
+            })
+            ->with(['users', 'role', 'company', 'asset_types', 'brands', 'items'])
+            ->paginate(5);
+    
+        // Fetch relevant quotations
+        $quotationOrder = Procurement::whereIn('status', [2, 3])
+            ->whereHas('items', function ($query) use ($assetTypeIds) {
+                $query->whereIn('asset_type_id', $assetTypeIds);
+            })
+            ->with(['quotation', 'users', 'role', 'company', 'asset_types', 'brands', 'items'])
+            ->paginate(5)
+            ->through(function ($item) {
+                foreach ($item->quotation as $quotation) {
+                    $item->quotation_status = $quotation->is_approved;
+                    $item->deliver_status = $quotation->quotation_status;
+                }
+                unset($item->quotation);
+                return $item;
+            });
+    
+        return view('vendor.orders', [
+            'getUserDetails' => $getUserDetails,
+            'getOrder' => $getOrder,
+            'quotationOrder' => $quotationOrder,
+        ]);
     }
+    
 
     public function getAssetDetails($procurement_id)
     {
