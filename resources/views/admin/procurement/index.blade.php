@@ -53,66 +53,30 @@
         @include('admin.section.flash_message')
         @include('admin.procurement.breadCrumb')
 
-        <?php
-        $changeColor = [
-            0 => 'warning',
-            1 => 'primary',
-            2 => 'info',
-            3 => 'success',
-            4 => 'danger',
-        
-            // null => 'danger'
-        ];
-        $changeTextColor = [
-            0 => '#000000',
-            1 => '#ffffff',
-            2 => '#ffffff',
-            3 => '#ffffff',
-            4 => '#ffffff',
-        ];
-        $changeStatusValue = [
-            0 => 'Pending',
-            1 => 'Approved',
-            2 => 'In Process',
-            3 => 'Delivered',
-            4 => 'Pause',
-        ];
-        ?>
-
-
         <div class="card">
             <div class="card-body">
-                {{-- {!! $dataTable->table() !!} --}}
                 <div class="table-responsive">
-                    {!! $dataTable->table(['class' => 'table table-striped table-hover']) !!}
+                    {!! $dataTable->table(['class' => 'table table-striped table-hover', 'style' => 'width: 100% !important;']) !!}
                 </div>
-
             </div>
         </div>
 
 
     </section>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script type="text/javascript" src="{{ asset('ckeditor/ckeditor.js') }}"></script>
-    <script>
-        CKEDITOR.replace('ckeditor');
-    </script>
+
+
     <!-- DataTables JS -->
-    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    {{-- <script src="https://code.jquery.com/jquery-3.5.1.js"></script> --}}
+    {{-- Data table button and other scripts  --}}
+    <script src="{{ asset('vendor/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('vendor/datatables/dataTables.bootstrap.min.js') }}"></script>
+    <script src="{{ asset('vendor/datatables/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ asset('vendor/datatables/buttons.bootstrap.min.js') }}"></script>
+    <script src="{{ asset('vendor/datatables/buttons.colVis.min.js') }}"></script>
+    <script src="{{ asset('vendor/datatables/buttons.server-side.js') }}"></script>
 
-    <!-- DataTables Buttons CSS and JS -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
-    <script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.print.min.js"></script>
-
-
-
-    {{-- Quotation List  --}}
-    <!-- Modal -->
+    {{-- Quotation List  modal --}}
     <div class="modal fade" id="viewlist" tabindex="-1" aria-labelledby="myModalLabel" data-bs-backdrop="static"
         data-bs-keyboard="false" aria-hidden="true">
         <div class="modal-dialog modal-dialog-bysk" style="top: 0% !important;">

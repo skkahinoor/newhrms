@@ -50,13 +50,30 @@ class ProcurementDataTable extends DataTable
             })
             ->editColumn('delivery_date', function ($procurement) {
                 return $procurement->delivery_date ? date('d-m-Y', strtotime($procurement->delivery_date)) : 'Not Set';
-            })->addColumn('action', function ($procurement) {
-            $role = Role::where('slug', 'admin')->value('id');
-            $isAdmin = auth()->user()->role_id == $role ? true : false;
-            $id = $procurement->id;
-            $status = $procurement->status;
-            return view('admin.procurement.common.action', compact('isAdmin', 'id', 'status'));
-        });
+            })
+            ->editColumn('procurement_number', function ($procurement) {
+                return '<span class="copy-procurement-number" data-number="' . $procurement->procurement_number . '" style="cursor: pointer;">' . $procurement->procurement_number . '</span>';
+            })
+            ->editColumn('status', function ($procurement) {
+                $statusColors = [
+                    0 => ['color' => '#000000', 'background' => '#f0ad4e', 'text' => 'Pending'],
+                    1 => ['color' => '#ffffff', 'background' => '#0275d8', 'text' => 'Approved'],
+                    2 => ['color' => '#ffffff', 'background' => '#5bc0de', 'text' => 'In Process'],
+                    3 => ['color' => '#ffffff', 'background' => '#5cb85c', 'text' => 'Delivered'],
+                    4 => ['color' => '#ffffff', 'background' => '#d9534f', 'text' => 'Pause'],
+                    null => ['color' => '#ffffff', 'background' => '#d9534f', 'text' => 'Not Set'],
+                ];
+                $status = $statusColors[$procurement->status];
+                return '<span style="color: ' . $status['color'] . '; background-color: ' . $status['background'] . '; padding: 5px 10px; border-radius: 5px;">' . $status['text'] . '</span>';
+            })
+            ->rawColumns(['procurement_number', 'status'])
+            ->addColumn('action', function ($procurement) {
+                $role = Role::where('slug', 'admin')->value('id');
+                $isAdmin = auth()->user()->role_id == $role ? true : false;
+                $id = $procurement->id;
+                $status = $procurement->status;
+                return view('admin.procurement.common.action', compact('isAdmin', 'id', 'status'));
+            });
     }
 
     // Define the DataTable columns
