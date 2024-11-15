@@ -4,7 +4,9 @@ namespace App\DataTables;
 
 use App\Models\Procurement;
 use App\Models\Role;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
+use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Services\DataTable;
@@ -14,7 +16,30 @@ class ProcurementDataTable extends DataTable
     // DataTable query method with filters applied
     public function query(Procurement $model): QueryBuilder
     {
+        // $roleadmin = Role::where('slug', 'admin')->value('id');
+        // $roleuser = Role::where('slug', 'admin')->value('id');
+        // $userId = Auth::user()->id;
+        // // fetch supervisor id and procurement will display the supervisor of the user
+        // // $userId = Auth::user()->id;
+        // $getUserId = User::find($userId)->get();
+        // $getSupervisorId = $getUserId->supervisor_id;
+
+        // if (auth()->user()->role_id == $roleadmin) {
+        //     $query = $model->newQuery()->with('users');
+        // } else {
+        //     $query = $model->newQuery()->with('users')->where('user_id', $userId);
+        // }
+
+        $roleAdminId = Role::where('slug', 'admin')->value('id');
+        $currentUser = Auth::user(); 
         $query = $model->newQuery()->with('users');
+    
+
+        if ($currentUser->role_id != $roleAdminId && $currentUser->supervisor_id) {
+            $query->where('user_id', $currentUser->id)
+                  ->orWhere('supervisor_id', $currentUser->supervisor_id);
+        }
+        
 
         // Apply filters based on the request parameters
         if ($this->request()->get('procurement_number')) {
