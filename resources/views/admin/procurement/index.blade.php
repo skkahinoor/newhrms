@@ -65,6 +65,21 @@
     </section>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
+    <script>
+        $(document).ready(function() {
+            $(document).on('click', '.copy-procurement-number', function() {
+                var procurementNumber = $(this).data('number');
+                var tempInput = $('<input>');
+                $('body').append(tempInput);
+                tempInput.val(procurementNumber).select();
+                document.execCommand('copy');
+                tempInput.remove();
+                Swal.fire('Success!', 'The Procurement Number: ' + '<b>' + procurementNumber + '</b>' +
+                    ' is Copied Successfully.', 'success');
+            });
+        });
+    </script>
+
 
     <!-- DataTables JS -->
     {{-- <script src="https://code.jquery.com/jquery-3.5.1.js"></script> --}}
