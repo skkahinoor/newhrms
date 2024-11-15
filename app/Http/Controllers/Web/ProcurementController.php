@@ -142,6 +142,7 @@ class ProcurementController extends Controller
 
         $procurement = Procurement::create([
             'user_id' => Auth::user()->id,
+            'supervisor_id' => Auth::user()->supervisor_id,
             'procurement_number' => $validatedData['procurement_number'],
             'email' => $validatedData['email'],
             'request_date' => $validatedData['request_date'],

@@ -13,6 +13,7 @@ class Procurement extends Model
     protected $fillable = [
         'procurement_number',
         'user_id',
+        'supervisor_id',
         'email',
         'request_date',
         'delivery_date',
