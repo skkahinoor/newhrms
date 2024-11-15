@@ -7,6 +7,7 @@ use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Services\DataTable;
@@ -16,30 +17,23 @@ class ProcurementDataTable extends DataTable
     // DataTable query method with filters applied
     public function query(Procurement $model): QueryBuilder
     {
-        // $roleadmin = Role::where('slug', 'admin')->value('id');
-        // $roleuser = Role::where('slug', 'admin')->value('id');
-        // $userId = Auth::user()->id;
-        // // fetch supervisor id and procurement will display the supervisor of the user
-        // // $userId = Auth::user()->id;
-        // $getUserId = User::find($userId)->get();
-        // $getSupervisorId = $getUserId->supervisor_id;
-
-        // if (auth()->user()->role_id == $roleadmin) {
-        //     $query = $model->newQuery()->with('users');
-        // } else {
-        //     $query = $model->newQuery()->with('users')->where('user_id', $userId);
-        // }
 
         $roleAdminId = Role::where('slug', 'admin')->value('id');
-        $currentUser = Auth::user(); 
-        $query = $model->newQuery()->with('users');
-    
+        $currentUser = Auth::user();
 
-        if ($currentUser->role_id != $roleAdminId && $currentUser->supervisor_id) {
-            $query->where('user_id', $currentUser->id)
-                  ->orWhere('supervisor_id', $currentUser->supervisor_id);
+        if (auth()->user()->role_id == $roleAdminId) {
+            $query = $model->newQuery()->with('users');
+        } elseif ( $currentUser->supervisor_id == $model->supervisor_id) {
+            $query = $model->newQuery()->Where('supervisor_id', $currentUser->supervisor_id);
+            // Log::info($query);
+        } else {
+            $query = $model->newQuery()->with('users')->where('user_id', $currentUser->id);
         }
         
+
+        // if ($currentUser->role_id != $roleAdminId && $currentUser->supervisor_id == $model->supervisor_id) {
+        //     $query->Where('supervisor_id', $currentUser->supervisor_id);
+        // } $currentUser->role_id != $roleAdminId &&
 
         // Apply filters based on the request parameters
         if ($this->request()->get('procurement_number')) {
@@ -105,6 +99,7 @@ class ProcurementDataTable extends DataTable
     public function html()
     {
         return $this->builder()
+            ->setTableId('procurement-datatable')
             ->columns([
                 Column::computed('DT_RowIndex')->title('#')->searchable(false)->orderable(false)->addClass('text-center'),
                 Column::make('procurement_number')->addClass('text-center'),
