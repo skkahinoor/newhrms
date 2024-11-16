@@ -22,6 +22,7 @@ class Quotation extends Model
         'total_item_price',
         'remark',
         'final_delivery_date',
+        'qstatus',
         'is_approved',
         'quotation_status',
         'bill_file',
