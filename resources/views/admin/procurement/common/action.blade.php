@@ -62,8 +62,8 @@
         @endcan
 
         <!-- Approval Options -->
-        @if ($isAdmin)
-            @if ($status != 1 && $status != 4 && $status != 2 && $status != 3)
+        @if ($isAdmin || ($isSupervisor && $currentUser->id != $procurement->user_id))
+            @if (!in_array($status, [1, 4, 2, 3]))
                 <li>
                     <a class="dropdown-item approveprocurementstatus" href="#" data-skk="{{ $id }}"
                         data-toggle="modal" data-target="#confirmModal" style="font-weight:bold;">
@@ -76,6 +76,8 @@
                 </li>
             @endif
         @endif
+
+
 
         <!-- Pause and Resume Options -->
         @if ($status == 1)
@@ -102,6 +104,16 @@
 
 
         @if ($isAdmin && $status == 4)
+            <li>
+                <a class="dropdown-item resumeOrder" href="#" data-rid="{{ $id }}"
+                    data-toggle="modal" data-target="#resumeModal" style="font-weight:bold;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="1.4rem" height="1.4rem" viewBox="0 0 24 24">
+                        <path fill="none" stroke="#ff3366" stroke-width="2" d="M1 20h5V4H1zm10-1l11-7l-11-7z" />
+                    </svg>
+                    &nbsp;Resume
+                </a>
+            </li>
+        @elseif ($status == 4 && ($isSupervisor && $currentUser->id != $procurement->user_id))
             <li>
                 <a class="dropdown-item resumeOrder" href="#" data-rid="{{ $id }}"
                     data-toggle="modal" data-target="#resumeModal" style="font-weight:bold;">
@@ -202,4 +214,3 @@
         </div>
     </div>
 </div>
-

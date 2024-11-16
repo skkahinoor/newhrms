@@ -7,7 +7,6 @@ use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Services\DataTable;
@@ -21,19 +20,25 @@ class ProcurementDataTable extends DataTable
         $roleAdminId = Role::where('slug', 'admin')->value('id');
         $currentUser = Auth::user();
 
-        if (auth()->user()->role_id == $roleAdminId) {
+        // Admins see all procurements
+        if ($currentUser->role_id == $roleAdminId) {
             $query = $model->newQuery()->with('users');
-        } elseif ( $currentUser->supervisor_id == $model->supervisor_id) {
-            $query = $model->newQuery()->Where('supervisor_id', $currentUser->supervisor_id);
-            // Log::info($query);
-        } else {
-            $query = $model->newQuery()->with('users')->where('user_id', $currentUser->id);
         }
-        
-
-        // if ($currentUser->role_id != $roleAdminId && $currentUser->supervisor_id == $model->supervisor_id) {
-        //     $query->Where('supervisor_id', $currentUser->supervisor_id);
-        // } $currentUser->role_id != $roleAdminId &&
+        // Supervisors see procurements
+        elseif ($currentUser->supervisor_id) {
+            $query = $model->newQuery()
+                ->with('users')
+                ->where(function ($q) use ($currentUser) {
+                    $q->where('supervisor_id', $currentUser->id)
+                        ->orWhere('user_id', $currentUser->id);
+                });
+        }
+        // General users
+        else {
+            $query = $model->newQuery()
+                ->with('users')
+                ->where('user_id', $currentUser->id);
+        }
 
         // Apply filters based on the request parameters
         if ($this->request()->get('procurement_number')) {
@@ -58,6 +63,13 @@ class ProcurementDataTable extends DataTable
     // DataTable columns and customization
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
+
+        $currentUser = Auth::user();
+        $roleAdminId = Role::where('slug', 'admin')->value('id');
+        $isAdmin = $currentUser->role_id == $roleAdminId;
+        $isSupervisor = User::where('supervisor_id', $currentUser->id)->exists(); 
+    
+
         return datatables()
             ->eloquent($query)
             ->addIndexColumn()
@@ -86,12 +98,10 @@ class ProcurementDataTable extends DataTable
                 return '<span style="color: ' . $status['color'] . '; background-color: ' . $status['background'] . '; padding: 5px 10px; border-radius: 5px;">' . $status['text'] . '</span>';
             })
             ->rawColumns(['procurement_number', 'status'])
-            ->addColumn('action', function ($procurement) {
-                $role = Role::where('slug', 'admin')->value('id');
-                $isAdmin = auth()->user()->role_id == $role ? true : false;
-                $id = $procurement->id;
+            ->addColumn('action', function ($procurement) use ($isAdmin, $isSupervisor, $currentUser) {
                 $status = $procurement->status;
-                return view('admin.procurement.common.action', compact('isAdmin', 'id', 'status'));
+                $id = $procurement->id;
+                return view('admin.procurement.common.action', compact('isAdmin', 'isSupervisor', 'currentUser', 'procurement', 'status', 'id'));
             });
     }
 
