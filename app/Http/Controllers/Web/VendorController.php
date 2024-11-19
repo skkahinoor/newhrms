@@ -31,9 +31,9 @@ class VendorController extends Controller
         // Display Complete Orders
         $totalRow = Procurement::count();
         $completeOrders = Procurement::where('status', 3)->with(['items', 'users', 'role', 'company', 'asset_types', 'brands', 'totalprice'])->paginate(5)
-        ->through(function ($prices) {
+            ->through(function ($prices) {
                 // dd($price->totalprice);
-                foreach($prices->totalprice as $price) {
+                foreach ($prices->totalprice as $price) {
                     // dd($price->total_item_price);
                     $prices->total_item_price = $price->total_item_price;
                     $prices->bill_file = $price->bill_file;
@@ -88,21 +88,31 @@ class VendorController extends Controller
     {
         $user = Auth::user();
         $getUserDetails = User::find($user->id);
-    
+
         // Decode the vendor's asset types from the JSON field in the users table
-        $assetTypeIds = !empty($getUserDetails->asset_type) 
-            ? json_decode($getUserDetails->asset_type, true) 
-            : [];
-    
+        $assetTypeIds = !empty($getUserDetails->asset_type)
+        ? json_decode($getUserDetails->asset_type, true)
+        : [];
+
         // Fetch procurements where the asset_type_id in procurement_items matches the vendor's asset types
+        // $getOrder = Procurement::where('status', 1)
+        //     ->where('status', '!=', 4)
+        //     ->whereHas('items', function ($query) use ($assetTypeIds) {
+        //         $query->whereIn('asset_type_id', $assetTypeIds);
+        //     })
+        //     ->with(['users', 'role', 'company', 'asset_types', 'brands', 'items'])
+        //     ->paginate(5);
+
         $getOrder = Procurement::where('status', 1)
-            ->where('status', '!=', 4)
             ->whereHas('items', function ($query) use ($assetTypeIds) {
                 $query->whereIn('asset_type_id', $assetTypeIds);
             })
+            ->whereDoesntHave('quotation', function ($query) use ($user) {
+                $query->where('vendor_id', $user->id); // Exclude procurements already quoted by this vendor
+            })
             ->with(['users', 'role', 'company', 'asset_types', 'brands', 'items'])
             ->paginate(5);
-    
+
         // Fetch relevant quotations
         $quotationOrder = Procurement::whereIn('status', [2, 3])
             ->whereHas('items', function ($query) use ($assetTypeIds) {
@@ -118,14 +128,13 @@ class VendorController extends Controller
                 unset($item->quotation);
                 return $item;
             });
-    
+
         return view('vendor.orders', [
             'getUserDetails' => $getUserDetails,
             'getOrder' => $getOrder,
             'quotationOrder' => $quotationOrder,
         ]);
     }
-    
 
     public function getAssetDetails($procurement_id)
     {
@@ -219,15 +228,12 @@ class VendorController extends Controller
     {
         $user = Auth::user();
         $getUserid = User::find($user->id);
-        // dd($getUserid->id);
 
         $request->validate([
             'order_id' => 'required',
-
             'productType.*' => 'required',
             'productBrand.*' => 'required',
             'productQuantity.*' => 'required',
-
             'amountperproduct.*' => 'required|numeric|min:0',
             'givediscount.*' => 'nullable|numeric|min:0',
             'finalamount.*' => 'required|numeric|min:0',
@@ -240,12 +246,13 @@ class VendorController extends Controller
                 'productType' => $request->productType[$index],
                 'productBrand' => $request->productBrand[$index],
                 'productQuantity' => $request->productQuantity[$index],
-
                 'product_per_price' => $amountPerProduct,
                 'discount_price' => $request->givediscount[$index] ?? 0,
                 'total_amount' => $request->finalamount[$index],
             ];
         }
+
+        // Create Quotation Entry for Vendor
         $quotation = Quotation::create([
             'procurement_id' => $request->order_id,
             'vendor_id' => $getUserid->id,
@@ -253,14 +260,10 @@ class VendorController extends Controller
             'total_item_price' => $request->totalcalculateamount,
             'remark' => $request->remark,
             'final_delivery_date' => $request->delivery_date,
-            'quotation_status' => 0,
+            'quotation_status' => 0, // Default status for a new quotation
         ]);
-        if ($procurement = Procurement::find($request->order_id)) {
-            $procurement->status = 2;
-            $procurement->save();
-        }
 
-        return response()->json(['message' => 'Quotation Sent Successfully!'], 200);
+        return response()->json(['message' => 'Quotation Submitted Successfully!'], 200);
     }
 
 }

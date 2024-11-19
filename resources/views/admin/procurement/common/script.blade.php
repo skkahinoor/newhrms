@@ -19,17 +19,25 @@
                         let count = 1;
                         response.forEach(getAsset => {
                             let status = getAsset.is_approved === 0 ? `<a href="javascript:void(0);" class="text-secondary approveorder" style="text-decoration:none;" data-id="${getAsset.id}" data-title="Approve">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="1.4rem" height="1.4rem" viewBox="0 0 24 24"><path fill="#ff3366" d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10s10-4.5 10-10S17.5 2 12 2m0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8s8 3.59 8 8s-3.59 8-8 8m4.59-12.42L10 14.17l-2.59-2.58L6 13l4 4l8-8z"/></svg>&nbsp;Approve
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <span class="badge bg-success text-light"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7.326 18.092c-.327.275-.61.41-.906.408c-.68-.007-1.247-.703-2.38-2.094l-1.515-1.86c-.624-.766-.7-1.907-.185-2.767c.588-.984 1.717-1.259 2.596-.766M10.922 8.5a52 52 0 0 1 2.556-2.513A1.77 1.77 0 0 1 15 5.527m-.894 10.784c2.26-2.62 4.441-4.396 7.182-6.913c.82-.753.947-2.073.303-3.009c-.684-.994-1.983-1.193-2.863-.402c-2.51 2.255-4.463 4.427-6.315 6.748c-.098.122-.146.183-.197.217a.37.37 0 0 1-.416.003c-.051-.034-.1-.094-.197-.213l-.987-1.21c-.9-1.106-2.516-.983-3.268.246c-.527.861-.449 2.002.189 2.768l1.548 1.86c1.157 1.391 1.736 2.087 2.431 2.094s1.327-.725 2.59-2.189" color="#000000"/></svg>&nbsp;Approve</span>
+                                                
+                                            </div>
+                                        </div>
                                     </a>` : `Already Approved`;
+                            const alreadyapprove = getAsset.is_approved === 1 ?
+                                `<span class="badge bg-success text-light">Approved</span>` :
+                                ``;
                             const row = `
                             <tr>
                                 <th class="text-center text-danger" scope="row">${count}</th>
-                                <td class="text-center text-secondary fs-12">${getAsset.vendor.name ?? 'Null'}</td>
+                                <td class="text-center text-secondary fs-12">${getAsset.vendor.name ?? 'Null'} ${alreadyapprove}</td>
                                 <td class="text-center text-secondary fs-12">₹ ${getAsset.total_item_price}</td>
                                 <td class="text-center text-secondary">${getAsset.final_delivery_date ?? 'Timely Delivered'}</td>
                                 <td class="text-center text-secondary"><textarea name="specification" class="form-control text-center p-1" cols="30" rows="2" readonly >${getAsset.remark}</textarea></td>
                                 <td class="text-center">
-                                    <a href="${getAsset.bill_file ? `{{ asset('assets/uploads/vendor/bill/') }}/${getAsset.bill_file}` : 'javascript:void(0);'}" ${getAsset.bill_file ? `download` : ``}>${getAsset.bill_file || 'Bill Not Generated'}</a>
+                                    <a style="text-decoration:none;" class="text-danger" href="${getAsset.bill_file ? `{{ asset('assets/uploads/vendor/bill/') }}/${getAsset.bill_file}` : 'javascript:void(0);'}" ${getAsset.bill_file ? `download` : ``}>${getAsset.bill_file || 'Bill Not Generated'}</a>
                                 <td class="text-center">${status}</td>
                             </tr>
                         `;
@@ -219,7 +227,7 @@
         });
 
 
-       
+
 
 
     });
