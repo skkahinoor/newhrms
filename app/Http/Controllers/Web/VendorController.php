@@ -114,18 +114,51 @@ class VendorController extends Controller
             ->paginate(5);
 
         // Fetch relevant quotations
-        $quotationOrder = Procurement::whereIn('status', [2, 3])
+        // $quotationOrder = Procurement::whereHas('quotation', function ($query) use ($user) {
+        //     // Filter quotations where the vendor has submitted
+        //     $query->where('vendor_id', $user->id);
+        // })
+        //     ->whereHas('items', function ($query) use ($assetTypeIds) {
+        //         // Ensure items match the vendor's asset types
+        //         $query->whereIn('asset_type_id', $assetTypeIds);
+        //     })
+        //     ->with(['quotation', 'users', 'role', 'company', 'asset_types', 'brands', 'items'])
+        //     ->paginate(5)
+        //     ->through(function ($item) {
+        //         // Map the quotation details into procurement
+        //         foreach ($item->quotation as $quotation) {
+        //             $item->quotation_status = $quotation->quotation_status;
+        //             $item->deliver_status = $quotation->quotation_status;
+        //             // dd($item->deliver_status);
+        //         }
+        //         unset($item->quotation);
+        //         return $item;
+        //     });
+
+        $quotationOrder = Procurement::whereHas('quotation', function ($query) use ($user) {
+            // Filter quotations submitted by the current vendor
+            $query->where('vendor_id', $user->id);
+        })
             ->whereHas('items', function ($query) use ($assetTypeIds) {
+                // Filter items based on vendor's asset types
                 $query->whereIn('asset_type_id', $assetTypeIds);
             })
-            ->with(['quotation', 'users', 'role', 'company', 'asset_types', 'brands', 'items'])
+            ->with([
+                'quotation' => function ($query) use ($user) {
+                    // Optionally filter quotations directly during eager loading
+                    $query->where('vendor_id', $user->id);
+                },
+                'users', 'role', 'company', 'asset_types', 'brands', 'items',
+            ])
             ->paginate(5)
             ->through(function ($item) {
-                foreach ($item->quotation as $quotation) {
-                    $item->quotation_status = $quotation->is_approved;
+                // Extract and map details into procurement for each associated quotation
+                if ($item->quotation->isNotEmpty()) {
+                    $quotation = $item->quotation->first(); // Use the first quotation as an example
+                    $item->quotation_status = $quotation->quotation_status;
                     $item->deliver_status = $quotation->quotation_status;
                 }
-                unset($item->quotation);
+                unset($item->quotation); // Remove the quotation relationship if not needed
                 return $item;
             });
 
@@ -152,6 +185,20 @@ class VendorController extends Controller
         }
 
         return response()->json(['error' => 'Quotation not found'], 404);
+
+        // $vendorId = Auth::id();
+        // $getQuote = Quotation::where('procurement_id', $id)
+        //     ->where('vendor_id', $vendorId)
+        //     ->with(['procurement', 'items', 'vendor'])
+        //     ->get();
+
+        // if ($getQuote->isEmpty()) {
+        //     return response()->json(['error' => 'No quotations found for this procurement.'], 404);
+        // }
+        // return response()->json([
+        //     'quotations' => $getQuote,
+        //     'vendor_id' => auth()->id(),
+        // ]);
     }
 
     public function sendquotation($order_id)
@@ -163,7 +210,8 @@ class VendorController extends Controller
     public function setDeliver($status)
     {
         // Update the Quotation's status
-        $setDeliver = Quotation::where('procurement_id', $status)->update([
+        $vId = auth()->user()->id;
+        $setDeliver = Quotation::where('procurement_id', $status)->where('vendor_id', $vId)->update([
             'quotation_status' => 1,
         ]);
 
@@ -211,7 +259,8 @@ class VendorController extends Controller
 
             // Assuming you have the quotation ID available; update the relevant quotation
             // Replace with actual logic for setting $quotation
-            $quotation = Quotation::where('procurement_id', $id)->update([
+            $vId = auth()->user()->id;
+            $quotation = Quotation::where('procurement_id', $id)->where('vendor_id', $vId)->update([
                 'bill_file' => $fileName,
             ]);
             // dd($quotation);

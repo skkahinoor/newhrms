@@ -278,6 +278,9 @@
                         type: 'GET',
                         success: function(response) {
                             console.log("Quotation Details Response:", response);
+                            console.log("Sk vendor current Id:",
+                                {{ auth()->id() }});
+
 
                             // Display procurement number
                             const spanshow = $('#show-no');
@@ -289,6 +292,12 @@
                             const tbody = $('#quotation-view');
                             tbody.empty();
                             response.forEach((list) => {
+                                const CURRENT_VENDOR_ID =
+                                    {{ auth()->id() }};
+
+                                if (list.vendor_id !== CURRENT_VENDOR_ID) {
+                                    return;
+                                }
                                 const approvedStatus = list.is_approved ==
                                     1 ? 'Approved By Admin' : 'Rejected';
 
@@ -309,6 +318,13 @@
                             divitems.empty();
                             response.forEach((qitems) => {
                                 try {
+                                    const CURRENT_VENDOR_ID =
+                                        {{ auth()->id() }};
+
+                                    if (qitems.vendor_id !==
+                                        CURRENT_VENDOR_ID) {
+                                        return;
+                                    }
                                     const itemsArray = typeof qitems
                                         .items === 'string' ? JSON.parse(
                                             qitems.items) : qitems.items;
@@ -333,33 +349,58 @@
                             });
 
                             // Check deliver status
-                            // Check deliver status
-                            const deliveryStatus = response[0]?.quotation_status ??
-                                null;
+                            // Assume CURRENT_VENDOR_ID contains the logged-in vendor's ID
+                            const CURRENT_VENDOR_ID =
+                            '{{ auth()->user()->id }}'; // Replace with the correct way to fetch the vendor ID
 
-                            const approveStatus = response[0]?.is_approved ??
-                                null;
+                            // Filter the response data to match the logged-in vendor
+                            const vendorResponse = response.find(data => data
+                                .vendor_id == CURRENT_VENDOR_ID);
 
-                            const deliverydiv = $('#setdeliverybutton');
-                            deliverydiv.empty();
+                            if (vendorResponse) {
+                                const deliveryStatus = vendorResponse
+                                    .quotation_status ??
+                                    null; // Get the delivery status
+                                const approveStatus = vendorResponse.is_approved ??
+                                    null; // Get the approval status
 
-                            let givdata = `
-    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-`;
+                                const deliverydiv = $(
+                                '#setdeliverybutton'); // Get the delivery button container
+                                deliverydiv.empty(); // Clear existing buttons
 
-                            if (deliveryStatus === 1) {
-                                // Already delivered
-                                givdata +=
-                                    `<button type="button" id="set-deliver" class="btn btn-success" disabled>Already Delivered</button>`;
-                            } else if (approveStatus === 0) {
-                                // Pending delivery (no "Set to Deliver" button added here intentionally)
+                                // Initialize the base buttons
+                                let givdata =
+                                    `<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>`;
+
+                                // Check the delivery and approval statuses
+                                if (deliveryStatus === 1) {
+                                    // If already delivered, disable the button
+                                    givdata +=
+                                        `<button type="button" id="set-deliver" class="btn btn-success" disabled>Already Delivered</button>`;
+                                } else if (approveStatus === 1) {
+                                    // If approved but not delivered, allow setting to deliver
+                                    givdata +=
+                                        `<button type="button" id="set-deliver" class="btn btn-success">Set To Deliver</button>`;
+                                } else {
+                                    // Handle the case where delivery is pending or status is unknown
+                                    // Optionally, provide feedback to the user
+                                    givdata +=
+                                        `<button type="button" class="btn btn-warning" disabled>Approval Pending</button>`;
+                                }
+
+                                // Append the buttons to the container
+                                deliverydiv.append(givdata);
                             } else {
-                                // Unknown status or not delivered yet, so allow setting to deliver
-                                givdata +=
-                                    `<button type="button" id="set-deliver" class="btn btn-success">Set To Deliver</button>`;
+                                // Handle the case where no matching data is found for the logged-in vendor
+                                console.log(
+                                    "No data found for the logged-in vendor.");
+                                const deliverydiv = $('#setdeliverybutton');
+                                deliverydiv.empty();
+                                deliverydiv.append(
+                                    '<p class="text-danger">No quotation data available for your account.</p>'
+                                    );
                             }
 
-                            deliverydiv.append(givdata);
 
 
                             // Set to deliver the order

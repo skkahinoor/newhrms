@@ -243,7 +243,7 @@
                                                 <td class="align-middle text-center text-sm">
                                                     @if ($qorder->quotation_status === 1)
                                                         <span class="badge badge-sm btn-success"
-                                                            style="color: #fff;">Quotation Approved</span>
+                                                            style="color: #fff;">Delivered</span>
                                                     @else
                                                         <span
                                                             class="badge badge-sm btn-{{ $changeColor[$qorder->status] ?? 'secondary' }}"
@@ -274,7 +274,7 @@
                                                             </g>
                                                         </svg>
                                                     </a>
-                                                    @if ($qorder->deliver_status === 1)
+                                                    @if ($qorder->quotation_status === 1)
                                                         <a href="javascript:;" data-bill="{{ $qorder->id }}"
                                                             class="generate-bill" data-bs-toggle="modal"
                                                             data-bs-target="#generate-bill">

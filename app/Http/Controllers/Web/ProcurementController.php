@@ -3,13 +3,11 @@
 namespace App\Http\Controllers\Web;
 
 use App\DataTables\ProcurementDataTable;
-use App\Exports\AssetAssignmentListExport;
 use App\Http\Controllers\Controller;
 use App\Models\Asset;
 use App\Models\Procurement;
 use App\Models\ProcurementItem;
 use App\Models\Quotation;
-use App\Models\Role;
 use App\Models\User;
 use App\Repositories\AssetAssignmentRepository;
 use App\Repositories\BrandRepository;
@@ -23,7 +21,6 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Maatwebsite\Excel\Facades\Excel;
 
 class ProcurementController extends Controller
 {
@@ -40,7 +37,7 @@ class ProcurementController extends Controller
         private BrandRepository $brandRepo
 
     ) {}
-    public function index(Request $request,ProcurementDataTable $table)
+    public function index(Request $request, ProcurementDataTable $table)
     {
         $this->authorize('view_procurement');
         try {
@@ -184,7 +181,7 @@ class ProcurementController extends Controller
     public function update(Request $request, $id)
     {
         $this->authorize('edit_procurement');
-    
+
         $validatedData = $request->validate([
             'procurement_number' => 'required|string|max:255',
             'email' => 'required|email',
@@ -198,7 +195,7 @@ class ProcurementController extends Controller
                 }
             }],
         ]);
-    
+
         try {
             // Step 1: Update main procurement details
             $procurement = Procurement::findOrFail($id);
@@ -209,14 +206,14 @@ class ProcurementController extends Controller
                 'delivery_date' => $validatedData['delivery_date'],
                 'purpose' => $validatedData['purpose'],
             ]);
-    
+
             // Step 2: Process procurement items
             $procurementItems = json_decode($validatedData['procurement_items'], true);
-    
+
             // Collect existing item IDs for deletion check
             $existingItemIds = $procurement->items()->pluck('id')->toArray();
             $updatedItemIds = [];
-    
+
             foreach ($procurementItems as $item) {
                 if (isset($item['id']) && in_array($item['id'], $existingItemIds)) {
                     // Update existing item
@@ -239,17 +236,16 @@ class ProcurementController extends Controller
                     $updatedItemIds[] = $newItem->id;
                 }
             }
-    
+
             // Step 3: Delete items not included in the update
             $itemsToDelete = array_diff($existingItemIds, $updatedItemIds);
             ProcurementItem::whereIn('id', $itemsToDelete)->delete();
-    
+
             return redirect()->route('admin.procurement.index')->with('success', 'Procurement updated successfully.');
         } catch (Exception $exception) {
             return redirect()->back()->with('danger', 'Error updating procurement: ' . $exception->getMessage());
         }
     }
-    
 
     public function oldupdate(ProcurementRequest $request, $id)
     {
@@ -335,14 +331,23 @@ class ProcurementController extends Controller
         return response()->json($getquotation);
     }
 
-    public function approveStatusQuotation($id)
+    public function approveStatusQuotation(Request $request, $id)
     {
-        // $getapprove = Quotation::where('procurement_id', $id)->with(['vendor'])->get();
-        $getapprove = Quotation::find($id);
+        $getapprove = Quotation::findOrFail($id);
         $getapprove->update([
             'is_approved' => 1,
         ]);
-        return response()->json($getapprove);
+        // return response()->json($getapprove);
+
+        // $quotation = Quotation::findOrFail($id);
+        // $quotation->is_approved = 1;
+        // $quotation->save();
+
+        Quotation::where('procurement_id', $getapprove->procurement_id)
+            ->where('id', '!=', $id)
+            ->update(['is_approved' => 2]);
+        return response()->json(['message' => 'Quotation approved and others rejected.']);
+
     }
 
 }
