@@ -17,6 +17,7 @@
             2 => 'info',
             3 => 'success',
             4 => 'danger',
+            5 => 'danger',
         
             // null => 'danger'
         ];
@@ -26,6 +27,7 @@
             2 => '#ffffff',
             3 => '#ffffff',
             4 => '#ffffff',
+            5 => '#ffffff',
         ];
         $changeStatusValue = [
             0 => 'Pending',
@@ -33,6 +35,7 @@
             2 => 'Quotation Submited',
             3 => 'Delivered',
             4 => 'Pause',
+            5 => 'Rejected',
         ];
         ?>
 
@@ -246,9 +249,9 @@
                                                             style="color: #fff;">Delivered</span>
                                                     @else
                                                         <span
-                                                            class="badge badge-sm btn-{{ $changeColor[$qorder->status] ?? 'secondary' }}"
-                                                            style="color: {{ $changeTextColor[$qorder->status] ?? '#fff' }};">
-                                                            {{ $changeStatusValue[$qorder->status] ?? 'Unknown Status' }}
+                                                            class="badge badge-sm btn-{{ $changeColor[$qorder->quotation_status] ?? 'secondary' }}"
+                                                            style="color: {{ $changeTextColor[$qorder->quotation_status] ?? '#fff' }};">
+                                                            {{ $changeStatusValue[$qorder->quotation_status] ?? 'Unknown Status' }}
                                                         </span>
                                                     @endif
                                                 </td>
@@ -287,7 +290,6 @@
                                                         </a>
                                                     @else
                                                     @endif
-
                                                 </td>
                                             </tr>
                                         @endforeach

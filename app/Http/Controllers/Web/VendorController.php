@@ -157,6 +157,7 @@ class VendorController extends Controller
                     $quotation = $item->quotation->first(); // Use the first quotation as an example
                     $item->quotation_status = $quotation->quotation_status;
                     $item->deliver_status = $quotation->quotation_status;
+                    // dd($item->quotation_status, $item->deliver_status);
                 }
                 unset($item->quotation); // Remove the quotation relationship if not needed
                 return $item;

@@ -50,7 +50,6 @@
             e.preventDefault();
             let url = $(this).data('href');
             $.get(url, function (data) {
-
                 $('.modal-title').html('Holiday Detail');
                 $('.occasion').text(data.data.event);
                 $('.occasion_date').text((data.data.event_date));
