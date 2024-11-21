@@ -37,7 +37,7 @@ class LeadEnquiriesController extends Controller
         $leadsource = LeadSource::all();
         $setting = LeadSetting::first();
         $leadform = LeadForms::first();
-        return view('leadsenquiries.create', ['leadcategory' => $leadcategory, 'leadsource' => $leadsource, 'setting' => $setting, 'leadform' => $leadform]);
+        return view('leadenquiry.create', ['leadcategory' => $leadcategory, 'leadsource' => $leadsource, 'setting' => $setting, 'leadform' => $leadform]);
     }
 
     public function list(Request $request)
@@ -84,7 +84,7 @@ class LeadEnquiriesController extends Controller
                 if ($filterParameters['leadagent']) {
                     $query->where('leadagent', $filterParameters['leadagent']);
                 }
-                $leadsenquiries = $query->paginate($datanum);
+                $leadenquiry = $query->paginate($datanum);
             } else {
                 $isAdmin = false;
                 $leadAgent = LeadAgent::where('userid', $user->id)->first();
@@ -101,13 +101,13 @@ class LeadEnquiriesController extends Controller
                     if ($filterParameters['leadstatus']) {
                         $query->where('leadstatus', $filterParameters['leadstatus']);
                     }
-                    $leadsenquiries = $query->paginate($datanum);
+                    $leadenquiry = $query->paginate($datanum);
                 } else {
-                    $leadsenquiries = collect();
+                    $leadenquiry = collect();
                 }
             }
 
-            return view('admin.leadsenquiries.index', ['leadsenquiries' => $leadsenquiries, 'isAdmin' => $isAdmin, 'leadstatuses' => $leadstatuses, 'leadformlink' => $leadformlink, 'leadagents' => $leadagents, 'leadStatuses' => $leadStatuses, 'leadform' => $leadform, 'leadcategory' => $leadcategory, 'filterParameters' => $filterParameters, 'leadsource' => $leadsource]);
+            return view('admin.leadenquiry.index', ['leadenquiry' => $leadenquiry, 'isAdmin' => $isAdmin, 'leadstatuses' => $leadstatuses, 'leadformlink' => $leadformlink, 'leadagents' => $leadagents, 'leadStatuses' => $leadStatuses, 'leadform' => $leadform, 'leadcategory' => $leadcategory, 'filterParameters' => $filterParameters, 'leadsource' => $leadsource]);
         } catch (Exception $exception) {
             return redirect()->back()->with('danger', $exception->getMessage());
         }
@@ -325,7 +325,7 @@ class LeadEnquiriesController extends Controller
     public function create()
     {
         // $leadcategory = LeadCategory::all();
-        return view('leadsenquiries.create');
+        return view('leadenquiry.create');
     }
 
     /*
@@ -432,7 +432,7 @@ class LeadEnquiriesController extends Controller
     public function edit_crm($id)
     {
         try {
-            $leadsenquiries = LeadEnquery::with('status')->find($id);
+            $leadenquiry = LeadEnquery::with('status')->find($id);
             $leadstatuses = LeadStatus::all();
             $leadagents = LeadAgent::all();
             $leadsources = LeadSource::all();
@@ -441,7 +441,7 @@ class LeadEnquiriesController extends Controller
             $branch = Branch::all();
             $departments = Department::all();
             $users = User::all();
-            return view('admin.leadsenquiries.edit', ['leadsenquiries' => $leadsenquiries, 'users' => $users, 'branch' => $branch, 'departments' => $departments, 'leadstatuses' => $leadstatuses, 'leadsources' => $leadsources, 'leadcategory' => $leadcategory, 'leadagents' => $leadagents, 'leadStatuses' => $leadStatuses]);
+            return view('admin.leadenquiry.edit', ['leadenquiry' => $leadenquiry, 'users' => $users, 'branch' => $branch, 'departments' => $departments, 'leadstatuses' => $leadstatuses, 'leadsources' => $leadsources, 'leadcategory' => $leadcategory, 'leadagents' => $leadagents, 'leadStatuses' => $leadStatuses]);
         } catch (\Throwable $th) {
             return redirect()->back()->with('danger', $th->getMessage());
         }
@@ -478,27 +478,27 @@ class LeadEnquiriesController extends Controller
             // 'assign_user.required' => 'Please select department, then choose the Agent',
         ]);
 
-        $leadsenquiries = LeadEnquery::find($id);
+        $leadenquiry = LeadEnquery::find($id);
         $assignUserId = $request->input('assign_user');
-        $leadsenquiries->name = $request->name;
-        $leadsenquiries->city = $request->city;
-        $leadsenquiries->email = $request->email;
-        $leadsenquiries->state = $request->state;
-        $leadsenquiries->companyname = $request->companyname;
-        $leadsenquiries->country = $request->country;
-        $leadsenquiries->website = $request->website;
-        $leadsenquiries->postalcode = $request->postalcode;
-        $leadsenquiries->address = $request->address;
-        $leadsenquiries->number = $request->number;
-        $leadsenquiries->message = $request->message;
-        $leadsenquiries->leadsource = $request->input('leadsource');
-        $leadsenquiries->leadcategory = $request->input('leadcategory');
-        // $leadsenquiries->assign_user = $assignUserId; leadagents
-        $leadsenquiries->leadagent = $request->input('leadagents');
+        $leadenquiry->name = $request->name;
+        $leadenquiry->city = $request->city;
+        $leadenquiry->email = $request->email;
+        $leadenquiry->state = $request->state;
+        $leadenquiry->companyname = $request->companyname;
+        $leadenquiry->country = $request->country;
+        $leadenquiry->website = $request->website;
+        $leadenquiry->postalcode = $request->postalcode;
+        $leadenquiry->address = $request->address;
+        $leadenquiry->number = $request->number;
+        $leadenquiry->message = $request->message;
+        $leadenquiry->leadsource = $request->input('leadsource');
+        $leadenquiry->leadcategory = $request->input('leadcategory');
+        // $leadenquiry->assign_user = $assignUserId; leadagents
+        $leadenquiry->leadagent = $request->input('leadagents');
 
-        $leadsenquiries->leadstatus = $request->input('leadstatus');
-        $leadsenquiries->save();
-        return redirect()->route('admin.leadsenquiries.index')->with('success', 'Lead Enquiries updated/Assign successfully!');
+        $leadenquiry->leadstatus = $request->input('leadstatus');
+        $leadenquiry->save();
+        return redirect()->route('admin.leadenquiry.index')->with('success', 'Lead Enquiries updated/Assign successfully!');
     }
 
     /**
@@ -510,10 +510,10 @@ class LeadEnquiriesController extends Controller
     public function destroy($id)
     {
         // Find the lead source by ID
-        $leadsenquiries = LeadEnquery::findOrFail($id);
+        $leadenquiry = LeadEnquery::findOrFail($id);
 
         // Delete the lead source
-        $leadsenquiries->delete();
+        $leadenquiry->delete();
 
         // Redirect back with a success message
         return redirect()->back()->with('success', 'Lead Enquery deleted successfully!');

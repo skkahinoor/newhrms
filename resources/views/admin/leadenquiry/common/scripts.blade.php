@@ -93,7 +93,7 @@
                 var enquireId = $(this).data('id');
                 $.ajax({
                     type: 'GET',
-                    url: "{{ url('admin/leadsenquiries/lead-enquiries') }}" + '/' +
+                    url: "{{ url('admin/leadenquiry/lead-enquiries') }}" + '/' +
                         enquireId,
                     success: function(data) {
                         // For lead Data
@@ -187,7 +187,7 @@
 
         $('.deleteLeadEnquiryLink').on('click', function() {
             var id = $(this).data('id');
-            var url = "{{ route('admin.leadsenquiries.destroy', '') }}/" + id;
+            var url = "{{ route('admin.leadenquiry.destroy', '') }}/" + id;
             $('#delete-leadenquiry-form').attr('action', url);
             $('#deleteleadenquiryModal').modal('show');
         });
@@ -230,7 +230,7 @@
 
                 // Send an AJAX request to update the status in the database
                 $.ajax({
-                    url: 'leadsenquiries/update-status', // Update this with the correct route
+                    url: 'leadenquiry/update-status', // Update this with the correct route
                     method: 'POST',
                     data: {
                         lead_id: leadId,
@@ -269,7 +269,7 @@
 
                 // Send AJAX request to assign the agent
                 $.ajax({
-                    url: '{{ route('admin.leadsenquiries.update-lagents') }}',
+                    url: '{{ route('admin.leadenquiry.update-lagents') }}',
                     method: 'POST',
                     data: {
                         lead_id: leadId,
@@ -303,7 +303,7 @@
                                     var statusId = result
                                         .value;
                                     $.ajax({
-                                        url: 'leadsenquiries/update-lstatus',
+                                        url: 'leadenquiry/update-lstatus',
                                         method: 'POST',
                                         data: {
                                             lead_id: leadId,
@@ -421,8 +421,8 @@
                     '#dropdownMenuButton3';
                 let optionsContainer = dropdownType === 'status' ? '#lead-status-options' :
                     '#lead-agent-options';
-                let fetchUrl = dropdownType === 'status' ? 'leadsenquiries/get-lead-statuses' :
-                    'leadsenquiries/get-lead-agents';
+                let fetchUrl = dropdownType === 'status' ? 'leadenquiry/get-lead-statuses' :
+                    'leadenquiry/get-lead-agents';
 
                 // Show the relevant dropdown
                 dropdownType === 'status' ? $('#second-dropdown').show() : $('#third-dropdown').show();
@@ -490,7 +490,7 @@
 
                 if (isDeleteAction && selectedLeadIds.length > 0) {
                     // Make an AJAX call to delete selected leads
-                    $.post('leadsenquiries/delete-leads', {
+                    $.post('leadenquiry/delete-leads', {
                         lead_ids: selectedLeadIds
                     }, function(response) {
                         Swal.fire('Success!', 'Leads deleted successfully!', 'success')
@@ -502,7 +502,7 @@
                         Swal.fire('Error!', 'Failed to delete leads', 'error');
                     });
                 } else if (selectedLeadStatusId && selectedLeadIds.length > 0) {
-                    $.post('leadsenquiries/update-lead-status', {
+                    $.post('leadenquiry/update-lead-status', {
                         lead_ids: selectedLeadIds,
                         status_id: selectedLeadStatusId
                     }, function(response) {
@@ -515,7 +515,7 @@
                         Swal.fire('Error!', 'Failed to update status', 'error');
                     });
                 } else if (selectedLeadAgentId && selectedLeadIds.length > 0) {
-                    $.post('leadsenquiries/update-lead-agent', {
+                    $.post('leadenquiry/update-lead-agent', {
                         lead_ids: selectedLeadIds,
                         agent_id: selectedLeadAgentId
                     }, function(response) {

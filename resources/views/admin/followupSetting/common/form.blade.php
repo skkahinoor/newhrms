@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col-lg-4 col-md-6 mb-4">
         <label for="name" class="form-label"> Name <span style="color: red">*</span></label>
-        <input type="text" class="form-control  @error('name') is-validate @enderror " id="name" name="name" required value="{{ $leadsenquiries->name }}"
+        <input type="text" class="form-control  @error('name') is-validate @enderror " id="name" name="name" required value="{{ $leadenquiry->name }}"
                autocomplete="off" placeholder="Enter Name">
                @error('name')
                    <p>{{ $message }}</p>
@@ -10,7 +10,7 @@
 
     <div class="col-lg-4 col-md-6 mb-4">
         <label for="email" class="form-label"> Email <span style="color: red">*</span></label>
-        <input type="email" class="form-control @error('email') is-validate @enderror" id="email" name="email" required value="{{  old('email',$leadsenquiries->email) }}"
+        <input type="email" class="form-control @error('email') is-validate @enderror" id="email" name="email" required value="{{  old('email',$leadenquiry->email) }}"
                autocomplete="off" placeholder="Enter Client email" >
                @error('email')
                    <p>{{ $message }}</p>
@@ -19,7 +19,7 @@
 
     <div class="col-lg-4 col-md-6 mb-4">
         <label for="contact_no" class="form-label"> Number <span style="color: red">*</span> </label>
-        <input type="text" class="form-control  @error('number') is-validate @enderror" id="contact_no" name="number" required value="{{ old('number',$leadsenquiries->number) }}"
+        <input type="text" class="form-control  @error('number') is-validate @enderror" id="contact_no" name="number" required value="{{ old('number',$leadenquiry->number) }}"
                autocomplete="off" placeholder="Enter Contact Number" >
                @error('number')
                <p>{{ $message }}</p>
@@ -28,7 +28,7 @@
 
     <div class="col-lg-4 col-md-6 mb-4">
         <label for="address" class="form-label"> Address  </label>
-        <input type="text" class="form-control  @error('address') is-validate @enderror" id="address" name="address" required value="{{ old('address',$leadsenquiries->address) }}"
+        <input type="text" class="form-control  @error('address') is-validate @enderror" id="address" name="address" required value="{{ old('address',$leadenquiry->address) }}"
                autocomplete="off" placeholder="Enter Client address">
                @error('address')
                <p>{{ $message }}</p>
@@ -38,7 +38,7 @@
 
     <div class="col-lg-4 col-md-6 mb-4">
         <label for="message" class="form-label"> Message <span style="color: red">*</span> </label>
-               <textarea name="message" class="form-control @error('message') is-validate @enderror" id="message" cols="5" rows="2">{{ old('message',$leadsenquiries->message) }}</textarea>
+               <textarea name="message" class="form-control @error('message') is-validate @enderror" id="message" cols="5" rows="2">{{ old('message',$leadenquiry->message) }}</textarea>
                @error('message')
                <p>{{ $message }}</p>
            @enderror

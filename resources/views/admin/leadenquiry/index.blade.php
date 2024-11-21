@@ -11,7 +11,7 @@
 
         @include('admin.section.flash_message')
 
-        @include('leadsenquiries.common.breadcrumb')
+        @include('leadenquiry.common.breadcrumb')
 
 
         {{-- Bootstrap Gutters  --}}
@@ -53,7 +53,7 @@
                         </svg>&nbsp;Import</button>
 
                     <button type="button" class="sk-g-btn btn-outline-dark btn-sm"
-                        onclick="window.location.href='leadsenquiries/export-leadenquery';">
+                        onclick="window.location.href='leadenquiry/export-leadenquery';">
                         <svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="0 0 48 48">
                             <path fill="#ffccbc"
                                 d="M7 40V8c0-2.2 1.8-4 4-4h24c2.2 0 4 1.8 4 4v32c0 2.2-1.8 4-4 4H11c-2.2 0-4-1.8-4-4" />
@@ -197,7 +197,7 @@
 
         {{-- Lead Filter start  --}}
         <div class="search-box p-4 bg-white rounded mb-3 box-shadow">
-            <form class="forms-sample" action="{{ route('admin.leadsenquiries.index') }}" method="get">
+            <form class="forms-sample" action="{{ route('admin.leadenquiry.index') }}" method="get">
                 <h5>Lead Filter</h5>
                 <div class="row align-items-center">
 
@@ -233,7 +233,7 @@
                     <div class="col-lg-2 col-md-6 mt-3">
                         <div class="d-flex float-md-end">
                             <button type="submit" class="btn btn-block btn-secondary me-2">Filter</button>
-                            <a class="btn btn-block btn-primary" href="{{ route('admin.leadsenquiries.index') }}">Reset</a>
+                            <a class="btn btn-block btn-primary" href="{{ route('admin.leadenquiry.index') }}">Reset</a>
                         </div>
                     </div>
 
@@ -265,7 +265,7 @@
                             <p>No leads available.</p>
                         @else
                             {{-- Lead Source  --}}
-                            @include('admin.leadsenquiries.form')
+                            @include('admin.leadenquiry.form')
                             {{-- End Lead Source  --}}
                         @endif
                     </div>
@@ -298,7 +298,7 @@
                 </div>
                 <div class="modal-body">
                     <!-- Your form or content for adding a new lead goes here -->
-                    <form class="forms-sample" action="leadsenquiries/addleadstore" method="POST">
+                    <form class="forms-sample" action="leadenquiry/addleadstore" method="POST">
                         @csrf
                         <div class="row mb-3">
                             @if ($leadform->name == 1)
@@ -499,7 +499,7 @@
                 </div>
                 <div class="modal-body">
                     <!-- Your form or content for adding a new lead goes here -->
-                    <form class="box" action="leadsenquiries/import-leadenquery" method="POST"
+                    <form class="box" action="leadenquiry/import-leadenquery" method="POST"
                         enctype="multipart/form-data">
                         @csrf
                         <label>Select Excel File:( <span class="text-danger">Only csv,xlsx Format will accepted</span>
@@ -684,5 +684,5 @@
 @endsection
 
 @section('scripts')
-    @include('admin.leadsenquiries.common.scripts')
+    @include('admin.leadenquiry.common.scripts')
 @endsection

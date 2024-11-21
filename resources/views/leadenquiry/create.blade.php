@@ -110,7 +110,7 @@
                 {{ $setting->leadformtitle }}
             </div>
             <div class="card-body">
-                <form id="leadAdd" class="forms-sample" action="{{ route('leadsenquiries.store') }}" method="POST">
+                <form id="leadAdd" class="forms-sample" action="{{ route('leadenquiry.store') }}" method="POST">
                     @csrf
                     <div class="row mb-3">
                         @if ($leadform->name == 1)
@@ -343,7 +343,7 @@
                 e.preventDefault();
 
                 $.ajax({
-                    url: "{{ route('leadsenquiries.store') }}",
+                    url: "{{ route('leadenquiry.store') }}",
                     method: 'post',
                     data: $('form').serialize(),
                     success: function(response) {

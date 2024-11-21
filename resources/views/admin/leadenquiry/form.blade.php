@@ -1,4 +1,4 @@
-@if ($leadsenquiries->count() == 0)
+@if ($leadenquiry->count() == 0)
     <br>
     <p>No leads available.</p>
 @else
@@ -19,11 +19,11 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($leadsenquiries as $key => $value)
+                @foreach ($leadenquiry as $key => $value)
                     <tr>
                         <td><input type="checkbox" style="cursor: pointer;" class="select-item"
                                 value="{{ $value->id }}"></td>
-                        <td>{{ $leadsenquiries->firstItem() + $key }}</td>
+                        <td>{{ $leadenquiry->firstItem() + $key }}</td>
                         <td><span style="font-weight: bold;">{{ $value->name ?? 'Not Set' }}</span></td>
                         <td>{{ $value->email ?? 'Not Set' }}</td>
                         <td><a href="tel:{{ $value->number }}">{{ $value->number ?? 'Not Set' }}</a></td>
@@ -227,7 +227,7 @@
                                         </li>
                                         <li><a style="color: #383838 !important;font-size:13px;font-weight:bold;"
                                                 class="dropdown-item"
-                                                href="{{ route('admin.leadsenquiries.edit', $value->id) }}"
+                                                href="{{ route('admin.leadenquiry.edit', $value->id) }}"
                                                 title="Edit Lead Enquiries"><svg xmlns="http://www.w3.org/2000/svg"
                                                     width="1rem" height="1rem" viewBox="0 0 48 48">
                                                     <g fill="none" stroke="#000" stroke-linejoin="round"
@@ -334,6 +334,6 @@
             </tbody>
         </table>
         <br>
-        <div class="row">{{ $leadsenquiries->links() }}</div>
+        <div class="row">{{ $leadenquiry->links() }}</div>
     </div>
 @endif

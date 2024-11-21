@@ -75,9 +75,9 @@ Route::get('/', function () {
 
 /** Crm Enquery route */
 
-Route::get('/leadsenquiries', [LeadEnquiriesController::class, 'index'])->name('leadsenquiries.index');
+Route::get('/leadenquiry', [LeadEnquiriesController::class, 'index'])->name('leadenquiry.index');
 
-Route::post('leadsenquiries', [LeadEnquiriesController::class, 'store'])->name('leadsenquiries.store');
+Route::post('leadenquiry', [LeadEnquiriesController::class, 'store'])->name('leadenquiry.store');
 
 // Lead Form
 Route::get('/leadform', function () {
@@ -243,45 +243,45 @@ Route::group([
         Route::get('clients/delete/{id}', [ClientController::class, 'delete'])->name('clients.delete');
         Route::get('clients/toggle-status/{id}', [ClientController::class, 'toggleIsActiveStatus'])->name('clients.toggle-status');
 
-        /** leadsenquiries route */
-        // Route::resource('leadsenquiries', CrmEnqueriesController::class);
-        Route::get('/leadsenquiries', [LeadEnquiriesController::class, 'list'])->name('leadsenquiries.index');
-        Route::get('/leadsenquiries/{id}/edit', [LeadEnquiriesController::class, 'edit_crm'])->name('leadsenquiries.edit');
-        Route::put('leadsenquiries/{id}', [LeadEnquiriesController::class, 'update'])->name('leadsenquiries.update');
-        Route::get('leadsenquiries/get-users-by-department/{departmentId}', [LeadEnquiriesController::class, 'getUsersByDepartment'])->name('leadsenquiries.getUsersByDepartment');
-        // Route::get('leadsenquiries/{id}',[LeadEnquiriesController::class, 'show'])->name('admin.leadsenquiries.show');
-        Route::get('leadsenquiries/lead-enquiries/{id}', [LeadEnquiriesController::class, 'show'])->name('leadsenquiries.show');
-        Route::put('leadsenquiries/lead-enquiries-delete/{id}', [LeadEnquiriesController::class, 'destroy'])->name('leadsenquiries.destroy');
+        /** leadenquiry route */
+        // Route::resource('leadenquiry', CrmEnqueriesController::class);
+        Route::get('/leadenquiry', [LeadEnquiriesController::class, 'list'])->name('leadenquiry.index');
+        Route::get('/leadenquiry/{id}/edit', [LeadEnquiriesController::class, 'edit_crm'])->name('leadenquiry.edit');
+        Route::put('leadenquiry/{id}', [LeadEnquiriesController::class, 'update'])->name('leadenquiry.update');
+        Route::get('leadenquiry/get-users-by-department/{departmentId}', [LeadEnquiriesController::class, 'getUsersByDepartment'])->name('leadenquiry.getUsersByDepartment');
+        // Route::get('leadenquiry/{id}',[LeadEnquiriesController::class, 'show'])->name('admin.leadenquiry.show');
+        Route::get('leadenquiry/lead-enquiries/{id}', [LeadEnquiriesController::class, 'show'])->name('leadenquiry.show');
+        Route::put('leadenquiry/lead-enquiries-delete/{id}', [LeadEnquiriesController::class, 'destroy'])->name('leadenquiry.destroy');
         // from Dropdown
-        Route::post('leadsenquiries/update-status', [LeadEnquiriesController::class, 'updateStatus'])->name('leadsenquiries.updateStatus');
-        Route::post('leadsenquiries/update-agents', [LeadEnquiriesController::class, 'updateAgents'])->name('leadsenquiries.updateAgents');
+        Route::post('leadenquiry/update-status', [LeadEnquiriesController::class, 'updateStatus'])->name('leadenquiry.updateStatus');
+        Route::post('leadenquiry/update-agents', [LeadEnquiriesController::class, 'updateAgents'])->name('leadenquiry.updateAgents');
         // from checkbox
-        Route::get('leadsenquiries/get-lead-statuses', [LeadEnquiriesController::class, 'getLeadStatuses'])->name('leadsenquiries.getLeadStatuses');
-        Route::post('leadsenquiries/update-lead-status', [LeadEnquiriesController::class, 'updateLeadStatus'])->name('leadsenquiries.updateLeadStatus');
+        Route::get('leadenquiry/get-lead-statuses', [LeadEnquiriesController::class, 'getLeadStatuses'])->name('leadenquiry.getLeadStatuses');
+        Route::post('leadenquiry/update-lead-status', [LeadEnquiriesController::class, 'updateLeadStatus'])->name('leadenquiry.updateLeadStatus');
 
-        Route::get('leadsenquiries/get-lead-agents', [LeadEnquiriesController::class, 'getLeadAgents'])->name('leadsenquiries.getLeadAgents');
-        Route::post('leadsenquiries/update-lead-agent', [LeadEnquiriesController::class, 'updateLeadAgent'])->name('leadsenquiries.updateLeadAgent');
+        Route::get('leadenquiry/get-lead-agents', [LeadEnquiriesController::class, 'getLeadAgents'])->name('leadenquiry.getLeadAgents');
+        Route::post('leadenquiry/update-lead-agent', [LeadEnquiriesController::class, 'updateLeadAgent'])->name('leadenquiry.updateLeadAgent');
 
         // Store Lead Enquery Through ADD Lead Modal
-        Route::post('leadsenquiries/addleadstore', [LeadEnquiriesController::class, 'addleadstore'])->name('leadsenquiries.addleadstore');
+        Route::post('leadenquiry/addleadstore', [LeadEnquiriesController::class, 'addleadstore'])->name('leadenquiry.addleadstore');
 
         // Lead Enquery Export and Import option
-        Route::get('leadsenquiries/export-leadenquery', function () {
+        Route::get('leadenquiry/export-leadenquery', function () {
             return Excel::download(new LeadEnqueryExport, 'LeadEnquery.xlsx');
         });
-        Route::post('leadsenquiries/import-leadenquery', [LeadEnquiriesController::class, 'import'])->name('leadsenquiries.import');
+        Route::post('leadenquiry/import-leadenquery', [LeadEnquiriesController::class, 'import'])->name('leadenquiry.import');
 
         // from Swalfire after assign Agents
-        Route::post('leadsenquiries/update-lagents', [LeadEnquiriesController::class, 'updateLAgents'])->name('leadsenquiries.update-lagents');
-        Route::post('leadsenquiries/update-lstatus', [LeadEnquiriesController::class, 'updateLStatus'])->name('leadsenquiries.update-lstatus');
+        Route::post('leadenquiry/update-lagents', [LeadEnquiriesController::class, 'updateLAgents'])->name('leadenquiry.update-lagents');
+        Route::post('leadenquiry/update-lstatus', [LeadEnquiriesController::class, 'updateLStatus'])->name('leadenquiry.update-lstatus');
 
-        Route::post('leadsenquiries/delete-leads', [LeadEnquiriesController::class, 'deleteLeads'])->name('leadsenquiries.deleteLeads');
+        Route::post('leadenquiry/delete-leads', [LeadEnquiriesController::class, 'deleteLeads'])->name('leadenquiry.deleteLeads');
 
         // Dashboard Follow up in swal fire
         Route::get('dashboard/followups', [DashboardController::class, 'showFollowUps']);
 
         // Follow Up Routes which is under the part of Lead Enquiry
-        Route::post('leadsenquiries/addfollowup/store', [LeadEnquiriesController::class, 'addfollowup_store'])->name('addfollowup.store');
+        Route::post('leadenquiry/addfollowup/store', [LeadEnquiriesController::class, 'addfollowup_store'])->name('addfollowup.store');
 
         // Lead Setting
         Route::post('leads-setting/leadsetting/setting', [LeadsSettingController::class, 'setting'])->name('leadsetting.setting');
