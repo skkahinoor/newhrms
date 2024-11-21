@@ -17,7 +17,7 @@
     <link href="{{ asset('assets/vendor/css/nucleo-icons.css') }}" rel="stylesheet" />
     <link href="{{ asset('assets/vendor/css/nucleo-svg.css') }}" rel="stylesheet" />
     <!-- Font Awesome Icons -->
-    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/2c6fa898a2.js" crossorigin="anonymous"></script>
     <!-- Material Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
     <!-- CSS Files -->

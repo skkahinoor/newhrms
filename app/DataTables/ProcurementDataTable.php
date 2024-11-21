@@ -83,7 +83,7 @@ class ProcurementDataTable extends DataTable
                 return $procurement->delivery_date ? date('d-m-Y', strtotime($procurement->delivery_date)) : 'Not Set';
             })
             ->editColumn('procurement_number', function ($procurement) {
-                return '<span class="copy-procurement-number" data-number="' . $procurement->procurement_number . '" style="cursor: pointer;">' . $procurement->procurement_number . '</span>';
+                return '<span class="copy-procurement-number pro-copy-hover" data-number="' . $procurement->procurement_number . '" style="cursor: pointer;">' . $procurement->procurement_number . '</span>';
             })
             ->editColumn('status', function ($procurement) {
                 $statusColors = [

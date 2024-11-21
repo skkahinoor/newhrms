@@ -39,6 +39,15 @@
             font-weight: 600 !important;
 
         }
+
+        .pro-copy-hover {
+            color: #000;
+            transition: color 0.3s ease;
+        }
+
+        .pro-copy-hover:hover {
+            color: #e82e5f;
+        }
     </style>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
         integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
