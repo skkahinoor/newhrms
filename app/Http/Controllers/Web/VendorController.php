@@ -8,6 +8,7 @@ use App\Models\Procurement;
 use App\Models\ProcurementItem;
 use App\Models\Quotation;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -28,26 +29,25 @@ class VendorController extends Controller
             $getUserDetails->decoded_asset_types = [];
         }
 
-        // Display Complete Orders
-        $totalRow = Procurement::count();
-        $completeOrders = Procurement::where('status', 3)->with(['items', 'users', 'role', 'company', 'asset_types', 'brands', 'totalprice'])->paginate(5)
-            ->through(function ($prices) {
-                // dd($price->totalprice);
-                foreach ($prices->totalprice as $price) {
-                    // dd($price->total_item_price);
-                    $prices->total_item_price = $price->total_item_price;
-                    $prices->bill_file = $price->bill_file;
-                }
-                unset($prices->totalprice);
-                return $prices;
-            })
-        ;
+        // Display Complete Orders Based on User's Quotations
+        $totalRow = Quotation::where('vendor_id', $user->id)->where('quotation_status', 1)->count();
 
-        $calculateAmount = Quotation::where('procurement_id', $getUserDetails->id)->where('quotation_status', 1)->sum('total_item_price');
-// dd($calculateAmount);
-        // dd($completeOrders->toArray());
+        $vid = auth()->user()->id;
+        $completeOrders = Quotation::where('quotation_status', 1)->where('vendor_id', $vid)->with(['procurement'])->paginate(5);
+        // dd($completeOrders);
 
-        return view('vendor.dashboard', ['getUserDetails' => $getUserDetails, 'completeOrders' => $completeOrders, 'totalRow' => $totalRow, 'calculateAmount' => $calculateAmount]);
+        // Calculate Amount for the Current User's Accepted Quotations
+        $calculateAmount = Quotation::where('vendor_id', $getUserDetails->id)
+            ->where('quotation_status', 1)
+            ->sum('total_item_price');
+
+        // Pass data to the view
+        return view('vendor.dashboard', [
+            'getUserDetails' => $getUserDetails,
+            'completeOrders' => $completeOrders,
+            'totalRow' => $totalRow,
+            'calculateAmount' => $calculateAmount,
+        ]);
     }
 
     public function profile()
@@ -208,20 +208,25 @@ class VendorController extends Controller
         return response()->json($assetdetails);
     }
 
-    public function setDeliver($status)
+    public function setDeliver($procurementId)
     {
-        // Update the Quotation's status
-        $vId = auth()->user()->id;
-        $setDeliver = Quotation::where('procurement_id', $status)->where('vendor_id', $vId)->update([
-            'quotation_status' => 1,
-        ]);
+        $vendorId = auth()->user()->id;
 
-        // Update the Procurement's status
-        $setDeliverProcurement = Procurement::where('id', $status)->update([
-            'status' => 3,
-        ]);
+        // Update the current vendor's quotation status to 1
+        $setDeliver = Quotation::where('procurement_id', $procurementId)
+            ->where('vendor_id', $vendorId)
+            ->update(['quotation_status' => 1]);
 
-        // Check if both updates were successful
+        // Update other vendors' quotations for the same procurement to status 2
+        $updateOthers = Quotation::where('procurement_id', $procurementId)
+            ->where('vendor_id', '!=', $vendorId)
+            ->update(['quotation_status' => 2]);
+
+        // Update the Procurement's status to 3
+        $setDeliverProcurement = Procurement::where('id', $procurementId)
+            ->update(['status' => 3]);
+
+        // Check if updates were successful
         if ($setDeliver && $setDeliverProcurement) {
             return response()->json([
                 'success' => true,
@@ -314,6 +319,117 @@ class VendorController extends Controller
         ]);
 
         return response()->json(['message' => 'Quotation Submitted Successfully!'], 200);
+    }
+
+    // Dashboard Chat methods
+    // public function getCombinedChartData()
+    // {
+    //     $vid = auth()->user()->id;
+
+    //     // Line Chart Data - Daily Sales
+    //     $dailyData = Quotation::where('vendor_id', $vid)
+    //         ->where('quotation_status', 1)
+    //         ->selectRaw('DATE(created_at) as date, SUM(total_item_price) as total_sales')
+    //         ->groupBy('date')
+    //         ->orderBy('date', 'asc')
+    //         ->get();
+
+    //     $lineLabels = $dailyData->pluck('date'); // Dates for the X-axis
+    //     $lineData = $dailyData->pluck('total_sales'); // Sales totals for the Y-axis
+
+    //     // Monthly Bar Chart Data
+    //     $monthlyData = Quotation::where('vendor_id', $vid)
+    //         ->where('quotation_status', 1)
+    //         ->selectRaw('MONTH(created_at) as month, YEAR(created_at) as year, COUNT(*) as total_orders')
+    //         ->groupBy('year', 'month')
+    //         ->orderBy('year', 'asc')
+    //         ->orderBy('month', 'asc')
+    //         ->get();
+
+    //     $monthlyLabels = $monthlyData->map(function ($item) {
+    //         return Carbon::createFromDate($item->year, $item->month, 1)->format('M'); // Get month abbreviation
+    //     });
+    //     $monthlyDataValues = $monthlyData->pluck('total_orders'); // Monthly total orders
+
+    //     // Weekly Bar Chart Data
+    //     $weeklyData = Quotation::where('vendor_id', $vid)
+    //         ->where('quotation_status', 1)
+    //         ->selectRaw('WEEK(created_at) as week, YEAR(created_at) as year, COUNT(*) as total_orders')
+    //         ->groupBy('year', 'week')
+    //         ->orderBy('year', 'asc')
+    //         ->orderBy('week', 'asc')
+    //         ->get();
+
+    //     $weeklyLabels = $weeklyData->map(function ($item) {
+    //         return 'Week ' . $item->week; // Format as Week 1, Week 2, etc.
+    //     });
+    //     $weeklyDataValues = $weeklyData->pluck('total_orders'); // Weekly total orders
+
+    //     // Return the combined data for both charts
+    //     return response()->json([
+    //         'line_labels' => $lineLabels, // Daily sales labels (dates)
+    //         'line_data' => $lineData, // Daily sales data (total sales)
+    //         'monthly_labels' => $monthlyLabels, // Monthly labels (Jan, Feb, Mar)
+    //         'monthly_data' => $monthlyDataValues, // Monthly total orders
+    //         'weekly_labels' => $weeklyLabels, // Weekly labels (Week 1, Week 2, etc.)
+    //         'weekly_data' => $weeklyDataValues, // Weekly total orders
+    //     ]);
+    // }
+
+    public function getCombinedChartData()
+    {
+        $vid = auth()->user()->id;
+
+        // Line Chart Data - Daily Sales
+        $dailyData = Quotation::where('vendor_id', $vid)
+            ->where('quotation_status', 1)
+            ->selectRaw('DATE(created_at) as date, SUM(total_item_price) as total_sales')
+            ->groupBy('date')
+            ->orderBy('date', 'asc')
+            ->get();
+
+        $lineLabels = $dailyData->pluck('date'); // Dates for the X-axis (line chart)
+        $lineData = $dailyData->pluck('total_sales'); // Sales totals for the Y-axis (line chart)
+
+        // Monthly Bar Chart Data
+        $monthlyData = Quotation::where('vendor_id', $vid)
+            ->where('quotation_status', 1)
+            ->selectRaw('MONTH(created_at) as month, YEAR(created_at) as year, COUNT(*) as total_orders')
+            ->groupBy('year', 'month')
+            ->orderBy('year', 'asc')
+            ->orderBy('month', 'asc')
+            ->get();
+
+        // Prepare Monthly Labels (abbreviated months like Jan, Feb, Mar)
+        $monthlyLabels = $monthlyData->map(function ($item) {
+            return Carbon::createFromDate($item->year, $item->month, 1)->format('M'); // Format month
+        });
+        $monthlyDataValues = $monthlyData->pluck('total_orders'); // Monthly total orders (bar chart)
+
+        // Weekly Bar Chart Data
+        $weeklyData = Quotation::where('vendor_id', $vid)
+            ->where('quotation_status', 1)
+            ->selectRaw('WEEK(created_at) as week, YEAR(created_at) as year, COUNT(*) as total_orders')
+            ->groupBy('year', 'week')
+            ->orderBy('year', 'asc')
+            ->orderBy('week', 'asc')
+            ->get();
+
+        // Prepare Weekly Labels (e.g., Week 1, Week 2, etc.)
+        $weeklyLabels = $weeklyData->map(function ($item) {
+            return 'Week ' . $item->week; // Format as Week 1, Week 2, etc.
+        });
+        $weeklyDataValues = $weeklyData->pluck('total_orders'); // Weekly total orders (bar chart)
+
+        // Return the combined data for both charts
+        return response()->json([
+            'line_labels' => $lineLabels, // Dates for line chart (daily sales)
+            'line_data' => $lineData, // Data for line chart (daily sales)
+            'monthly_labels' => $monthlyLabels, // Labels for monthly bar chart (Jan, Feb, etc.)
+            'monthly_data' => $monthlyDataValues, // Data for monthly bar chart (total orders)
+            'weekly_labels' => $weeklyLabels, // Labels for weekly bar chart (Week 1, Week 2, etc.)
+            'weekly_data' => $weeklyDataValues, // Data for weekly bar chart (total orders)
+        ]);
     }
 
 }

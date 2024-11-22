@@ -8,7 +8,7 @@
     <?php
     $changeColor = [
         0 => 'warning',
-        1 => 'primary',
+        1 => 'success',
         2 => 'info',
         3 => 'success',
         4 => 'danger',
@@ -24,9 +24,9 @@
     ];
     $changeStatusValue = [
         0 => 'Pending',
-        1 => 'Active',
-        2 => 'Quotation Submited',
-        3 => 'Delivered',
+        1 => 'Delivered',
+        2 => 'Rejected',
+        3 => 'Unset status',
         4 => 'Pause',
     ];
     ?>
@@ -79,8 +79,8 @@
                             <i class="material-icons opacity-10">person</i>
                         </div>
                         <div class="text-end pt-1">
-                            <p class="text-sm mb-0 text-capitalize">New Clients</p>
-                            <h4 class="mb-0">3,462</h4>
+                            <p class="text-sm mb-0 text-capitalize">Order Complete</p>
+                            <h4 class="mb-0">{{ $totalRow }}</h4>
                         </div>
                     </div>
                     <hr class="dark horizontal my-0">
@@ -111,8 +111,27 @@
             </div>
         </div>
         <div class="row mt-4">
+
             <div class="col-lg-4 col-md-6 mt-4 mb-4">
-                <div class="card z-index-2 ">
+                <div class="card z-index-2">
+                    <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
+                        <div class="bg-gradient-dark shadow-dark border-radius-lg py-3 pe-1">
+                            <div class="chart">
+                                <canvas id="chart-line" class="chart-canvas" height="170"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <h6 class="mb-0">Daily Sales</h6>
+                        <p class="text-sm">(<span class="font-weight-bolder">+15%</span>) increase in today's sales.</p>
+                        <hr class="dark horizontal">
+                       
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6 mt-4 mb-4">
+                <div class="card z-index-2">
                     <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
                         <div class="bg-gradient-primary shadow-primary border-radius-lg py-3 pe-1">
                             <div class="chart">
@@ -121,54 +140,26 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <h6 class="mb-0 ">Website Views</h6>
-                        <p class="text-sm ">Last Campaign Performance</p>
+                        <h6 class="mb-0">Completed Orders (Monthly)</h6>
+                        <p class="text-sm">Current Month Performance</p>
                         <hr class="dark horizontal">
-                        <div class="d-flex ">
-                            <i class="material-icons text-sm my-auto me-1">schedule</i>
-                            <p class="mb-0 text-sm"> campaign sent 2 days ago </p>
-                        </div>
                     </div>
                 </div>
             </div>
+
             <div class="col-lg-4 col-md-6 mt-4 mb-4">
-                <div class="card z-index-2  ">
+                <div class="card z-index-2">
                     <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
-                        <div class="bg-gradient-success shadow-success border-radius-lg py-3 pe-1">
+                        <div class="bg-gradient-info shadow-info border-radius-lg py-3 pe-1">
                             <div class="chart">
-                                <canvas id="chart-line" class="chart-canvas" height="170"></canvas>
+                                <canvas id="chart-bars-weekly" class="chart-canvas" height="170"></canvas>
                             </div>
                         </div>
                     </div>
                     <div class="card-body">
-                        <h6 class="mb-0 "> Daily Sales </h6>
-                        <p class="text-sm "> (<span class="font-weight-bolder">+15%</span>) increase in today
-                            sales. </p>
+                        <h6 class="mb-0">Completed Orders (Weekly)</h6>
+                        <p class="text-sm">Current Week Performance</p>
                         <hr class="dark horizontal">
-                        <div class="d-flex ">
-                            <i class="material-icons text-sm my-auto me-1">schedule</i>
-                            <p class="mb-0 text-sm"> updated 4 min ago </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 mt-4 mb-3">
-                <div class="card z-index-2 ">
-                    <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
-                        <div class="bg-gradient-dark shadow-dark border-radius-lg py-3 pe-1">
-                            <div class="chart">
-                                <canvas id="chart-line-tasks" class="chart-canvas" height="170"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <h6 class="mb-0 ">Completed Tasks</h6>
-                        <p class="text-sm ">Last Campaign Performance</p>
-                        <hr class="dark horizontal">
-                        <div class="d-flex ">
-                            <i class="material-icons text-sm my-auto me-1">schedule</i>
-                            <p class="mb-0 text-sm">just updated</p>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -233,7 +224,8 @@
                                                         <div>
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="1.2rem"
                                                                 height="1.2rem" viewBox="0 0 48 48">
-                                                                <title>Order Number {{ $cOrders->procurement_number ?? 'null'}}</title>
+                                                                <title>Order Number
+                                                                    {{ $cOrders->procurement_number ?? 'null' }}</title>
                                                                 <g fill="none" stroke-linejoin="round"
                                                                     stroke-width="4">
                                                                     <rect width="30" height="36" x="9" y="8"
@@ -252,8 +244,11 @@
                                                             </svg>
                                                         </div>
                                                         <div class="d-flex flex-column justify-content-center">
-                                                            <h6 class="mb-0 text-sm text-secondary" id="copyOrder" data-procopy="{{ $cOrders->procurement_number}}" title="Click to copy">
-                                                                &nbsp;{{ $cOrders->procurement_number ?? 'Not Set' }}</h6>
+                                                            <h6 class="mb-0 text-sm text-secondary" id="copyOrder"
+                                                                data-procopy="{{ $cOrders->procurement->procurement_number }}"
+                                                                title="Click to copy">
+                                                                &nbsp;{{ $cOrders->procurement->procurement_number ?? 'Not Set' }}
+                                                            </h6>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -263,7 +258,8 @@
                                                 </td>
                                                 <td class="text-center text-sm">
                                                     <span class="text-xs font-weight-bold">
-                                                        <a class="text-secondary" href="{{ $cOrders->bill_file ? asset('assets/uploads/vendor/bill/' . $cOrders->bill_file) : 'javascript:void(0);' }}"
+                                                        <a class="text-secondary"
+                                                            href="{{ $cOrders->bill_file ? asset('assets/uploads/vendor/bill/' . $cOrders->bill_file) : 'javascript:void(0);' }}"
                                                             {{ $cOrders->bill_file ? 'download' : '' }}>
                                                             {{ $cOrders->bill_file ?? '' }}
                                                         </a>
@@ -271,13 +267,13 @@
 
                                                 </td>
                                                 <td class="text-center">
-                                                    @if ($cOrders->status === 3)
-                                                        <span
-                                                            class="badge badge-sm btn-{{ $changeColor[$cOrders->status] ?? 'secondary' }}"
-                                                            style="color: {{ $changeTextColor[$cOrders->status] ?? '#fff' }};">
-                                                            {{ $changeStatusValue[$cOrders->status] ?? 'Unknown Status' }}
-                                                        </span>
-                                                    @endif
+
+                                                    <span
+                                                        class="badge badge-sm btn-{{ $changeColor[$cOrders->quotation_status] ?? 'secondary' }}"
+                                                        style="color: {{ $changeTextColor[$cOrders->quotation_status] ?? '#fff' }};">
+                                                        {{ $changeStatusValue[$cOrders->quotation_status] ?? 'Unknown Status' }}
+                                                    </span>
+
                                                 </td>
                                             </tr>
                                         @endforeach

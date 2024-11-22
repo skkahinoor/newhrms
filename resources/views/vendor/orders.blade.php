@@ -14,7 +14,7 @@
         $changeColor = [
             0 => 'warning',
             1 => 'primary',
-            2 => 'info',
+            2 => 'danger',
             3 => 'success',
             4 => 'danger',
             5 => 'danger',
@@ -32,7 +32,7 @@
         $changeStatusValue = [
             0 => 'Pending',
             1 => 'Active',
-            2 => 'Quotation Submited',
+            2 => 'Rejected',
             3 => 'Delivered',
             4 => 'Pause',
             5 => 'Rejected',
@@ -163,7 +163,7 @@
                 <div class="card my-4">
                     <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                         <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
-                            <h6 class="text-white text-capitalize ps-3">Quotation Orders</h6>
+                            <h6 class="text-white text-capitalize ps-3">Approve Quotation Orders</h6>
                         </div>
                     </div>
                     <div class="card-body px-0 pb-2">

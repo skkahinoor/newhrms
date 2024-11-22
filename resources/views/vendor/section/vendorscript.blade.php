@@ -1,258 +1,192 @@
- <!--   Core JS Files   -->
- <script src="{{ asset('assets/vendor/js/core/popper.min.js') }}"></script>
- <script src="{{ asset('assets/vendor/js/core/bootstrap.min.js') }}"></script>
- <script src="{{ asset('assets/vendor/js/plugins/perfect-scrollbar.min.js') }}"></script>
- <script src="{{ asset('assets/vendor/js/plugins/smooth-scrollbar.min.js') }}"></script>
- <script src="{{ asset('assets/vendor/js/plugins/chartjs.min.js') }}"></script>
- <script>
-     var ctx = document.getElementById("chart-bars").getContext("2d");
+<script src="{{ asset('assets/vendor/js/core/popper.min.js') }}"></script>
+<script src="{{ asset('assets/vendor/js/core/bootstrap.min.js') }}"></script>
+<script src="{{ asset('assets/vendor/js/plugins/perfect-scrollbar.min.js') }}"></script>
+<script src="{{ asset('assets/vendor/js/plugins/smooth-scrollbar.min.js') }}"></script>
+<script src="{{ asset('assets/vendor/js/plugins/chartjs.min.js') }}"></script>
 
-     new Chart(ctx, {
-         type: "bar",
-         data: {
-             labels: ["M", "T", "W", "T", "F", "S", "S"],
-             datasets: [{
-                 label: "Sales",
-                 tension: 0.4,
-                 borderWidth: 0,
-                 borderRadius: 4,
-                 borderSkipped: false,
-                 backgroundColor: "rgba(255, 255, 255, .8)",
-                 data: [50, 20, 10, 22, 50, 10, 40],
-                 maxBarThickness: 6
-             }, ],
-         },
-         options: {
-             responsive: true,
-             maintainAspectRatio: false,
-             plugins: {
-                 legend: {
-                     display: false,
-                 }
-             },
-             interaction: {
-                 intersect: false,
-                 mode: 'index',
-             },
-             scales: {
-                 y: {
-                     grid: {
-                         drawBorder: false,
-                         display: true,
-                         drawOnChartArea: true,
-                         drawTicks: false,
-                         borderDash: [5, 5],
-                         color: 'rgba(255, 255, 255, .2)'
-                     },
-                     ticks: {
-                         suggestedMin: 0,
-                         suggestedMax: 500,
-                         beginAtZero: true,
-                         padding: 10,
-                         font: {
-                             size: 14,
-                             weight: 300,
-                             family: "Roboto",
-                             style: 'normal',
-                             lineHeight: 2
-                         },
-                         color: "#fff"
-                     },
-                 },
-                 x: {
-                     grid: {
-                         drawBorder: false,
-                         display: true,
-                         drawOnChartArea: true,
-                         drawTicks: false,
-                         borderDash: [5, 5],
-                         color: 'rgba(255, 255, 255, .2)'
-                     },
-                     ticks: {
-                         display: true,
-                         color: '#f8f9fa',
-                         padding: 10,
-                         font: {
-                             size: 14,
-                             weight: 300,
-                             family: "Roboto",
-                             style: 'normal',
-                             lineHeight: 2
-                         },
-                     }
-                 },
-             },
-         },
-     });
+<script>
+    // Fetch the data dynamically (optional)
+    async function fetchChartData() {
+        const response = await fetch('api/quotations/combined-chart-data'); // Adjust the URL to your endpoint
+        return await response.json();
+    }
 
+    async function renderChart() {
+        const chartData = await fetchChartData(); // Fetch data dynamically
 
-     var ctx2 = document.getElementById("chart-line").getContext("2d");
+        // Line Chart
+        const ctxLine = document.getElementById('chart-line').getContext('2d');
+        new Chart(ctxLine, {
+            type: 'line',
+            data: {
+                labels: chartData.line_labels,
+                datasets: [{
+                    label: 'Daily Sales',
+                    data: chartData.line_data,
+                    borderColor: '#c9c9c9',
+                    backgroundColor: '#ffffff',
+                    tension: 0.4, // Smooth curves
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top',
+                        labels: {
+                            color: 'white',
+                            font: {
+                                weight: 'bold',
+                                size: '17px'
+                            }
+                        }
+                    },
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                            color: 'white',
+                            font: {
+                                weight: 'bold'
+                            }
+                        },
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.2)',
+                        }
+                    },
+                    y: {
+                        ticks: {
+                            color: 'white',
+                            font: {
+                                weight: 'bold'
+                            }
+                        }
+                    }
+                },
+                layout: {
+                    padding: {
+                        top: 10,
+                        bottom: 10
+                    }
+                }
+            }
+        });
 
-     new Chart(ctx2, {
-         type: "line",
-         data: {
-             labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-             datasets: [{
-                 label: "Mobile apps",
-                 tension: 0,
-                 borderWidth: 0,
-                 pointRadius: 5,
-                 pointBackgroundColor: "rgba(255, 255, 255, .8)",
-                 pointBorderColor: "transparent",
-                 borderColor: "rgba(255, 255, 255, .8)",
-                 borderColor: "rgba(255, 255, 255, .8)",
-                 borderWidth: 4,
-                 backgroundColor: "transparent",
-                 fill: true,
-                 data: [50, 40, 300, 320, 500, 350, 200, 230, 500],
-                 maxBarThickness: 6
+        // Monthly Bar Chart
+        const ctxMonthly = document.getElementById('chart-bars').getContext('2d');
+        new Chart(ctxMonthly, {
+            type: 'bar',
+            data: {
+                labels: chartData.monthly_labels,
+                datasets: [{
+                    label: 'Completed Orders (Monthly)',
+                    data: chartData.monthly_data,
+                    backgroundColor: '#ffffff80',
+                    borderColor: '#ffffff',
+                    borderWidth: 1,
+                    tension: 0.4,
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top',
+                        labels: {
+                            color: 'white',
+                            font: {
+                                weight: 'bold',
+                                size: '17px'
+                            }
+                        }
+                    },
+                },
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        ticks: {
+                            color: 'white',
+                            font: {
+                                weight: 'bold'
+                            }
+                        },
+                    },
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            color: 'white',
+                            font: {
+                                weight: 'bold'
+                            }
+                        },
+                    }
+                }
+            }
+        });
 
-             }],
-         },
-         options: {
-             responsive: true,
-             maintainAspectRatio: false,
-             plugins: {
-                 legend: {
-                     display: false,
-                 }
-             },
-             interaction: {
-                 intersect: false,
-                 mode: 'index',
-             },
-             scales: {
-                 y: {
-                     grid: {
-                         drawBorder: false,
-                         display: true,
-                         drawOnChartArea: true,
-                         drawTicks: false,
-                         borderDash: [5, 5],
-                         color: 'rgba(255, 255, 255, .2)'
-                     },
-                     ticks: {
-                         display: true,
-                         color: '#f8f9fa',
-                         padding: 10,
-                         font: {
-                             size: 14,
-                             weight: 300,
-                             family: "Roboto",
-                             style: 'normal',
-                             lineHeight: 2
-                         },
-                     }
-                 },
-                 x: {
-                     grid: {
-                         drawBorder: false,
-                         display: false,
-                         drawOnChartArea: false,
-                         drawTicks: false,
-                         borderDash: [5, 5]
-                     },
-                     ticks: {
-                         display: true,
-                         color: '#f8f9fa',
-                         padding: 10,
-                         font: {
-                             size: 14,
-                             weight: 300,
-                             family: "Roboto",
-                             style: 'normal',
-                             lineHeight: 2
-                         },
-                     }
-                 },
-             },
-         },
-     });
+        // Weekly Bar Chart
+        // Weekly Bar Chart
+        const ctxWeekly = document.getElementById('chart-bars-weekly').getContext('2d');
+        new Chart(ctxWeekly, {
+            type: 'bar',
+            data: {
+                labels: chartData.weekly_labels, // Days of the week (Monday, Tuesday, ...)
+                datasets: [{
+                    label: 'Completed Orders (Weekly)',
+                    data: chartData.weekly_data, // Weekly data (total orders)
+                    backgroundColor: '#ffffff80',
+                    borderColor: '#ffffff',
+                    borderWidth: 1,
+                    tension: 0.4, // Smooth curves (if applicable for bar charts)
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top',
+                        labels: {
+                            color: 'white',
+                            font: {
+                                weight: 'bold',
+                                size: '17px'
+                            }
+                        }
+                    },
+                },
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        ticks: {
+                            color: 'white',
+                            font: {
+                                weight: 'bold'
+                            }
+                        },
+                    },
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            color: 'white',
+                            font: {
+                                weight: 'bold'
+                            }
+                        },
+                    }
+                }
+            }
+        });
 
-     var ctx3 = document.getElementById("chart-line-tasks").getContext("2d");
+    }
 
-     new Chart(ctx3, {
-         type: "line",
-         data: {
-             labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-             datasets: [{
-                 label: "Mobile apps",
-                 tension: 0,
-                 borderWidth: 0,
-                 pointRadius: 5,
-                 pointBackgroundColor: "rgba(255, 255, 255, .8)",
-                 pointBorderColor: "transparent",
-                 borderColor: "rgba(255, 255, 255, .8)",
-                 borderWidth: 4,
-                 backgroundColor: "transparent",
-                 fill: true,
-                 data: [50, 40, 300, 220, 500, 250, 400, 230, 500],
-                 maxBarThickness: 6
+    // Initialize the chart
+    renderChart();
+</script>
 
-             }],
-         },
-         options: {
-             responsive: true,
-             maintainAspectRatio: false,
-             plugins: {
-                 legend: {
-                     display: false,
-                 }
-             },
-             interaction: {
-                 intersect: false,
-                 mode: 'index',
-             },
-             scales: {
-                 y: {
-                     grid: {
-                         drawBorder: false,
-                         display: true,
-                         drawOnChartArea: true,
-                         drawTicks: false,
-                         borderDash: [5, 5],
-                         color: 'rgba(255, 255, 255, .2)'
-                     },
-                     ticks: {
-                         display: true,
-                         padding: 10,
-                         color: '#f8f9fa',
-                         font: {
-                             size: 14,
-                             weight: 300,
-                             family: "Roboto",
-                             style: 'normal',
-                             lineHeight: 2
-                         },
-                     }
-                 },
-                 x: {
-                     grid: {
-                         drawBorder: false,
-                         display: false,
-                         drawOnChartArea: false,
-                         drawTicks: false,
-                         borderDash: [5, 5]
-                     },
-                     ticks: {
-                         display: true,
-                         color: '#f8f9fa',
-                         padding: 10,
-                         font: {
-                             size: 14,
-                             weight: 300,
-                             family: "Roboto",
-                             style: 'normal',
-                             lineHeight: 2
-                         },
-                     }
-                 },
-             },
-         },
-     });
- </script>
- 
- <!-- Github buttons -->
- <script async defer src="https://buttons.github.io/buttons.js"></script>
- <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
- <script src="{{ asset('assets/vendor/js/material-dashboard.min.js?v=3.0.0') }}"></script>
+<!-- Github buttons -->
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+<!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
+<script src="{{ asset('assets/vendor/js/material-dashboard.min.js?v=3.0.0') }}"></script>

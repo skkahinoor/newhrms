@@ -552,6 +552,10 @@ Route::group([
         Route::post('setDeliver/{id}', [VendorController::class, 'setDeliver'])->name('setDeliver');
         Route::get('checkbill/{id}', [VendorController::class, 'checkBillData'])->name('checkBillData');
         Route::post('uploadBill/{id}', [VendorController::class, 'uploadBill'])->name('uploadBill');
+
+        // On Dashboard Page
+        Route::get('api/quotations/combined-chart-data', [VendorController::class, 'getCombinedChartData']);
+        // Route::get('api/quotations/complete-orders-count', [VendorController::class, 'completeOrderChartData']);
         
 
         
