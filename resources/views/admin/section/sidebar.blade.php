@@ -22,6 +22,7 @@
                 @include('admin.section.partial.user')
                 @include('admin.section.partial.attendance')
                 @include('admin.section.partial.client')
+                @include('admin.section.partial.recruitment')
                 @include('admin.section.partial.leadenquiry')
                 @include('admin.section.partial.projectManagement')
                 @include('admin.section.partial.taskManagement')

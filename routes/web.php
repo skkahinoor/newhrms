@@ -39,6 +39,7 @@ use App\Http\Controllers\Web\PrivacyPolicyController;
 use App\Http\Controllers\Web\ProcurementController;
 use App\Http\Controllers\Web\ProjectController;
 use App\Http\Controllers\Web\QrCodeController;
+use App\Http\Controllers\Web\RecruitmentController;
 use App\Http\Controllers\Web\RegularizationController;
 use App\Http\Controllers\Web\RoleController;
 use App\Http\Controllers\Web\RouterController;
@@ -87,7 +88,7 @@ Route::get('/leadform', function () {
 
 // Requirement Module
 
-Route::get('requirement', [RequirementController::class, 'index'])->name('requirement.index');
+Route::get('recruitment', [RecruitmentController::class, 'index'])->name('recruitment.index');
 
 /** app privacy policy route */
 Route::get('privacy', [PrivacyPolicyController::class, 'index'])->name('privacy-policy');
@@ -533,7 +534,8 @@ Route::group([
         Route::get('employees/leave_type/delete/{id}', [UserController::class, 'deleteEmployeeLeaveType'])->name('employee_leave_type.delete');
 
         // Requirement Module
-        Route::get('requirement', [RequirementController::class, 'manageRequirement'])->name('requirement.manageRequirement');
+        Route::get('recruitment', [RecruitmentController::class, 'manageRecruitment'])->name('recruitment.manageRecruitment');
+        Route::post('recruitment/addpost', [RecruitmentController::class, 'addPost'])->name('recruitment.addpost');
 
     });
 });
