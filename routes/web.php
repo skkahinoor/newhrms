@@ -42,6 +42,7 @@ use App\Http\Controllers\Web\QrCodeController;
 use App\Http\Controllers\Web\RegularizationController;
 use App\Http\Controllers\Web\RoleController;
 use App\Http\Controllers\Web\RouterController;
+use App\Http\Controllers\Web\RequirementController;
 use App\Http\Controllers\Web\SalaryComponentController;
 use App\Http\Controllers\Web\SalaryGroupController;
 use App\Http\Controllers\Web\SalaryHistoryController;
@@ -83,6 +84,10 @@ Route::post('leadenquiry', [LeadEnquiriesController::class, 'store'])->name('lea
 Route::get('/leadform', function () {
     return view('leadform.index');
 });
+
+// Requirement Module
+
+Route::get('requirement', [RequirementController::class, 'index'])->name('requirement.index');
 
 /** app privacy policy route */
 Route::get('privacy', [PrivacyPolicyController::class, 'index'])->name('privacy-policy');
@@ -526,6 +531,10 @@ Route::group([
 
         /** delete employee leave type */
         Route::get('employees/leave_type/delete/{id}', [UserController::class, 'deleteEmployeeLeaveType'])->name('employee_leave_type.delete');
+
+        // Requirement Module
+        Route::get('requirement', [RequirementController::class, 'manageRequirement'])->name('requirement.manageRequirement');
+
     });
 });
 
@@ -556,9 +565,9 @@ Route::group([
         // On Dashboard Page
         Route::get('api/quotations/combined-chart-data', [VendorController::class, 'getCombinedChartData']);
         // Route::get('api/quotations/complete-orders-count', [VendorController::class, 'completeOrderChartData']);
-        
 
-        
+
+
 
 
     });
