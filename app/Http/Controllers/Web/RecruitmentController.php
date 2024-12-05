@@ -19,7 +19,7 @@ class RecruitmentController extends Controller
 
     public function manageRecruitment()
     {
-        $postlist = Recruitment::where('status', 0)->paginate(5);
+        $postlist = Recruitment::where('status', 0)->orderBy('id', 'desc')->paginate(5);
         $posttype = RecruitmentType::where('status', 0)->paginate(5);
         $postlocation = RecruitmentLocation::where('status', 0)->paginate(5);
 
@@ -31,19 +31,21 @@ class RecruitmentController extends Controller
 
     public function addPost(Request $request)
     {
-        $validated = $request->validate([
+         $request->validate([
             'postname' => 'required|string|max:50',
             'postexperience' => 'required|numeric|min:0',
-            // 'jobtype' => 'required|exists:job_types,id',
-            // 'joblocation' => 'required|exists:locations,id',
+            'totalvacancy' => 'required',
+            'salaryrange' => 'required',
             'jobtype' => 'required',
             'joblocation' => 'required',
             'postdescription' => 'required|string|min:20|max:30',
-        ]);
+         ]);
 
         Recruitment::create([
             'postname' => $request->postname,
             'experience' => $request->postexperience,
+            'totalvacancy' => $request->totalvacancy,
+            'salaryrange' => $request->salaryrange,
             'posttypeid' => $request->jobtype,
             'postlocationid' => $request->joblocation,
             'description' => $request->postdescription,

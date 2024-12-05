@@ -22,21 +22,31 @@
                                 name="postexperience" placeholder="Enter Experience" required>
                         </div>
                         <div class="col-md-6 mb-3">
+                            <label for="totalvacancy" class="form-label">Total Vacancy</label>
+                            <input type="number" class="form-control" id="totalvacancy" name="totalvacancy"
+                                placeholder="Enter Total Job Vacancy" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="salaryrange" class="form-label">Salary Range</label>
+                            <input type="text" class="form-control" id="salaryrange"
+                                name="salaryrange" placeholder="Enter Salary Range" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
                             <label for="postexperience" class="form-label">Job Type</label>
                             <select name="jobtype" class="form-control" id="jobtype">
                                 <option value="">Select Type</option>
                                 @foreach ($applyposttype as $type)
-                                     <option value="{{ $type->id }}">{{ $type->posttype }}</option>
+                                    <option value="{{ $type->id }}">{{ $type->posttype }}</option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label for="postexperience"  class="form-label">Job Location</label>
+                            <label for="postexperience" class="form-label">Job Location</label>
                             <select name="joblocation" class="form-control" id="joblocation">
                                 <option value="">Select Location</option>
                                 @foreach ($applypostlocation as $location)
-                                <option value="{{ $location->id }}">{{ $location->postlocation }}</option>
-                           @endforeach
+                                    <option value="{{ $location->id }}">{{ $location->postlocation }}</option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="col-md-12 mb-3">
