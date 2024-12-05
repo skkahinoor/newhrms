@@ -23,11 +23,10 @@
             </div>
             <div class="card-body">
                 <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-                   
                     <li class="nav-item" role="presentation">
                         <button class="nav-link active" id="pills-category-tab" data-bs-toggle="pill"
                             data-bs-target="#pills-category" type="button" role="tab" aria-controls="pills-category"
-                            aria-selected="false">Requirement Type</button>
+                            aria-selected="true">Requirement Type</button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="pills-setting-tab" data-bs-toggle="pill"
@@ -36,7 +35,7 @@
                     </li>
                 </ul>
                 <div class="tab-content" id="pills-tabContent">
-                    <div class="tab-pane fade" id="pills-category" role="tabpanel" aria-labelledby="pills-category-tab"
+                    <div class="tab-pane fade show active" id="pills-category" role="tabpanel" aria-labelledby="pills-category-tab"
                         tabindex="0">
                         {{-- Post type  --}}
                         @include('admin.recruitment.recruitmenttype.index')

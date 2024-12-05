@@ -536,6 +536,14 @@ Route::group([
         // Requirement Module
         Route::get('recruitment', [RecruitmentController::class, 'manageRecruitment'])->name('recruitment.manageRecruitment');
         Route::post('recruitment/addpost', [RecruitmentController::class, 'addPost'])->name('recruitment.addpost');
+        Route::post('recruitment/addposttype', [RecruitmentController::class, 'addPostType'])->name('recruitment.addPostType');
+        Route::post('recruitment/addpostlocation', [RecruitmentController::class, 'addPostLocation'])->name('recruitment.addPostLocation');
+
+        Route::put('recruitment/addposttype-update/{id}', [RecruitmentController::class, 'updatePostType'])->name('recruitment.addposttype-update');
+        Route::put('recruitment/addposttype-delete/{id}', [RecruitmentController::class, 'deletePostType'])->name('recruitment.addposttype-delete');
+
+        Route::put('recruitment/addpostlocation-update/{id}', [RecruitmentController::class, 'updatePostLocation'])->name('recruitment.addpostlocation-update');
+        Route::put('recruitment/addpostlocation-delete/{id}', [RecruitmentController::class, 'deletePostLocation'])->name('recruitment.addpostlocation-delete');
 
     });
 });

@@ -5,7 +5,7 @@
     <!-- Mobile Specific Meta -->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Favicon-->
-    <link rel="shortcut icon" href="{{ asset('assets/requirement/img/fav.png') }}">
+    <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}">
     <!-- Author Meta -->
     <meta name="author" content="codepixer">
     <!-- Meta Description -->
@@ -15,24 +15,24 @@
     <!-- meta character set -->
     <meta charset="UTF-8">
     <!-- Site Title -->
-    <title>Job Listing</title>
+    <title>Recruitment Page</title>
 
     <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,400,300,500,600,700" rel="stylesheet">
     <!--
         CSS
         ============================================= -->
-    <link rel="stylesheet" href="{{ asset('assets/requirement/css/linearicons.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/requirement/css/font-awesome.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/requirement/css/bootstrap.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/requirement/css/magnific-popup.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/requirement/css/nice-select.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/requirement/css/animate.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/requirement/css/owl.carousel.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/requirement/css/main.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/recruitment/css/linearicons.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/recruitment/css/font-awesome.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/recruitment/css/bootstrap.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/recruitment/css/magnific-popup.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/recruitment/css/nice-select.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/recruitment/css/animate.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/recruitment/css/owl.carousel.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/recruitment/css/main.css') }}">
 </head>
 
 <body>
-<!-- #header -->
+    <!-- #header -->
     {{-- <header id="header" id="home">
         <div class="container">
             <div class="row align-items-center justify-content-between d-flex">
@@ -163,7 +163,7 @@
                 <div class="active-popular-post-carusel">
                     <div class="single-popular-post d-flex flex-row">
                         <div class="thumb">
-                            <img class="img-fluid" src="{{ asset('assets/requirement/img/p1.png') }}" alt="">
+                            <img class="img-fluid" src="{{ asset('assets/recruitment/img/p1.png') }}" alt="">
                             <a class="btns text-uppercase" href="#">view job post</a>
                         </div>
                         <div class="details">
@@ -179,7 +179,7 @@
                     </div>
                     <div class="single-popular-post d-flex flex-row">
                         <div class="thumb">
-                            <img src="{{ asset('assets/requirement/img/p2.png') }}" alt="">
+                            <img src="{{ asset('assets/recruitment/img/p2.png') }}" alt="">
                             <a class="btns text-uppercase" href="#">view job post</a>
                         </div>
                         <div class="details">
@@ -195,7 +195,7 @@
                     </div>
                     <div class="single-popular-post d-flex flex-row">
                         <div class="thumb">
-                            <img src="{{ asset('assets/requirement/img/p1.png') }}" alt="">
+                            <img src="{{ asset('assets/recruitment/img/p1.png') }}" alt="">
                             <a class="btns text-uppercase" href="#">view job post</a>
                         </div>
                         <div class="details">
@@ -211,7 +211,7 @@
                     </div>
                     <div class="single-popular-post d-flex flex-row">
                         <div class="thumb">
-                            <img src="{{ asset('assets/requirement/img/p2.png') }}" alt="">
+                            <img src="{{ asset('assets/recruitment/img/p2.png') }}" alt="">
                             <a class="btns text-uppercase" href="#">view job post</a>
                         </div>
                         <div class="details">
@@ -227,7 +227,7 @@
                     </div>
                     <div class="single-popular-post d-flex flex-row">
                         <div class="thumb">
-                            <img src="{{ asset('assets/requirement/img/p1.png') }}" alt="">
+                            <img src="{{ asset('assets/recruitment/img/p1.png') }}" alt="">
                             <a class="btns text-uppercase" href="#">view job post</a>
                         </div>
                         <div class="details">
@@ -243,7 +243,7 @@
                     </div>
                     <div class="single-popular-post d-flex flex-row">
                         <div class="thumb">
-                            <img src="{{ asset('assets/requirement/img/p2.png') }}" alt="">
+                            <img src="{{ asset('assets/recruitment/img/p2.png') }}" alt="">
                             <a class="btns text-uppercase" href="#">view job post</a>
                         </div>
                         <div class="details">
@@ -278,7 +278,7 @@
                 <div class="col-lg-2 col-md-4 col-sm-6">
                     <div class="single-fcat">
                         <a href="category.html">
-                            <img src="{{ asset('assets/requirement/img/o1.png') }}" alt="">
+                            <img src="{{ asset('assets/recruitment/img/o1.png') }}" alt="">
                         </a>
                         <p>Accounting</p>
                     </div>
@@ -286,7 +286,7 @@
                 <div class="col-lg-2 col-md-4 col-sm-6">
                     <div class="single-fcat">
                         <a href="category.html">
-                            <img src="{{ asset('assets/requirement/img/o2.png') }}" alt="">
+                            <img src="{{ asset('assets/recruitment/img/o2.png') }}" alt="">
                         </a>
                         <p>Development</p>
                     </div>
@@ -294,7 +294,7 @@
                 <div class="col-lg-2 col-md-4 col-sm-6">
                     <div class="single-fcat">
                         <a href="category.html">
-                            <img src="{{ asset('assets/requirement/img/o3.png') }}" alt="">
+                            <img src="{{ asset('assets/recruitment/img/o3.png') }}" alt="">
                         </a>
                         <p>Technology</p>
                     </div>
@@ -302,7 +302,7 @@
                 <div class="col-lg-2 col-md-4 col-sm-6">
                     <div class="single-fcat">
                         <a href="category.html">
-                            <img src="{{ asset('assets/requirement/img/o4.png') }}" alt="">
+                            <img src="{{ asset('assets/recruitment/img/o4.png') }}" alt="">
                         </a>
                         <p>Media & News</p>
                     </div>
@@ -310,7 +310,7 @@
                 <div class="col-lg-2 col-md-4 col-sm-6">
                     <div class="single-fcat">
                         <a href="category.html">
-                            <img src="{{ asset('assets/requirement/img/o5.png') }}" alt="">
+                            <img src="{{ asset('assets/recruitment/img/o5.png') }}" alt="">
                         </a>
                         <p>Medical</p>
                     </div>
@@ -318,7 +318,7 @@
                 <div class="col-lg-2 col-md-4 col-sm-6">
                     <div class="single-fcat">
                         <a href="category.html">
-                            <img src="{{ asset('assets/requirement/img/o6.png') }}" alt="">
+                            <img src="{{ asset('assets/recruitment/img/o6.png') }}" alt="">
                         </a>
                         <p>Goverment</p>
                     </div>
@@ -339,268 +339,57 @@
                         <li><a href="#">Intern</a></li>
                         <li><a href="#">part Time</a></li>
                     </ul>
-                    <div class="single-post d-flex flex-row">
-                        <div class="thumb">
-                            <img src="{{ asset('assets/requirement/img/post.png') }}" alt="">
-                            <ul class="tags">
-                                <li>
-                                    <a href="#">Art</a>
-                                </li>
-                                <li>
-                                    <a href="#">Media</a>
-                                </li>
-                                <li>
-                                    <a href="#">Design</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="details">
-                            <div class="title d-flex flex-row justify-content-between">
-                                <div class="titles">
-                                    <a href="single.html">
-                                        <h4>Creative Art Designer</h4>
-                                    </a>
-                                    <h6>Premium Labels Limited</h6>
-                                </div>
-                                <ul class="btns">
-                                    <li><a href="#"><span class="lnr lnr-heart"></span></a></li>
-                                    <li><a href="#">Apply</a></li>
-                                </ul>
-                            </div>
-                            <p>
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod temporinc
-                                ididunt ut dolore magna aliqua.
-                            </p>
-                            <h5>Job Nature: Full time</h5>
-                            <p class="address"><span class="lnr lnr-map"></span> 56/8, Panthapath Dhanmondi Dhaka</p>
-                            <p class="address"><span class="lnr lnr-database"></span> 15k - 25k</p>
-                        </div>
-                    </div>
-                    <div class="single-post d-flex flex-row">
-                        <div class="thumb">
-                            <img src="{{ asset('assets/requirement/img/post.png') }}" alt="">
-                            <ul class="tags">
-                                <li>
-                                    <a href="#">Art</a>
-                                </li>
-                                <li>
-                                    <a href="#">Media</a>
-                                </li>
-                                <li>
-                                    <a href="#">Design</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="details">
-                            <div class="title d-flex flex-row justify-content-between">
-                                <div class="titles">
-                                    <a href="single.html">
-                                        <h4>Creative Art Designer</h4>
-                                    </a>
-                                    <h6>Premium Labels Limited</h6>
-                                </div>
-                                <ul class="btns">
-                                    <li><a href="#"><span class="lnr lnr-heart"></span></a></li>
-                                    <li><a href="#">Apply</a></li>
-                                </ul>
-                            </div>
-                            <p>
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod temporinc
-                                ididunt ut dolore magna aliqua.
-                            </p>
-                            <h5>Job Nature: Full time</h5>
-                            <p class="address"><span class="lnr lnr-map"></span> 56/8, Panthapath Dhanmondi Dhaka</p>
-                            <p class="address"><span class="lnr lnr-database"></span> 15k - 25k</p>
-                        </div>
-                    </div>
-                    <div class="single-post d-flex flex-row">
-                        <div class="thumb">
-                            <img src="{{ asset('assets/requirement/img/post.png') }}" alt="">
-                            <ul class="tags">
-                                <li>
-                                    <a href="#">Art</a>
-                                </li>
-                                <li>
-                                    <a href="#">Media</a>
-                                </li>
-                                <li>
-                                    <a href="#">Design</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="details">
-                            <div class="title d-flex flex-row justify-content-between">
-                                <div class="titles">
-                                    <a href="single.html">
-                                        <h4>Creative Art Designer</h4>
-                                    </a>
-                                    <h6>Premium Labels Limited</h6>
-                                </div>
-                                <ul class="btns">
-                                    <li><a href="#"><span class="lnr lnr-heart"></span></a></li>
-                                    <li><a href="#">Apply</a></li>
-                                </ul>
-                            </div>
-                            <p>
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod temporinc
-                                ididunt ut dolore magna aliqua.
-                            </p>
-                            <h5>Job Nature: Full time</h5>
-                            <p class="address"><span class="lnr lnr-map"></span> 56/8, Panthapath Dhanmondi Dhaka</p>
-                            <p class="address"><span class="lnr lnr-database"></span> 15k - 25k</p>
-                        </div>
-                    </div>
-                    <div class="single-post d-flex flex-row">
-                        <div class="thumb">
-                            <img src="{{ asset('assets/requirement/img/post.png') }}" alt="">
-                            <ul class="tags">
-                                <li>
-                                    <a href="#">Art</a>
-                                </li>
-                                <li>
-                                    <a href="#">Media</a>
-                                </li>
-                                <li>
-                                    <a href="#">Design</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="details">
-                            <div class="title d-flex flex-row justify-content-between">
-                                <div class="titles">
-                                    <a href="single.html">
-                                        <h4>Creative Art Designer</h4>
-                                    </a>
-                                    <h6>Premium Labels Limited</h6>
-                                </div>
-                                <ul class="btns">
-                                    <li><a href="#"><span class="lnr lnr-heart"></span></a></li>
-                                    <li><a href="#">Apply</a></li>
-                                </ul>
-                            </div>
-                            <p>
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod temporinc
-                                ididunt ut dolore magna aliqua.
-                            </p>
-                            <h5>Job Nature: Full time</h5>
-                            <p class="address"><span class="lnr lnr-map"></span> 56/8, Panthapath Dhanmondi Dhaka</p>
-                            <p class="address"><span class="lnr lnr-database"></span> 15k - 25k</p>
-                        </div>
-                    </div>
-                    <div class="single-post d-flex flex-row">
-                        <div class="thumb">
-                            <img src="{{ asset('assets/requirement/img/post.png') }}" alt="">
-                            <ul class="tags">
-                                <li>
-                                    <a href="#">Art</a>
-                                </li>
-                                <li>
-                                    <a href="#">Media</a>
-                                </li>
-                                <li>
-                                    <a href="#">Design</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="details">
-                            <div class="title d-flex flex-row justify-content-between">
-                                <div class="titles">
-                                    <a href="single.html">
-                                        <h4>Creative Art Designer</h4>
-                                    </a>
-                                    <h6>Premium Labels Limited</h6>
-                                </div>
-                                <ul class="btns">
-                                    <li><a href="#"><span class="lnr lnr-heart"></span></a></li>
-                                    <li><a href="#">Apply</a></li>
-                                </ul>
-                            </div>
-                            <p>
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod temporinc
-                                ididunt ut dolore magna aliqua.
-                            </p>
-                            <h5>Job Nature: Full time</h5>
-                            <p class="address"><span class="lnr lnr-map"></span> 56/8, Panthapath Dhanmondi Dhaka</p>
-                            <p class="address"><span class="lnr lnr-database"></span> 15k - 25k</p>
-                        </div>
-                    </div>
-                    <div class="single-post d-flex flex-row">
-                        <div class="thumb">
-                            <img src="{{ asset('assets/requirement/img/post.png') }}" alt="">
-                            <ul class="tags">
-                                <li>
-                                    <a href="#">Art</a>
-                                </li>
-                                <li>
-                                    <a href="#">Media</a>
-                                </li>
-                                <li>
-                                    <a href="#">Design</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="details">
-                            <div class="title d-flex flex-row justify-content-between">
-                                <div class="titles">
-                                    <a href="single.html">
-                                        <h4>Creative Art Designer</h4>
-                                    </a>
-                                    <h6>Premium Labels Limited</h6>
-                                </div>
-                                <ul class="btns">
-                                    <li><a href="#"><span class="lnr lnr-heart"></span></a></li>
-                                    <li><a href="#">Apply</a></li>
-                                </ul>
-                            </div>
-                            <p>
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod temporinc
-                                ididunt ut dolore magna aliqua.
-                            </p>
-                            <h5>Job Nature: Full time</h5>
-                            <p class="address"><span class="lnr lnr-map"></span> 56/8, Panthapath Dhanmondi Dhaka</p>
-                            <p class="address"><span class="lnr lnr-database"></span> 15k - 25k</p>
-                        </div>
-                    </div>
-                    <div class="single-post d-flex flex-row">
-                        <div class="thumb">
-                            <img src="{{ asset('assets/requirement/img/post.png') }}" alt="">
-                            <ul class="tags">
-                                <li>
-                                    <a href="#">Art</a>
-                                </li>
-                                <li>
-                                    <a href="#">Media</a>
-                                </li>
-                                <li>
-                                    <a href="#">Design</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="details">
-                            <div class="title d-flex flex-row justify-content-between">
-                                <div class="titles">
-                                    <a href="single.html">
-                                        <h4>Creative Art Designer</h4>
-                                    </a>
-                                    <h6>Premium Labels Limited</h6>
-                                </div>
-                                <ul class="btns">
-                                    <li><a href="#"><span class="lnr lnr-heart"></span></a></li>
-                                    <li><a href="#">Apply</a></li>
-                                </ul>
-                            </div>
-                            <p>
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod temporinc
-                                ididunt ut dolore magna aliqua.
-                            </p>
-                            <h5>Job Nature: Full time</h5>
-                            <p class="address"><span class="lnr lnr-map"></span> 56/8, Panthapath Dhanmondi Dhaka</p>
-                            <p class="address"><span class="lnr lnr-database"></span> 15k - 25k</p>
-                        </div>
-                    </div>
 
-                    <a class="text-uppercase loadmore-btn mx-auto d-block" href="category.html">Load More job
-                        Posts</a>
+                    {{-- Job Post here  --}}
+
+                    @if ($applypage->count() > 0)
+                        @foreach ($applypage as $post)
+                            <div class="single-post d-flex flex-row">
+                                <div class="thumb">
+                                    <img src="{{ asset('assets/recruitment/img/post.png') }}" alt="">
+                                    <ul class="tags">
+                                        <li>
+                                            <a href="#">Artsk</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Media</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Design</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="details" style="margin-left: 15px !important;">
+                                    <div class="title d-flex flex-row justify-content-between" >
+                                        <div class="titles">
+                                            <a href="single.html">
+                                                <h4>{{ $post->postname }}</h4>
+                                            </a>
+                                            <h6>Premium Labels Limited</h6>
+                                        </div>
+                                        <ul class="btns">
+                                            <li><a href="#"><span class="lnr lnr-heart"></span></a></li>
+                                            <li><a href="#">Apply</a></li>
+                                        </ul>
+                                    </div>
+                                    <p>
+                                        {{ $post->description }}
+                                    </p>
+                                    <h5>Job Nature: {{ $post->posttypeid }}</h5>
+                                    <p class="address"><span class="lnr lnr-map"></span> {{ $post->postlocationid }}
+                                    </p>
+                                    <p class="address"><span class="lnr lnr-database"></span> {{ $post->salaryrange }}</p>
+                                </div>
+                            </div>
+                        @endforeach
+                    @else
+                        <p>No post founds</p>
+                    @endif
+
+                    {{-- End Job post  --}}
+
+                    {{-- <a class="text-uppercase loadmore-btn mx-auto d-block" href="category.html">Load More job
+                        Posts</a> --}}
 
                 </div>
                 <div class="col-lg-4 sidebar">
@@ -635,7 +424,8 @@
                         <h4>Top rated job posts</h4>
                         <div class="active-relatedjob-carusel">
                             <div class="single-rated">
-                                <img class="img-fluid" src="{{ asset('assets/requirement/img/r1.jpg') }}" alt="">
+                                <img class="img-fluid" src="{{ asset('assets/recruitment/img/r1.jpg') }}"
+                                    alt="">
                                 <a href="single.html">
                                     <h4>Creative Art Designer</h4>
                                 </a>
@@ -651,7 +441,8 @@
                                 <a href="#" class="btns text-uppercase">Apply job</a>
                             </div>
                             <div class="single-rated">
-                                <img class="img-fluid" src="{{ asset('assets/requirement/img/r1.jpg') }}" alt="">
+                                <img class="img-fluid" src="{{ asset('assets/recruitment/img/r1.jpg') }}"
+                                    alt="">
                                 <a href="single.html">
                                     <h4>Creative Art Designer</h4>
                                 </a>
@@ -667,7 +458,8 @@
                                 <a href="#" class="btns text-uppercase">Apply job</a>
                             </div>
                             <div class="single-rated">
-                                <img class="img-fluid" src="{{ asset('assets/requirement/img/r1.jpg') }}" alt="">
+                                <img class="img-fluid" src="{{ asset('assets/recruitment/img/r1.jpg') }}"
+                                    alt="">
                                 <a href="single.html">
                                     <h4>Creative Art Designer</h4>
                                 </a>
@@ -800,7 +592,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-6 download-left">
-                    <img class="img-fluid" src="{{ asset('assets/requirement/img/d1.png') }}" alt="">
+                    <img class="img-fluid" src="{{ asset('assets/recruitment/img/d1.png') }}" alt="">
                 </div>
                 <div class="col-lg-6 download-right">
                     <h1>Download the <br>
@@ -889,14 +681,14 @@
                     <div class="single-footer-widget mail-chimp">
                         <h6 class="mb-20">Instragram Feed</h6>
                         <ul class="instafeed d-flex flex-wrap">
-                            <li><img src="{{ asset('assets/requirement/img/i1.jpg') }}" alt=""></li>
-                            <li><img src="{{ asset('assets/requirement/img/i2.jpg') }}" alt=""></li>
-                            <li><img src="{{ asset('assets/requirement/img/i3.jpg') }}" alt=""></li>
-                            <li><img src="{{ asset('assets/requirement/img/i4.jpg') }}" alt=""></li>
-                            <li><img src="{{ asset('assets/requirement/img/i5.jpg') }}" alt=""></li>
-                            <li><img src="{{ asset('assets/requirement/img/i6.jpg') }}" alt=""></li>
-                            <li><img src="{{ asset('assets/requirement/img/i7.jpg') }}" alt=""></li>
-                            <li><img src="{{ asset('assets/requirement/img/i8.jpg') }}" alt=""></li>
+                            <li><img src="{{ asset('assets/recruitment/img/i1.jpg') }}" alt=""></li>
+                            <li><img src="{{ asset('assets/recruitment/img/i2.jpg') }}" alt=""></li>
+                            <li><img src="{{ asset('assets/recruitment/img/i3.jpg') }}" alt=""></li>
+                            <li><img src="{{ asset('assets/recruitment/img/i4.jpg') }}" alt=""></li>
+                            <li><img src="{{ asset('assets/recruitment/img/i5.jpg') }}" alt=""></li>
+                            <li><img src="{{ asset('assets/recruitment/img/i6.jpg') }}" alt=""></li>
+                            <li><img src="{{ asset('assets/recruitment/img/i7.jpg') }}" alt=""></li>
+                            <li><img src="{{ asset('assets/recruitment/img/i8.jpg') }}" alt=""></li>
                         </ul>
                     </div>
                 </div>
@@ -923,24 +715,24 @@
     </footer> --}}
     <!-- End footer Area -->
 
-    <script src="{{ asset('assets/requirement/js/vendor/jquery-2.2.4.min.js') }}"></script>
+    <script src="{{ asset('assets/recruitment/js/vendor/jquery-2.2.4.min.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
         integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
     </script>
-    <script src="{{ asset('assets/requirement/js/vendor/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('assets/recruitment/js/vendor/bootstrap.min.js') }}"></script>
     <script type="text/javascript"
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBhOdIF3Y9382fqJYt5I_sswSrEw5eihAA"></script>
-    <script src="{{ asset('assets/requirement/js/easing.min.js') }}"></script>
-    <script src="{{ asset('assets/requirement/js/hoverIntent.js') }}"></script>
-    <script src="{{ asset('assets/requirement/js/superfish.min.js') }}"></script>
-    <script src="{{ asset('assets/requirement/js/jquery.ajaxchimp.min.js') }}"></script>
-    <script src="{{ asset('assets/requirement/js/jquery.magnific-popup.min.js') }}"></script>
-    <script src="{{ asset('assets/requirement/js/owl.carousel.min.js') }}"></script>
-    <script src="{{ asset('assets/requirement/js/jquery.sticky.js') }}"></script>
-    <script src="{{ asset('assets/requirement/js/jquery.nice-select.min.js') }}"></script>
-    <script src="{{ asset('assets/requirement/js/parallax.min.js') }}"></script>
-    <script src="{{ asset('assets/requirement/js/mail-script.js') }}"></script>
-    <script src="{{ asset('assets/requirement/js/main.js') }}"></script>
+    <script src="{{ asset('assets/recruitment/js/easing.min.js') }}"></script>
+    <script src="{{ asset('assets/recruitment/js/hoverIntent.js') }}"></script>
+    <script src="{{ asset('assets/recruitment/js/superfish.min.js') }}"></script>
+    <script src="{{ asset('assets/recruitment/js/jquery.ajaxchimp.min.js') }}"></script>
+    <script src="{{ asset('assets/recruitment/js/jquery.magnific-popup.min.js') }}"></script>
+    <script src="{{ asset('assets/recruitment/js/owl.carousel.min.js') }}"></script>
+    <script src="{{ asset('assets/recruitment/js/jquery.sticky.js') }}"></script>
+    <script src="{{ asset('assets/recruitment/js/jquery.nice-select.min.js') }}"></script>
+    <script src="{{ asset('assets/recruitment/js/parallax.min.js') }}"></script>
+    <script src="{{ asset('assets/recruitment/js/mail-script.js') }}"></script>
+    <script src="{{ asset('assets/recruitment/js/main.js') }}"></script>
 </body>
 
 </html>

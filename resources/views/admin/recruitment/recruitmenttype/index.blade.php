@@ -3,7 +3,7 @@
 <div class="position-relative">
     <div class="position-absolute bottom-0 end-0">
         <button type="button" class="btn-primary rounded f-2 p-1" data-bs-toggle="modal"
-            data-bs-target="#addLeadSourceModal">
+            data-bs-target="#addPostTypeModal">
             <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" fill="currentColor" class="bi bi-plus"
                 viewBox="0 0 16 16">
                 <path
@@ -15,7 +15,7 @@
 </div>
 {{-- Table start  --}}
 <div class="table-responsive">
-    @isset($leadSources)
+    @isset($posttype)
         <table id="dataTableExample" class="table">
             <thead>
                 <tr>
@@ -27,11 +27,11 @@
             <tbody>
                 <tr>
 
-                    @if ($leadSources->count() > 0)
-                        @foreach ($leadSources as $key => $value)
+                    @if ($posttype->count() > 0)
+                        @foreach ($posttype as $key => $value)
                 <tr>
-                    <td>{{ $leadSources->firstItem() + $key }}</td>
-                    <td>{{ $value->name }}</td>
+                    <td>{{ $posttype->firstItem() + $key }}</td>
+                    <td>{{ $value->posttype }}</td>
 
 
 
@@ -40,30 +40,29 @@
                         <ul class="d-flex list-unstyled mb-0 justify-content-center">
                             {{-- For admins --}}
                             <li class="me-2">
-                                <a class="editLeadSourceBtn" data-id="{{ $value->id }}" data-name="{{ $value->name }}"
-                                    data-bs-toggle="modal" data-bs-target="#editLeadSourceModal">
+                                <a class="editPostTypeBtn" data-id="{{ $value->id }}" data-name="{{ $value->posttype }}"
+                                    data-bs-toggle="modal" data-bs-target="#editPostTypeModal" style="cursor: pointer">
                                     <i class="link-icon" data-feather="edit"></i>
                                 </a>
-                                <a class="deleteLeadSourceLink" data-id="{{ $value->id }}" data-toggle="modal"
-                                    data-target="#deleteModal">
+                                <a class="deletePostTypeLink" data-id="{{ $value->id }}" data-toggle="modal"
+                                    data-target="#deletePostTypeModal" style="cursor: pointer">
                                     <i class="link-icon" data-feather="delete"></i>
                                 </a>
                             </li>
                         </ul>
                         {{-- @endif --}}
-
                     </td>
                 </tr>
                 @endforeach
             @else
-                <p>No enquiries assigned to you.</p>
+                <p>No Post Type here.</p>
                 @endif
 
 
             </tbody>
         </table>
         <br>
-        <div class="row">{{ $leadSources->links() }}</div>
+        <div class="row">{{ $posttype->links() }}</div>
     @endisset
 </div>
 {{-- Table end  --}}

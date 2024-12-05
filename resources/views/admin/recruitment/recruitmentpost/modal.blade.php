@@ -25,14 +25,18 @@
                             <label for="postexperience" class="form-label">Job Type</label>
                             <select name="jobtype" class="form-control" id="jobtype">
                                 <option value="">Select Type</option>
-                                <option value="1">Remote</option>
+                                @foreach ($applyposttype as $type)
+                                     <option value="{{ $type->id }}">{{ $type->posttype }}</option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="postexperience"  class="form-label">Job Location</label>
                             <select name="joblocation" class="form-control" id="joblocation">
                                 <option value="">Select Location</option>
-                                <option value="3">BBSR</option>
+                                @foreach ($applypostlocation as $location)
+                                <option value="{{ $location->id }}">{{ $location->postlocation }}</option>
+                           @endforeach
                             </select>
                         </div>
                         <div class="col-md-12 mb-3">
