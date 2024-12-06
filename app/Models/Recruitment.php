@@ -23,4 +23,14 @@ class Recruitment extends Model
         'created_by',
         'updated_by'
     ];
+
+    public function location()
+    {
+        return $this->belongsTo(RecruitmentLocation::class, 'postlocationid', 'id');
+    }
+
+    public function type()
+    {
+        return $this->belongsTo(RecruitmentType::class, 'posttypeid', 'id');
+    }
 }

@@ -1,15 +1,7 @@
 @extends('layouts.master')
-@section('title', 'Recruitment')
-@section('action', 'Recruitment')
-@section('button')
-    {{-- @can('create_procurement')
-        <a href="{{ route('admin.procurement.create') }}">
-            <button class="btn btn-primary">
-                <i class="link-icon" data-feather="plus"></i>Add Request
-            </button>
-        </a>
-    @endcan --}}
-@endsection
+@section('title', 'Job Applications')
+@section('action', 'Job Applications')
+
 @section('main-content')
 
     <section class="content">

@@ -38,6 +38,7 @@
                                 </button>
                                 <ul class="dropdown-menu">
                                     <!-- Add relevant dropdown menu options -->
+                                    <li><a class="dropdown-item" href="{{ route('admin.recruitment.view', $value->id) }}">View</a></li>
                                     <li><a class="dropdown-item" href="#">Edit</a></li>
                                     <li><a class="dropdown-item" href="#">Delete</a></li>
                                 </ul>

@@ -17,4 +17,8 @@ class RecruitmentLocation extends Model
         'created_by',
         'updated_by'
     ];
+
+    public function recruitment(){
+        return $this->hasMany(Recruitment::class);
+    }
 }

@@ -13,8 +13,14 @@ class RecruitmentController extends Controller
 {
     public function index()
     {
-        $applypage = Recruitment::where('status', 0)->paginate(5);
-        return view('recruitment.index', ['applypage' => $applypage]);
+        $activejobcount = Recruitment::where('status', 0)->count();
+        if ($activejobcount > 11) {
+            $activejobcount = ($activejobcount - 1) . '+';
+        }
+        $applypage = Recruitment::where('status', 0)->with(['location'])->get();
+        // dd($applypage);
+        $applybylocation = RecruitmentLocation::where('status', 0)->limit(5)->get();
+        return view('recruitment.index', ['applypage' => $applypage, 'applybylocation' => $applybylocation, 'activejobcount' => $activejobcount]);
     }
 
     public function manageRecruitment()
@@ -29,9 +35,15 @@ class RecruitmentController extends Controller
         return view('admin.recruitment.index', ['postlist' => $postlist, 'posttype' => $posttype, 'postlocation' => $postlocation, 'applyposttype' => $applyposttype, 'applypostlocation' => $applypostlocation]);
     }
 
+    public function view($id)
+    {
+        $viewjob = Recruitment::find($id);
+        return view('admin.recruitment.view', ['viewjob' => $viewjob]);
+    }
+
     public function addPost(Request $request)
     {
-         $request->validate([
+        $request->validate([
             'postname' => 'required|string|max:50',
             'postexperience' => 'required|numeric|min:0',
             'totalvacancy' => 'required',
@@ -39,7 +51,7 @@ class RecruitmentController extends Controller
             'jobtype' => 'required',
             'joblocation' => 'required',
             'postdescription' => 'required|string|min:20|max:30',
-         ]);
+        ]);
 
         Recruitment::create([
             'postname' => $request->postname,

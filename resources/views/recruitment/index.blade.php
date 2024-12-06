@@ -1,76 +1,15 @@
-<!DOCTYPE html>
-<html lang="zxx" class="no-js">
-
-<head>
-    <!-- Mobile Specific Meta -->
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <!-- Favicon-->
-    <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}">
-    <!-- Author Meta -->
-    <meta name="author" content="codepixer">
-    <!-- Meta Description -->
-    <meta name="description" content="">
-    <!-- Meta Keyword -->
-    <meta name="keywords" content="">
-    <!-- meta character set -->
-    <meta charset="UTF-8">
-    <!-- Site Title -->
-    <title>Recruitment Page</title>
-
-    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,400,300,500,600,700" rel="stylesheet">
-    <!--
-        CSS
-        ============================================= -->
-    <link rel="stylesheet" href="{{ asset('assets/recruitment/css/linearicons.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/recruitment/css/font-awesome.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/recruitment/css/bootstrap.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/recruitment/css/magnific-popup.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/recruitment/css/nice-select.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/recruitment/css/animate.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/recruitment/css/owl.carousel.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/recruitment/css/main.css') }}">
-</head>
-
-<body>
-    <!-- #header -->
-    {{-- <header id="header" id="home">
-        <div class="container">
-            <div class="row align-items-center justify-content-between d-flex">
-                <div id="logo">
-                    <a href="index.html"><img src="img/logo.png" alt="" title="" /></a>
-                </div>
-                <nav id="nav-menu-container">
-                    <ul class="nav-menu">
-                        <li class="menu-active"><a href="index.html">Home</a></li>
-                        <li><a href="about-us.html">About Us</a></li>
-                        <li><a href="category.html">Category</a></li>
-                        <li><a href="price.html">Price</a></li>
-                        <li><a href="blog-home.html">Blog</a></li>
-                        <li><a href="contact.html">Contact</a></li>
-                        <li class="menu-has-children"><a href="">Pages</a>
-                            <ul>
-                                <li><a href="elements.html">elements</a></li>
-                                <li><a href="search.html">search</a></li>
-                                <li><a href="single.html">single</a></li>
-                            </ul>
-                        </li>
-                        <li><a class="ticker-btn" href="#">Signup</a></li>
-                        <li><a class="ticker-btn" href="#">Login</a></li>
-                    </ul>
-                </nav><!-- #nav-menu-container -->
-            </div>
-        </div>
-    </header> --}}
-
+@extends('recruitment.layout.master')
+@section('title', 'Recruitment')
+@section('main-content')
 
     <!-- start banner Area -->
-    <section class="banner-area relative" id="home">
+    <section class="banner-area relative" id="home" style="height: 600px;">
         <div class="overlay overlay-bg"></div>
         <div class="container">
             <div class="row fullscreen d-flex align-items-center justify-content-center">
                 <div class="banner-content col-lg-12">
                     <h1 class="text-light">
-                        <span>1500+</span> Jobs posted last week
+                        <span>{{ $activejobcount }}</span> Jobs posted last week
                     </h1>
                     <form action="search.html" class="serach-form-area">
                         <div class="row justify-content-center form-wrap requirement-search">
@@ -156,211 +95,24 @@
     </section>
     <!-- End features Area -->
 
-    <!-- Start popular-post Area -->
-    <section class="popular-post-area pt-100">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="active-popular-post-carusel">
-                    <div class="single-popular-post d-flex flex-row">
-                        <div class="thumb">
-                            <img class="img-fluid" src="{{ asset('assets/recruitment/img/p1.png') }}" alt="">
-                            <a class="btns text-uppercase" href="#">view job post</a>
-                        </div>
-                        <div class="details">
-                            <a href="#">
-                                <h4>Creative Designer</h4>
-                            </a>
-                            <h6>Los Angeles</h6>
-                            <p>
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod temporinc
-                                ididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="single-popular-post d-flex flex-row">
-                        <div class="thumb">
-                            <img src="{{ asset('assets/recruitment/img/p2.png') }}" alt="">
-                            <a class="btns text-uppercase" href="#">view job post</a>
-                        </div>
-                        <div class="details">
-                            <a href="#">
-                                <h4>Creative Designer</h4>
-                            </a>
-                            <h6>Los Angeles</h6>
-                            <p>
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod temporinc
-                                ididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="single-popular-post d-flex flex-row">
-                        <div class="thumb">
-                            <img src="{{ asset('assets/recruitment/img/p1.png') }}" alt="">
-                            <a class="btns text-uppercase" href="#">view job post</a>
-                        </div>
-                        <div class="details">
-                            <a href="#">
-                                <h4>Creative Designer</h4>
-                            </a>
-                            <h6>Los Angeles</h6>
-                            <p>
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod temporinc
-                                ididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="single-popular-post d-flex flex-row">
-                        <div class="thumb">
-                            <img src="{{ asset('assets/recruitment/img/p2.png') }}" alt="">
-                            <a class="btns text-uppercase" href="#">view job post</a>
-                        </div>
-                        <div class="details">
-                            <a href="#">
-                                <h4>Creative Designer</h4>
-                            </a>
-                            <h6>Los Angeles</h6>
-                            <p>
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod temporinc
-                                ididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="single-popular-post d-flex flex-row">
-                        <div class="thumb">
-                            <img src="{{ asset('assets/recruitment/img/p1.png') }}" alt="">
-                            <a class="btns text-uppercase" href="#">view job post</a>
-                        </div>
-                        <div class="details">
-                            <a href="#">
-                                <h4>Creative Designer</h4>
-                            </a>
-                            <h6>Los Angeles</h6>
-                            <p>
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod temporinc
-                                ididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="single-popular-post d-flex flex-row">
-                        <div class="thumb">
-                            <img src="{{ asset('assets/recruitment/img/p2.png') }}" alt="">
-                            <a class="btns text-uppercase" href="#">view job post</a>
-                        </div>
-                        <div class="details">
-                            <a href="#">
-                                <h4>Creative Designer</h4>
-                            </a>
-                            <h6>Los Angeles</h6>
-                            <p>
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod temporinc
-                                ididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- End popular-post Area -->
-
-    <!-- Start feature-cat Area -->
-    <section class="feature-cat-area pt-100" id="category">
-        <div class="container">
-            <div class="row d-flex justify-content-center">
-                <div class="menu-content pb-60 col-lg-10">
-                    <div class="title text-center">
-                        <h1 class="mb-10">Featured Job Categories</h1>
-                        <p>Who are in extremely love with eco friendly system.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-2 col-md-4 col-sm-6">
-                    <div class="single-fcat">
-                        <a href="category.html">
-                            <img src="{{ asset('assets/recruitment/img/o1.png') }}" alt="">
-                        </a>
-                        <p>Accounting</p>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-4 col-sm-6">
-                    <div class="single-fcat">
-                        <a href="category.html">
-                            <img src="{{ asset('assets/recruitment/img/o2.png') }}" alt="">
-                        </a>
-                        <p>Development</p>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-4 col-sm-6">
-                    <div class="single-fcat">
-                        <a href="category.html">
-                            <img src="{{ asset('assets/recruitment/img/o3.png') }}" alt="">
-                        </a>
-                        <p>Technology</p>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-4 col-sm-6">
-                    <div class="single-fcat">
-                        <a href="category.html">
-                            <img src="{{ asset('assets/recruitment/img/o4.png') }}" alt="">
-                        </a>
-                        <p>Media & News</p>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-4 col-sm-6">
-                    <div class="single-fcat">
-                        <a href="category.html">
-                            <img src="{{ asset('assets/recruitment/img/o5.png') }}" alt="">
-                        </a>
-                        <p>Medical</p>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-4 col-sm-6">
-                    <div class="single-fcat">
-                        <a href="category.html">
-                            <img src="{{ asset('assets/recruitment/img/o6.png') }}" alt="">
-                        </a>
-                        <p>Goverment</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- End feature-cat Area -->
-
     <!-- Start post Area -->
     <section class="post-area section-gap">
         <div class="container">
+            <div class="title text-center">
+                <h2 class="mb-10">Current Job Opening</h2>
+                <hr>
+                <br>
+            </div>
             <div class="row justify-content-center d-flex">
                 <div class="col-lg-8 post-list">
-                    <ul class="cat-list">
-                        <li><a href="#">Recent</a></li>
-                        <li><a href="#">Full Time</a></li>
-                        <li><a href="#">Intern</a></li>
-                        <li><a href="#">part Time</a></li>
-                    </ul>
-
                     {{-- Job Post here  --}}
 
                     @if ($applypage->count() > 0)
                         @foreach ($applypage as $post)
                             <div class="single-post d-flex flex-row">
-                                <div class="thumb">
-                                    <img src="{{ asset('assets/recruitment/img/post.png') }}" alt="">
-                                    <ul class="tags">
-                                        <li>
-                                            <a href="#">Artsk</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Media</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Design</a>
-                                        </li>
-                                    </ul>
-                                </div>
+
                                 <div class="details" style="margin-left: 15px !important;">
-                                    <div class="title d-flex flex-row justify-content-between" >
+                                    <div class="title d-flex flex-row justify-content-between">
                                         <div class="titles">
                                             <a href="single.html">
                                                 <h4>{{ $post->postname }}</h4>
@@ -372,13 +124,14 @@
                                             <li><a href="#">Apply</a></li>
                                         </ul>
                                     </div>
-                                    <p>
-                                        {{ $post->description }}
+                                    <p class="mb-2">{{ $post->description }}</p>
+                                    <h5>Job Type: {{ $post->type->posttype }}</h5>
+                                    <p class="address"><span class="lnr lnr-map"></span>
+                                        {{ $post->location->postlocation }}
+
                                     </p>
-                                    <h5>Job Nature: {{ $post->posttypeid }}</h5>
-                                    <p class="address"><span class="lnr lnr-map"></span> {{ $post->postlocationid }}
-                                    </p>
-                                    <p class="address"><span class="lnr lnr-database"></span> {{ $post->salaryrange }}</p>
+                                    <p class="address"><span class="lnr lnr-database"></span>
+                                        {{ $post->salaryrange }}</p>
                                 </div>
                             </div>
                         @endforeach
@@ -396,27 +149,12 @@
                     <div class="single-slidebar">
                         <h4>Jobs by Location</h4>
                         <ul class="cat-list">
-                            <li><a class="justify-content-between d-flex" href="category.html">
-                                    <p>New York</p><span>37</span>
-                                </a></li>
-                            <li><a class="justify-content-between d-flex" href="category.html">
-                                    <p>Park Montana</p><span>57</span>
-                                </a></li>
-                            <li><a class="justify-content-between d-flex" href="category.html">
-                                    <p>Atlanta</p><span>33</span>
-                                </a></li>
-                            <li><a class="justify-content-between d-flex" href="category.html">
-                                    <p>Arizona</p><span>36</span>
-                                </a></li>
-                            <li><a class="justify-content-between d-flex" href="category.html">
-                                    <p>Florida</p><span>47</span>
-                                </a></li>
-                            <li><a class="justify-content-between d-flex" href="category.html">
-                                    <p>Rocky Beach</p><span>27</span>
-                                </a></li>
-                            <li><a class="justify-content-between d-flex" href="category.html">
-                                    <p>Chicago</p><span>17</span>
-                                </a></li>
+                            @foreach ($applybylocation as $location)
+                                <li><a class="justify-content-between d-flex" href="category.html">
+                                        <p>{{ $location->postlocation }}</p><span>37</span>
+                                    </a></li>
+                            @endforeach
+
                         </ul>
                     </div>
 
@@ -424,8 +162,7 @@
                         <h4>Top rated job posts</h4>
                         <div class="active-relatedjob-carusel">
                             <div class="single-rated">
-                                <img class="img-fluid" src="{{ asset('assets/recruitment/img/r1.jpg') }}"
-                                    alt="">
+                                <img class="img-fluid" src="{{ asset('assets/recruitment/img/r1.jpg') }}" alt="">
                                 <a href="single.html">
                                     <h4>Creative Art Designer</h4>
                                 </a>
@@ -441,8 +178,7 @@
                                 <a href="#" class="btns text-uppercase">Apply job</a>
                             </div>
                             <div class="single-rated">
-                                <img class="img-fluid" src="{{ asset('assets/recruitment/img/r1.jpg') }}"
-                                    alt="">
+                                <img class="img-fluid" src="{{ asset('assets/recruitment/img/r1.jpg') }}" alt="">
                                 <a href="single.html">
                                     <h4>Creative Art Designer</h4>
                                 </a>
@@ -458,8 +194,7 @@
                                 <a href="#" class="btns text-uppercase">Apply job</a>
                             </div>
                             <div class="single-rated">
-                                <img class="img-fluid" src="{{ asset('assets/recruitment/img/r1.jpg') }}"
-                                    alt="">
+                                <img class="img-fluid" src="{{ asset('assets/recruitment/img/r1.jpg') }}" alt="">
                                 <a href="single.html">
                                     <h4>Creative Art Designer</h4>
                                 </a>
@@ -476,91 +211,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <div class="single-slidebar">
-                        <h4>Jobs by Category</h4>
-                        <ul class="cat-list">
-                            <li><a class="justify-content-between d-flex" href="category.html">
-                                    <p>Technology</p><span>37</span>
-                                </a></li>
-                            <li><a class="justify-content-between d-flex" href="category.html">
-                                    <p>Media & News</p><span>57</span>
-                                </a></li>
-                            <li><a class="justify-content-between d-flex" href="category.html">
-                                    <p>Goverment</p><span>33</span>
-                                </a></li>
-                            <li><a class="justify-content-between d-flex" href="category.html">
-                                    <p>Medical</p><span>36</span>
-                                </a></li>
-                            <li><a class="justify-content-between d-flex" href="category.html">
-                                    <p>Restaurants</p><span>47</span>
-                                </a></li>
-                            <li><a class="justify-content-between d-flex" href="category.html">
-                                    <p>Developer</p><span>27</span>
-                                </a></li>
-                            <li><a class="justify-content-between d-flex" href="category.html">
-                                    <p>Accounting</p><span>17</span>
-                                </a></li>
-                        </ul>
-                    </div>
-
-                    <div class="single-slidebar">
-                        <h4>Carrer Advice Blog</h4>
-                        <div class="blog-list">
-                            <div class="single-blog " style="background:#000 url(img/blog1.jpg);">
-                                <a href="single.html">
-                                    <h4>Home Audio Recording <br>
-                                        For Everyone</h4>
-                                </a>
-                                <div class="meta justify-content-between d-flex">
-                                    <p>
-                                        02 Hours ago
-                                    </p>
-                                    <p>
-                                        <span class="lnr lnr-heart"></span>
-                                        06
-                                        <span class="lnr lnr-bubble"></span>
-                                        02
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="single-blog " style="background:#000 url(img/blog2.jpg);">
-                                <a href="single.html">
-                                    <h4>Home Audio Recording <br>
-                                        For Everyone</h4>
-                                </a>
-                                <div class="meta justify-content-between d-flex">
-                                    <p>
-                                        02 Hours ago
-                                    </p>
-                                    <p>
-                                        <span class="lnr lnr-heart"></span>
-                                        06
-                                        <span class="lnr lnr-bubble"></span>
-                                        02
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="single-blog " style="background:#000 url(img/blog1.jpg);">
-                                <a href="single.html">
-                                    <h4>Home Audio Recording <br>
-                                        For Everyone</h4>
-                                </a>
-                                <div class="meta justify-content-between d-flex">
-                                    <p>
-                                        02 Hours ago
-                                    </p>
-                                    <p>
-                                        <span class="lnr lnr-heart"></span>
-                                        06
-                                        <span class="lnr lnr-bubble"></span>
-                                        02
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
             </div>
         </div>
@@ -715,24 +365,4 @@
     </footer> --}}
     <!-- End footer Area -->
 
-    <script src="{{ asset('assets/recruitment/js/vendor/jquery-2.2.4.min.js') }}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
-    </script>
-    <script src="{{ asset('assets/recruitment/js/vendor/bootstrap.min.js') }}"></script>
-    <script type="text/javascript"
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBhOdIF3Y9382fqJYt5I_sswSrEw5eihAA"></script>
-    <script src="{{ asset('assets/recruitment/js/easing.min.js') }}"></script>
-    <script src="{{ asset('assets/recruitment/js/hoverIntent.js') }}"></script>
-    <script src="{{ asset('assets/recruitment/js/superfish.min.js') }}"></script>
-    <script src="{{ asset('assets/recruitment/js/jquery.ajaxchimp.min.js') }}"></script>
-    <script src="{{ asset('assets/recruitment/js/jquery.magnific-popup.min.js') }}"></script>
-    <script src="{{ asset('assets/recruitment/js/owl.carousel.min.js') }}"></script>
-    <script src="{{ asset('assets/recruitment/js/jquery.sticky.js') }}"></script>
-    <script src="{{ asset('assets/recruitment/js/jquery.nice-select.min.js') }}"></script>
-    <script src="{{ asset('assets/recruitment/js/parallax.min.js') }}"></script>
-    <script src="{{ asset('assets/recruitment/js/mail-script.js') }}"></script>
-    <script src="{{ asset('assets/recruitment/js/main.js') }}"></script>
-</body>
-
-</html>
+@endsection

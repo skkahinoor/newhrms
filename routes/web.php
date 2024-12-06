@@ -23,6 +23,7 @@ use App\Http\Controllers\Web\FollowUpController;
 use App\Http\Controllers\Web\FollowUpSettingController;
 use App\Http\Controllers\Web\GeneralSettingController;
 use App\Http\Controllers\Web\HolidayController;
+use App\Http\Controllers\Web\JobApplicationController;
 use App\Http\Controllers\Web\LeadEnquiriesController;
 use App\Http\Controllers\Web\LeadsSettingController;
 use App\Http\Controllers\Web\LeaveController;
@@ -535,6 +536,8 @@ Route::group([
 
         // Requirement Module
         Route::get('recruitment', [RecruitmentController::class, 'manageRecruitment'])->name('recruitment.manageRecruitment');
+        Route::get('recruitment/view/{id}', [RecruitmentController::class, 'view'])->name('recruitment.view');
+
         Route::post('recruitment/addpost', [RecruitmentController::class, 'addPost'])->name('recruitment.addpost');
         Route::post('recruitment/addposttype', [RecruitmentController::class, 'addPostType'])->name('recruitment.addPostType');
         Route::post('recruitment/addpostlocation', [RecruitmentController::class, 'addPostLocation'])->name('recruitment.addPostLocation');
@@ -544,6 +547,9 @@ Route::group([
 
         Route::put('recruitment/addpostlocation-update/{id}', [RecruitmentController::class, 'updatePostLocation'])->name('recruitment.addpostlocation-update');
         Route::put('recruitment/addpostlocation-delete/{id}', [RecruitmentController::class, 'deletePostLocation'])->name('recruitment.addpostlocation-delete');
+
+        // Job Applications 
+        Route::get('jobapplication', [JobApplicationController::class, 'index'])->name('jobapplication.index');
 
     });
 });
