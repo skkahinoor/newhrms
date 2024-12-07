@@ -114,9 +114,16 @@
                                 <div class="details" style="margin-left: 15px !important;">
                                     <div class="title d-flex flex-row justify-content-between">
                                         <div class="titles">
-                                            <a href="single.html">
+
+                                            <form action="{{ route('recruitment.view') }}" method="POST" class="d-inline">
+                                                @csrf
+                                                <input type="hidden" name="id" value="{{ $post->id }}">
+                                                <button type="submit" class="btn btn-link text-dark fw-bolder">{{ $post->postname }}</button>
+                                            </form>
+
+                                            {{-- <a href="{{ route('recruitment.view', $post->id) }}">
                                                 <h4>{{ $post->postname }}</h4>
-                                            </a>
+                                            </a> --}}
                                             <h6>Premium Labels Limited</h6>
                                         </div>
                                         <ul class="btns">
@@ -194,7 +201,8 @@
                                 <a href="#" class="btns text-uppercase">Apply job</a>
                             </div>
                             <div class="single-rated">
-                                <img class="img-fluid" src="{{ asset('assets/recruitment/img/r1.jpg') }}" alt="">
+                                <img class="img-fluid" src="{{ asset('assets/recruitment/img/r1.jpg') }}"
+                                    alt="">
                                 <a href="single.html">
                                     <h4>Creative Art Designer</h4>
                                 </a>

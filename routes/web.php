@@ -88,8 +88,9 @@ Route::get('/leadform', function () {
 });
 
 // Requirement Module
-
 Route::get('recruitment', [RecruitmentController::class, 'index'])->name('recruitment.index');
+Route::post('recruitment/view', [RecruitmentController::class, 'viewJob'])->name('recruitment.view');
+Route::post('recruitment/view/apply', [RecruitmentController::class, 'apply'])->name('recruitment.apply');
 
 /** app privacy policy route */
 Route::get('privacy', [PrivacyPolicyController::class, 'index'])->name('privacy-policy');

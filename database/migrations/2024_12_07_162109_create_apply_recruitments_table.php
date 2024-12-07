@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('job_applications', function (Blueprint $table) {
+        Schema::create('apply_recruitments', function (Blueprint $table) {
             $table->id();
             $table->string('full_name'); // Full Name
             $table->string('email_address')->unique(); // Email Address
@@ -35,6 +35,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('job_applications');
+        Schema::dropIfExists('apply_recruitments');
     }
 };

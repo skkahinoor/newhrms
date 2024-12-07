@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Models\ApplyRecruitment;
 use App\Models\Recruitment;
 use App\Models\RecruitmentLocation;
 use App\Models\RecruitmentType;
@@ -11,6 +12,7 @@ use Illuminate\Support\Facades\Redirect;
 
 class RecruitmentController extends Controller
 {
+    // Frontend Part Start
     public function index()
     {
         $activejobcount = Recruitment::where('status', 0)->count();
@@ -22,6 +24,59 @@ class RecruitmentController extends Controller
         $applybylocation = RecruitmentLocation::where('status', 0)->limit(5)->get();
         return view('recruitment.index', ['applypage' => $applypage, 'applybylocation' => $applybylocation, 'activejobcount' => $activejobcount]);
     }
+
+    public function viewJob(Request $request)
+    {
+        $id = $request->input('id'); // Retrieve the ID from the request body
+        $viewcurrentjob = Recruitment::findOrFail($id);
+        $applybylocation = RecruitmentLocation::where('status', 0)->limit(5)->get();
+        return view('recruitment.view', ['viewcurrentjob' => $viewcurrentjob, 'applybylocation' => $applybylocation]);
+    }
+
+    public function apply(Request $request)
+    {
+        $request->validate([
+            'full_name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'mobile' => 'required|string|max:15',
+            'experience_years' => 'required|integer|min:0',
+            'experience_months' => 'required|integer|min:0|max:11',
+            'current_ctc' => 'required|numeric|min:0',
+            'expected_ctc' => 'required|numeric|min:0',
+            'notice_period' => 'required|integer|min:0',
+            'cv' => 'required|mimes:pdf|max:2048', // Max size 2MB
+        ]);
+
+        // Handle file upload
+        $cvPath = null;
+        if ($request->hasFile('cv')) {
+            // Get the original filename
+            $filename = time() . '_' . $request->file('cv')->getClientOriginalName();
+
+            // Move the file to the "resume" directory under "public"
+            $request->file('cv')->move(public_path('resume'), $filename);
+
+            // Save the relative file path
+            $cvPath = $filename;
+        }
+
+        // Save application to the database
+        ApplyRecruitment::create([
+            'full_name' => $request->full_name,
+            'email_address' => $request->email,
+            'mobile_number' => $request->mobile,
+            'experience_years' => $request->experience_years,
+            'experience_months' => $request->experience_months,
+            'current_ctc' => $request->current_ctc,
+            'expected_ctc' => $request->expected_ctc,
+            'notice_period_days' => $request->notice_period,
+            'cv_file_path' => $cvPath,
+        ]);
+
+        return back()->with('success', 'Your application has been submitted successfully!');
+    }
+
+    // Admin part start
 
     public function manageRecruitment()
     {
@@ -50,7 +105,7 @@ class RecruitmentController extends Controller
             'salaryrange' => 'required',
             'jobtype' => 'required',
             'joblocation' => 'required',
-            'postdescription' => 'required|string|min:20|max:30',
+            'postdescription' => 'required|string',
         ]);
 
         Recruitment::create([
