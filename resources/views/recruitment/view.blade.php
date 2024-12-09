@@ -83,6 +83,7 @@
                         <h2 class="mb-4 text-center text-danger">Apply for Job</h2>
                         <form action="{{ route('recruitment.apply') }}" method="POST" enctype="multipart/form-data">
                             @csrf
+                            <input type="hidden" name="jobpostid" value="{{ $viewcurrentjob->id }}">
                             <!-- Full Name -->
                             <div class="mb-3">
                                 <label for="fullName" class="form-label">Full Name *</label>
@@ -91,17 +92,38 @@
                             </div>
 
                             <!-- Email Address -->
-                            <div class="mb-3">
-                                <label for="email" class="form-label">Email Address *</label>
-                                <input type="email" class="form-control" id="email" name="email"
-                                    placeholder="Enter your email" required>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="email" class="form-label">Email Address *</label>
+                                    <input type="email" class="form-control" id="email" name="email"
+                                        placeholder="Enter your email" required>
+                                </div>
+
+                                <!-- Date of Birth -->
+                                <div class="col-md-6">
+                                    <label for="experienceMonths" class="form-label">Date Of Birth *</label>
+                                    <input type="date" class="form-control" id="dob" name="dob" required>
+                                </div>
                             </div>
 
                             <!-- Mobile Number -->
-                            <div class="mb-3">
-                                <label for="mobile" class="form-label">Mobile Number *</label>
-                                <input type="text" class="form-control" id="mobile" name="mobile"
-                                    placeholder="Enter your mobile number" required>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="mobile" class="form-label">Mobile Number *</label>
+                                    <input type="text" class="form-control" id="mobile" name="mobile"
+                                        placeholder="Enter your mobile number" required>
+                                </div>
+
+                                <!-- Gender -->
+                                <div class="col-md-6">
+                                    <label for="experienceMonths" class="form-label">Gender *</label>
+                                    <select name="gender" id="gender" class="form-control" required
+                                        style="cursor: pointer">
+                                        <option value="">Select Gender</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                    </select>
+                                </div>
                             </div>
 
                             <!-- Experience (In Years) -->

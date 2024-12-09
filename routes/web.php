@@ -552,6 +552,10 @@ Route::group([
         // Job Applications 
         Route::get('jobapplication', [JobApplicationController::class, 'index'])->name('jobapplication.index');
 
+        Route::post('jobapplication/sheduleinterview/{id}', [JobApplicationController::class, 'sheduleInterview'])->name('jobapplication.sheduleinterview');
+        Route::post('jobapplication/approveeasemployee/{id}', [JobApplicationController::class, 'approveEmployee'])->name('jobapplication.approveeasemployee');
+        Route::post('jobapplication/rejectcandidate/{id}', [JobApplicationController::class, 'rejectCandidate'])->name('jobapplication.rejectcandidate');
+
     });
 });
 

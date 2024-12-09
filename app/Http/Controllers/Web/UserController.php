@@ -2,33 +2,33 @@
 
 namespace App\Http\Controllers\Web;
 
-use Exception;
-use App\Models\User;
-use App\Helpers\AppHelper;
-use App\Imports\ImportUser;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Exports\EmployeeFormExport;
-use Illuminate\Contracts\View\View;
-use Maatwebsite\Excel\Facades\Excel;
-use App\Repositories\UserRepository;
-use App\Repositories\RoleRepository;
+use App\Helpers\AppHelper;
 use App\Http\Controllers\Controller;
-use Laravel\Passport\TokenRepository;
+use App\Imports\ImportUser;
+use App\Models\User;
 use App\Repositories\BranchRepository;
-use Illuminate\Contracts\View\Factory;
 use App\Repositories\CompanyRepository;
-use App\Requests\User\UserCreateRequest;
-use App\Requests\User\UserUpdateRequest;
-use App\Requests\User\UserAccountRequest;
+use App\Repositories\EmployeeLeaveTypeRepository;
 use App\Repositories\LeaveTypeRepository;
 use App\Repositories\OfficeTimeRepository;
-use App\Requests\User\UserLeaveTypeRequest;
+use App\Repositories\RoleRepository;
 use App\Repositories\UserAccountRepository;
+use App\Repositories\UserRepository;
 use App\Requests\User\ChangePasswordRequest;
-use Laravel\Passport\RefreshTokenRepository;
+use App\Requests\User\UserAccountRequest;
+use App\Requests\User\UserCreateRequest;
+use App\Requests\User\UserLeaveTypeRequest;
+use App\Requests\User\UserUpdateRequest;
+use Exception;
 use Illuminate\Contracts\Foundation\Application;
-use App\Repositories\EmployeeLeaveTypeRepository;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Laravel\Passport\RefreshTokenRepository;
+use Laravel\Passport\TokenRepository;
+use Maatwebsite\Excel\Facades\Excel;
 
 class UserController extends Controller
 {
@@ -72,7 +72,7 @@ class UserController extends Controller
         }
     }
 
-    public function employeeImport(): Factory|View|Application
+    public function employeeImport(): Factory | View | Application
     {
         $this->authorize('import_holiday');
         return view($this->view . 'imports.importUser');
@@ -92,7 +92,7 @@ class UserController extends Controller
 
     public function exportForm()
     {
-        return Excel::download(new EmployeeFormExport(), 'crate-form'  .  '-report.xlsx');
+        return Excel::download(new EmployeeFormExport(), 'crate-form' . '-report.xlsx');
     }
 
     public function create()
@@ -128,7 +128,6 @@ class UserController extends Controller
             $validatedData['status'] = 'verified';
             $validatedData['company_id'] = AppHelper::getAuthUserCompanyId();
 
-
             DB::beginTransaction();
             $user = $this->userRepo->store($validatedData);
             $accountValidatedData['user_id'] = $user['id'];
@@ -136,10 +135,10 @@ class UserController extends Controller
 
             if (!is_null($user['leave_allocated']) && isset($leaveTypeData['leave_type_id'])) {
                 foreach ($leaveTypeData['leave_type_id'] as $key => $value) {
-                    $input['days']       = $leaveTypeData['days'][$key] ?? 0;
-                    $input['is_active']  = $leaveTypeData['is_active'][$key] ?? 0;
-                    $input['employee_id']  = $user['id'];
-                    $input['leave_type_id']  = $value;
+                    $input['days'] = $leaveTypeData['days'][$key] ?? 0;
+                    $input['is_active'] = $leaveTypeData['is_active'][$key] ?? 0;
+                    $input['employee_id'] = $user['id'];
+                    $input['leave_type_id'] = $value;
 
                     $this->employeeLeaveTypeRepository->store($input);
                 }
@@ -165,7 +164,7 @@ class UserController extends Controller
                 'post:id,post_name',
                 'department:id,dept_name',
                 'role:id,name',
-                'accountDetail'
+                'accountDetail',
             ];
             $select = ['users.*', 'branch_id', 'company_id', 'department_id', 'post_id', 'role_id'];
             $userDetail = $this->userRepo->findUserDetailById($id, $select, $with);
@@ -219,17 +218,16 @@ class UserController extends Controller
 
             if (!is_null($validatedData['leave_allocated']) && isset($leaveTypeData['leave_type_id'])) {
                 foreach ($leaveTypeData['leave_type_id'] as $key => $value) {
-                    $input['days']       = $leaveTypeData['days'][$key];
-                    $input['is_active']  = $leaveTypeData['is_active'][$key] ?? 0;
+                    $input['days'] = $leaveTypeData['days'][$key];
+                    $input['is_active'] = $leaveTypeData['is_active'][$key] ?? 0;
 
                     $employeeLeaveTypeData = $this->employeeLeaveTypeRepository->findByLeaveType($id, $value);
                     if ($employeeLeaveTypeData) {
 
                         $this->employeeLeaveTypeRepository->update($employeeLeaveTypeData, $input);
                     } else {
-                        $input['employee_id']  = $id;
-                        $input['leave_type_id']  = $value;
-
+                        $input['employee_id'] = $id;
+                        $input['leave_type_id'] = $value;
 
                         $this->employeeLeaveTypeRepository->store($input);
                     }
@@ -318,7 +316,7 @@ class UserController extends Controller
 
             return response()->json([
                 'employee' => $employees,
-                'officeTime' => $officeTime
+                'officeTime' => $officeTime,
             ]);
         } catch (Exception $exception) {
             return redirect()->back()->with('danger', $exception->getMessage());
