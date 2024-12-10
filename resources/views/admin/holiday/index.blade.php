@@ -95,7 +95,7 @@
                             type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">All
                             Holidays</button>
                     </li>
-                    <li class="nav-item" role="presentation">
+                    {{-- <li class="nav-item" role="presentation">
                         <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane"
                             type="button" role="tab" aria-controls="profile-tab-pane"
                             aria-selected="false">Bhubaneshwar</button>
@@ -104,7 +104,7 @@
                         <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane"
                             type="button" role="tab" aria-controls="contact-tab-pane"
                             aria-selected="false">Cuttack</button>
-                    </li>
+                    </li> --}}
                 </ul>
                 <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab"
