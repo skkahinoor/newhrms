@@ -58,7 +58,7 @@
                 },
                 success: function(response) {
                     // Handle success response
-                    Swal.fire('Success!', 'Approved Employee Created successfully.',
+                    Swal.fire('Success!', 'Employee Created Successfully',
                         'success').then(
                         function() {
                             location

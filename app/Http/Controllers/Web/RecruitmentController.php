@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use App\Models\ApplyRecruitment;
+use App\Models\Company;
 use App\Models\Recruitment;
 use App\Models\RecruitmentLocation;
 use App\Models\RecruitmentType;
@@ -81,6 +82,8 @@ class RecruitmentController extends Controller
             'cv_file_path' => $cvPath,
         ]);
 
+        Recruitment::where('id', $request->jobpostid)->increment('totalapply');
+
         return view('recruitment.index', ['activejobcount' => $activejobcount, 'applybylocation' => $applybylocation, 'activejobcount' => $activejobcount, 'applypage' => $applypage])->with('success', 'Your application has been submitted successfully!');
     }
 
@@ -88,6 +91,8 @@ class RecruitmentController extends Controller
 
     public function manageRecruitment()
     {
+        $companyname = Company::first();
+        // dd($companyname);
         $postlist = Recruitment::where('status', 0)->orderBy('id', 'desc')->paginate(5);
         $posttype = RecruitmentType::where('status', 0)->paginate(5);
         $postlocation = RecruitmentLocation::where('status', 0)->paginate(5);
@@ -95,7 +100,7 @@ class RecruitmentController extends Controller
         // Apply Post Section
         $applyposttype = RecruitmentType::where('status', 0)->get();
         $applypostlocation = RecruitmentLocation::where('status', 0)->get();
-        return view('admin.recruitment.index', ['postlist' => $postlist, 'posttype' => $posttype, 'postlocation' => $postlocation, 'applyposttype' => $applyposttype, 'applypostlocation' => $applypostlocation]);
+        return view('admin.recruitment.index', ['postlist' => $postlist, 'posttype' => $posttype, 'postlocation' => $postlocation, 'applyposttype' => $applyposttype, 'applypostlocation' => $applypostlocation, 'companyname' => $companyname]);
     }
 
     public function view($id)

@@ -26,19 +26,23 @@
                                     <i class="bx bxl-mailchimp"></i>
                                 </div>
                                 <div class="ms-2">
-                                    <h6 class="mb-0">Mailchimp</h6>
+                                    <h6 class="mb-0">{{ $companyname->name }}</h6>
                                     <span class="text-muted small">{{ $value->created_at->diffForHumans() }}
                                     </span>
                                 </div>
                             </div>
                             <div class="btn-group dropstart">
-                                <button type="button" class="btn" data-bs-toggle="dropdown"
-                                    aria-expanded="false">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="text-secondary" width="20"  height="20" viewBox="0 0 24 24"><path fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"/></svg>
+                                <button type="button" class="btn" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="text-secondary" width="20"
+                                        height="20" viewBox="0 0 24 24">
+                                        <path fill="none" stroke="#000" stroke-linecap="round"
+                                            stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                                    </svg>
                                 </button>
                                 <ul class="dropdown-menu">
                                     <!-- Add relevant dropdown menu options -->
-                                    <li><a class="dropdown-item" href="{{ route('admin.recruitment.view', $value->id) }}">View</a></li>
+                                    <li><a class="dropdown-item"
+                                            href="{{ route('admin.recruitment.view', $value->id) }}">View</a></li>
                                     <li><a class="dropdown-item" href="#">Edit</a></li>
                                     <li><a class="dropdown-item" href="#">Delete</a></li>
                                 </ul>
@@ -58,8 +62,8 @@
                         <div class="mt-4">
                             <div class="progress" style="height: 6px;">
                                 <div class="progress-bar bg-success" role="progressbar"
-                                    style="width: {{ ($value->applied / $value->totalvacancy) * 100 }}%;"
-                                    aria-valuenow="{{ $value->applied }}" aria-valuemin="0"
+                                    style="width: {{ ($value->selected / $value->totalvacancy) * 100 }}%;"
+                                    aria-valuenow="{{ $value->selected }}" aria-valuemin="0"
                                     aria-valuemax="{{ $value->totalvacancy }}">
                                 </div>
                             </div>
@@ -73,12 +77,23 @@
                                     {{ $value->salaryrange }}
                                 </p>
                             </div>
-                            <div class="mt-2">
-                                <span class="text-muted">
-                                    <strong>{{ $value->applied }}</strong> Applied
-                                    <span class="text-muted">of {{ $value->totalvacancy }} capacity</span>
-                                </span>
+                            <br>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <span class="text-muted">
+                                        <strong>{{ $value->selected }}</strong> Selected
+                                        <span class="text-muted">out of {{ $value->totalvacancy }} Candidates</span>
+                                    </span>
+                                </div>
+                                <div class="col-md-6">
+                                    <span class="text-muted">
+                                        Total Apply:
+                                        <strong>{{ $value->totalapply }}</strong>
+                                    </span>
+                                </div>
                             </div>
+
+
                         </div>
                     </div>
                 </div>

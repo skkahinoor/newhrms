@@ -9,13 +9,13 @@
         @include('admin.recruitment.common.breadCrumb')
 
         <?php
-            $status = [
-                0 => 'Pending',
-                1 => 'Schedule',
-                2 => 'Approve',
-                3 => 'Reject'
-            ];
-       ?>
+        $status = [
+            0 => 'Pending',
+            1 => 'Scheduled',
+            2 => 'Selected',
+            3 => 'Rejected',
+        ];
+        ?>
 
         {{-- Requirement List  --}}
         <div class="card">
@@ -63,7 +63,9 @@
                                         {{ $value->cv_file_path }}
                                     </a>
                                 </td>
-                                <td><p class="badge bg-info text-dark">{{ $status[$value->status] ?? 'Unknown'}}</p></td>
+                                <td>
+                                    <p class="badge bg-info text-dark">{{ $status[$value->status] ?? 'Unknown' }}</p>
+                                </td>
                                 <td class="text-center">
                                     <div class="dropdown">
                                         <button class="btn btn-primary dropdown-toggle" type="button"
@@ -72,9 +74,12 @@
                                             Action
                                         </button>
                                         <ul class="dropdown-menu">
-                                            <li><a class="dropdown-item shedule-interview" data-id="{{ $value->id }}" href="javascript:void(0);">Interview Shedule</a></li>
-                                            <li><a class="dropdown-item approve-as-employee" data-id="{{ $value->id }}" href="javascript:void(0);">Approve as Employee</a></li>
-                                            <li><a class="dropdown-item reject-candidate" data-id="{{ $value->id }}" href="javascript:void(0);">Reject</a></li>
+                                            <li><a class="dropdown-item shedule-interview" data-id="{{ $value->id }}"
+                                                    href="javascript:void(0);">Shedule for Interview</a></li>
+                                            <li><a class="dropdown-item approve-as-employee" data-id="{{ $value->id }}"
+                                                    href="javascript:void(0);">Select as Employee</a></li>
+                                            <li><a class="dropdown-item reject-candidate" data-id="{{ $value->id }}"
+                                                    href="javascript:void(0);">Reject</a></li>
                                         </ul>
                                     </div>
                                 </td>
