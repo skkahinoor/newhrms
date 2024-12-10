@@ -103,5 +103,4 @@
 
 @section('scripts')
     @include('admin.recruitment.common.script')
-
 @endsection

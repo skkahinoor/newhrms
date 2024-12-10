@@ -23,7 +23,7 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="d-flex flex-row align-items-center">
                                 <div class="icon">
-                                    <i class="bx bxl-mailchimp"></i>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><g fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" color="#000"><path d="M11.007 21H9.605c-3.585 0-5.377 0-6.491-1.135S2 16.903 2 13.25s0-5.48 1.114-6.615S6.02 5.5 9.605 5.5h3.803c3.585 0 5.378 0 6.492 1.135c.857.873 1.054 2.156 1.1 4.365"/><path d="M20.017 20.023L22 22m-.947-4.474a3.527 3.527 0 1 0-7.053 0a3.527 3.527 0 0 0 7.053 0M16 5.5l-.1-.31c-.495-1.54-.742-2.31-1.331-2.75C13.979 2 13.197 2 11.63 2h-.263c-1.565 0-2.348 0-2.937.44c-.59.44-.837 1.21-1.332 2.75L7 5.5"/></g></svg>
                                 </div>
                                 <div class="ms-2">
                                     <h6 class="mb-0">{{ $companyname->name }}</h6>
@@ -43,8 +43,8 @@
                                     <!-- Add relevant dropdown menu options -->
                                     <li><a class="dropdown-item"
                                             href="{{ route('admin.recruitment.view', $value->id) }}">View</a></li>
-                                    <li><a class="dropdown-item" href="#">Edit</a></li>
-                                    <li><a class="dropdown-item" href="#">Delete</a></li>
+                                    <li><a class="dropdown-item editPostButton" data-post="{{ json_encode($value) }}" href="javascript:void(0);">Edit</a></li>
+                                    <li><a class="dropdown-item deleteJob" data-delete="{{ $value->id }}" href="javascript:void(0);">Delete</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -92,8 +92,6 @@
                                     </span>
                                 </div>
                             </div>
-
-
                         </div>
                     </div>
                 </div>

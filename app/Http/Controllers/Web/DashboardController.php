@@ -48,6 +48,15 @@ class DashboardController extends Controller
             $admin = User::where('role_id', $role);
             $user = Auth::user();
 
+            $isLeadAgent = false;
+
+            // Fetch the LeadAgent record for the current user
+            $leadAgent = LeadAgent::where('userid', auth()->user()->id)->first();
+            
+            if ($leadAgent) {
+                $isLeadAgent = true;
+            }
+
             // Check If the user is Admin Or Not
             if (auth()->user()->role_id == $user->id) { // This is Admin
                 $isAdmin = true;
@@ -128,6 +137,7 @@ class DashboardController extends Controller
                     'groupedFollowups',
                     'notifydays',
                     'isAdmin',
+                    'isLeadAgent',
                     'currentDate'
                 )
             );

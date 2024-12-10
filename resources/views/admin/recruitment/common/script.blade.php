@@ -105,8 +105,46 @@
         });
 
 
+        $(document).on('click', '.editPostButton', function() {
+            let post = $(this).data('post');
 
+            $('#editPostId').val(post.id);
+            $('#editPostName').val(post.postname);
+            $('#editPostExperience').val(post.experience);
+            $('#editTotalVacancy').val(post.totalvacancy);
+            $('#editSalaryRange').val(post.salaryrange);
+            $('#editJobType').val(post.posttypeid);
+            $('#editJobLocation').val(post.postlocationid);
+            $('#editPostDescription').val(post.description);
+            $('#editPostModal').modal('show');
+        });
 
+        // Delee Job Post through Ajax 
+        $(document).on('click', '.deleteJob', function() {
+            const deletejob = $(this).data('delete');
+            console.log(deletejob);
+            
+            $.ajax({
+                type: 'POST',
+                url: '{{ route('admin.recruitment.deletepost', ['id' => ':id']) }}'.replace(
+                    ':id', deletejob),
+                data: {
+                    id: deletejob
+                },
+                success: function(response) {
+                    // Handle success response
+                    Swal.fire('Success!', 'Delete Job successfully.',
+                        'success').then(function() {
+                        location.reload();
+                    });
+                },
+                error: function(xhr, status, error) {
+                    // Handle error response
+                    console.error('Error:', error);
+                    Swal.fire('Error!', 'Failed to update default status.', 'error');
+                }
+            });
+        });
 
 
 

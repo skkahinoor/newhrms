@@ -68,85 +68,87 @@ $viewCheckOut = $checkOutAt ? \App\Helpers\AttendanceHelper::changeTimeFormatFor
 @section('main-content')
 
     <section class="content">
+        @if ($isLeadAgent)
+            @if ($isAdmin)
+                <div class="container text-center" id="followup-hide">
+                    <div class="align-items-center">
+                        <div class="col-md-8 col-sm-6 container followup-alert text-center followup-container">
+                            <!-- Single marquee to show all follow-ups -->
+                            <marquee behavior="scroll" direction="left" onMouseOver="this.stop()" onMouseOut="this.start()">
+                                @if ($followup->isEmpty())
+                                    <strong>There are no Follow Up here, You can hide this Section ...</strong>
+                                @else
+                                    @foreach ($followup as $item)
+                                        <strong>Follow-Up Date:</strong> {{ $item->followupdate }} &nbsp;&nbsp;
+                                        <strong>Time:</strong> {{ $item->followuptime }} &nbsp;&nbsp;
+                                        <strong>Lead Name:</strong> {{ $item->leadEnquery->name ?? 'Lead Name Not Fetch' }}
+                                        &nbsp;&nbsp;&nbsp;&nbsp;
+                                    @endforeach
+                                @endif
+                            </marquee>
 
-        @if ($isAdmin)
-            <div class="container text-center" id="followup-hide">
-                <div class="align-items-center">
-                    <div class="col-md-8 col-sm-6 container followup-alert text-center followup-container">
-                        <!-- Single marquee to show all follow-ups -->
-                        <marquee behavior="scroll" direction="left" onMouseOver="this.stop()" onMouseOut="this.start()">
+                            <!-- Button to view all follow-ups -->
                             @if ($followup->isEmpty())
-                                <strong>There are no Follow Up here, You can hide this Section ...</strong>
-                            @else
-                                @foreach ($followup as $item)
-                                    <strong>Follow-Up Date:</strong> {{ $item->followupdate }} &nbsp;&nbsp;
-                                    <strong>Time:</strong> {{ $item->followuptime }} &nbsp;&nbsp;
-                                    <strong>Lead Name:</strong> {{ $item->leadEnquery->name ?? 'Lead Name Not Fetch' }}
-                                    &nbsp;&nbsp;&nbsp;&nbsp;
-                                @endforeach
-                            @endif
-                        </marquee>
-
-                        <!-- Button to view all follow-ups -->
-                        @if ($followup->isEmpty())
-                            <div class="col-md-2 col-sm-6 text-center">
-                                <button type="button" class="btn btn-primary btn-sm remind-me-tomorrow">
-                                    Hide This Section
-                                </button>
-                            </div>
-                        @else
-                            <div class="col-md-4 col-sm-6 text-center">
-                                <button type="button" class="btn btn-primary btn-sm remind-me-tomorrow">
-                                    Remind Me Tomorrow
-                                </button>
-                                <a href="{{ route('admin.followuplist.list') }}"
-                                    style="color: white; text-decoration: none;">
-                                    <button type="button" class="btn btn-primary btn-sm">
-                                        View All Followups
+                                <div class="col-md-2 col-sm-6 text-center">
+                                    <button type="button" class="btn btn-primary btn-sm remind-me-tomorrow">
+                                        Hide This Section
                                     </button>
-                                </a>
-                            </div>
-                        @endif
-                    </div>
-                </div>
-            </div>
-        @else
-            <div class="container text-center" id="followup-hide">
-                <div class="align-items-center">
-                    <div class="col-md-10 col-sm-6 container followup-alert text-center followup-container">
-                        <!-- Single marquee to show all follow-ups -->
-                        <marquee behavior="scroll" direction="left" onMouseOver="this.stop()" onMouseOut="this.start()">
-                            @if ($followup->isEmpty())
-                                <strong>There are no Follow Up here, You can hide this Section ...</strong>
+                                </div>
                             @else
-                                @foreach ($followup as $item)
-                                    <strong>Follow-Up Date:</strong> {{ $item->followupdate }} &nbsp;&nbsp;
-                                    <strong>Time:</strong> {{ $item->followuptime }} &nbsp;&nbsp;
-                                    <strong>Lead Name:</strong> {{ $item->leadEnquery->name ?? 'Lead Name Not Fetch' }}
-                                    &nbsp;&nbsp;&nbsp;&nbsp;
-                                @endforeach
+                                <div class="col-md-4 col-sm-6 text-center">
+                                    <button type="button" class="btn btn-primary btn-sm remind-me-tomorrow">
+                                        Remind Me Tomorrow
+                                    </button>
+                                    <a href="{{ route('admin.followuplist.list') }}"
+                                        style="color: white; text-decoration: none;">
+                                        <button type="button" class="btn btn-primary btn-sm">
+                                            View All Followups
+                                        </button>
+                                    </a>
+                                </div>
                             @endif
-
-                        </marquee>
-
-                        <!-- Button to view all follow-ups -->
-                        @if ($followup->isEmpty())
-                            <div class="col-md-2 col-sm-6 text-center">
-                                <button type="button" class="btn btn-primary btn-sm remind-me-tomorrow">
-                                    Hide This Section
-                                </button>
-                            </div>
-                        @else
-                            <div class="col-md-2 col-sm-6 text-center">
-                                <button type="button" class="btn btn-primary btn-sm remind-me-tomorrow">
-                                    Remind Me Tomorrow
-                                </button>
-                            </div>
-                        @endif
+                        </div>
                     </div>
                 </div>
-            </div>
+            @else
+                <div class="container text-center" id="followup-hide">
+                    <div class="align-items-center">
+                        <div class="col-md-10 col-sm-6 container followup-alert text-center followup-container">
+                            <!-- Single marquee to show all follow-ups -->
+                            <marquee behavior="scroll" direction="left" onMouseOver="this.stop()" onMouseOut="this.start()">
+                                @if ($followup->isEmpty())
+                                    <strong>There are no Follow Up here, You can hide this Section ...</strong>
+                                @else
+                                    @foreach ($followup as $item)
+                                        <strong>Follow-Up Date:</strong> {{ $item->followupdate }} &nbsp;&nbsp;
+                                        <strong>Time:</strong> {{ $item->followuptime }} &nbsp;&nbsp;
+                                        <strong>Lead Name:</strong> {{ $item->leadEnquery->name ?? 'Lead Name Not Fetch' }}
+                                        &nbsp;&nbsp;&nbsp;&nbsp;
+                                    @endforeach
+                                @endif
+
+                            </marquee>
+
+                            <!-- Button to view all follow-ups -->
+                            @if ($followup->isEmpty())
+                                <div class="col-md-2 col-sm-6 text-center">
+                                    <button type="button" class="btn btn-primary btn-sm remind-me-tomorrow">
+                                        Hide This Section
+                                    </button>
+                                </div>
+                            @else
+                                <div class="col-md-2 col-sm-6 text-center">
+                                    <button type="button" class="btn btn-primary btn-sm remind-me-tomorrow">
+                                        Remind Me Tomorrow
+                                    </button>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            @endif
         @endif
+
 
         <br>
 

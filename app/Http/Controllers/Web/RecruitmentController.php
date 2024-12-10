@@ -134,6 +134,39 @@ class RecruitmentController extends Controller
         return redirect()->route('admin.recruitment.manageRecruitment')->with('success', 'Requirement added successfully!');
     }
 
+    public function updatePost(Request $request)
+    {
+        $request->validate([
+            'post_id' => 'required|exists:recruitment_posts,id',
+            'postname' => 'required|string|max:255',
+            'postexperience' => 'required|numeric|min:0',
+            'totalvacancy' => 'required|integer|min:1',
+            'salaryrange' => 'required|string|max:255',
+            'jobtype' => 'required|integer|exists:recruitment_types,id',
+            'joblocation' => 'required|integer|exists:recruitment_locations,id',
+            'postdescription' => 'required|string',
+        ]);
+
+        Recruitment::find($request->post_id)->update([
+            'postname' => $request->postname,
+            'experience' => $request->postexperience,
+            'totalvacancy' => $request->totalvacancy,
+            'salaryrange' => $request->salaryrange,
+            'posttypeid' => $request->jobtype,
+            'postlocationid' => $request->joblocation,
+            'description' => $request->postdescription,
+        ]);
+
+        return redirect()->back()->with('success', 'Post updated successfully!');
+    }
+
+    public function deletePost($deletejob)
+    {
+        $deletejob = Recruitment::find($deletejob)->delete();
+
+        return response()->json([$deletejob]);
+    }
+
     public function addPostType(Request $request)
     {
         $request->validate([

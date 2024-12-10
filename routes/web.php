@@ -538,8 +538,13 @@ Route::group([
         // Requirement Module
         Route::get('recruitment', [RecruitmentController::class, 'manageRecruitment'])->name('recruitment.manageRecruitment');
         Route::get('recruitment/view/{id}', [RecruitmentController::class, 'view'])->name('recruitment.view');
-
+        
         Route::post('recruitment/addpost', [RecruitmentController::class, 'addPost'])->name('recruitment.addpost');
+
+        Route::put('recruitment/updatepost', [RecruitmentController::class, 'updatePost'])->name('recruitment.updatepost');
+        
+        Route::post('recruitment/deletejob/{id}', [RecruitmentController::class, 'deletePost'])->name('recruitment.deletepost');
+
         Route::post('recruitment/addposttype', [RecruitmentController::class, 'addPostType'])->name('recruitment.addPostType');
         Route::post('recruitment/addpostlocation', [RecruitmentController::class, 'addPostLocation'])->name('recruitment.addPostLocation');
 
