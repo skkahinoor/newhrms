@@ -1,4 +1,3 @@
-
 <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,400,300,500,600,700" rel="stylesheet">
 
 <link rel="stylesheet" href="{{ asset('assets/recruitment/css/linearicons.css') }}">
@@ -28,4 +27,6 @@
         box-shadow: 0px 4px 0px 0px #666;
         opacity: 1;
     }
+
+
 </style>

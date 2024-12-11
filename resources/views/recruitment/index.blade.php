@@ -55,7 +55,7 @@
     <!-- End banner Area -->
 
     <!-- Start features Area -->
-    <section class="features-area">
+    {{-- <section class="features-area">
         <div class="container">
             <div class="row">
                 <div class="col-lg-3 col-md-6">
@@ -92,7 +92,7 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> --}}
     <!-- End features Area -->
 
     <!-- Start post Area -->
@@ -109,36 +109,54 @@
 
                     @if ($applypage->count() > 0)
                         @foreach ($applypage as $post)
-                            <div class="single-post d-flex flex-row">
-
-                                <div class="details" style="margin-left: 15px !important;">
-                                    <div class="title d-flex flex-row justify-content-between">
+                            <div class="single-post d-flex flex-row p-3 border rounded mb-4 shadow-sm">
+                                <!-- Right Section: Post Details -->
+                                <div class="details ms-3">
+                                    <div
+                                        class="title d-flex flex-row justify-content-between align-items-center border-bottom pb-2 mb-2">
+                                        <!-- Left Section: Titles -->
                                         <div class="titles">
-
                                             <form action="{{ route('recruitment.view') }}" method="POST" class="d-inline">
                                                 @csrf
                                                 <input type="hidden" name="id" value="{{ $post->id }}">
-                                                <button type="submit" class="btn btn-link text-dark fw-bolder">{{ $post->postname }}</button>
+                                                <button type="submit" class="btn btn-link p-0 text-dark fw-bold fs-5">
+                                                    <b>{{ $post->postname }}</b>
+                                                </button>
                                             </form>
-
-                                            {{-- <a href="{{ route('recruitment.view', $post->id) }}">
-                                                <h4>{{ $post->postname }}</h4>
-                                            </a> --}}
-                                            <h6>Premium Labels Limited</h6>
                                         </div>
-                                        <ul class="btns">
-                                            <li><a href="#"><span class="lnr lnr-heart"></span></a></li>
-                                            <li><a href="#">Apply</a></li>
-                                        </ul>
                                     </div>
-                                    <p class="mb-2">{{ $post->description }}</p>
-                                    <h5>Job Type: {{ $post->type->posttype }}</h5>
-                                    <p class="address"><span class="lnr lnr-map"></span>
-                                        {{ $post->location->postlocation }}
 
-                                    </p>
-                                    <p class="address"><span class="lnr lnr-database"></span>
-                                        {{ $post->salaryrange }}</p>
+                                    <!-- Job Description -->
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <p class="mb-2 text-muted"><b class="fw-bolder">Description:
+                                                </b>{{ $post->description }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="details-list">
+                                        <h6 class="mb-1"><strong>Job Type:</strong> {{ $post->type->posttype }}</h6>
+
+                                        <p class="mb-1">
+                                            <span class="lnr lnr-map me-2"></span>
+                                            <strong>Location:</strong> {{ $post->location->postlocation }}
+                                        </p>
+                                        <p class="mb-0">
+                                            <span class="lnr lnr-database me-2"></span>
+                                            <strong>Salary Range:</strong> {{ $post->salaryrange }}
+                                        </p>
+                                    </div>
+                                    <ul class="btns">
+                                        <br>
+                                        <li class="bg-danger ">
+                                            <form action="{{ route('recruitment.view') }}" method="POST" class="d-inline">
+                                                @csrf
+                                                <input type="hidden" name="id" value="{{ $post->id }}">
+                                                <button type="submit" class="btn btn-link text-light p-0 fw-bold fs-5">
+                                                Apply
+                                                </button>
+                                            </form>
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
                         @endforeach
@@ -227,7 +245,7 @@
 
 
     <!-- Start callto-action Area -->
-    <section class="callto-action-area section-gap" id="join">
+    {{-- <section class="callto-action-area section-gap" id="join">
         <div class="container">
             <div class="row d-flex justify-content-center">
                 <div class="menu-content col-lg-9">
@@ -242,7 +260,7 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> --}}
     <!-- End calto-action Area -->
 
     <!-- Start download Area -->

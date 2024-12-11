@@ -641,6 +641,4 @@
     });
 
     var leadStatuses = @json($leadStatuses);
-
-   
 </script>

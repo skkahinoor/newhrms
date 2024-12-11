@@ -36,10 +36,7 @@
                                         <h4>{{ $viewcurrentjob->postname }}</h4>
                                     </a>
                                 </div>
-                                <ul class="btns">
-                                    <li><a href="#"><span class="lnr lnr-heart"></span></a></li>
-                                    <li><a href="#">Apply</a></li>
-                                </ul>
+                               
                             </div>
                             <br>
 
@@ -158,7 +155,7 @@
 
                             <!-- Notice Period -->
                             <div class="mb-3">
-                                <label for="noticePeriod" class="form-label">Notice Period (In Days) *</label>
+                                <label for="noticePeriod" class="form-label">Notice Period (In Months) *</label>
                                 <input type="number" class="form-control" id="noticePeriod" name="notice_period"
                                     placeholder="Enter notice period in days" required>
                             </div>
@@ -172,7 +169,7 @@
 
                             <!-- Apply Button -->
                             <div class="text-center">
-                                <button type="submit" class="btn btn-primary">Apply</button>
+                                <button type="submit" class="btn btn-danger">Apply</button>
                             </div>
                         </form>
                     </div>
