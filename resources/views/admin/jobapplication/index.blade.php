@@ -15,6 +15,13 @@
             2 => 'Selected',
             3 => 'Rejected',
         ];
+        $statusbackground = [
+            0 => 'alert',
+            1 => 'info',
+            2 => 'success',
+            3 => 'danger',
+        ];
+        
         ?>
 
         {{-- Requirement List  --}}
@@ -64,7 +71,7 @@
                                     </a>
                                 </td>
                                 <td>
-                                    <p class="badge bg-info text-dark">{{ $status[$value->status] ?? 'Unknown' }}</p>
+                                    <p class="badge bg-{{ $statusbackground[$value->status] ?? 'secondary' }} text-light">{{ $status[$value->status] ?? 'Unknown' }}</p>
                                 </td>
                                 <td class="text-center">
                                     <div class="dropdown">
