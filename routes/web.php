@@ -18,6 +18,7 @@ use App\Http\Controllers\Web\DataExportController;
 use App\Http\Controllers\Web\DepartmentController;
 use App\Http\Controllers\Web\EmployeeLogOutRequestController;
 use App\Http\Controllers\Web\EmployeeSalaryController;
+use App\Http\Controllers\Web\FaceAuthController;
 use App\Http\Controllers\Web\FeatureController;
 use App\Http\Controllers\Web\FollowUpController;
 use App\Http\Controllers\Web\FollowUpSettingController;
@@ -89,7 +90,7 @@ Route::get('/leadform', function () {
 
 // Requirement Module
 Route::get('recruitment', [RecruitmentController::class, 'index'])->name('recruitment.index');
-Route::post('recruitment/view', [RecruitmentController::class, 'viewJob'])->name('recruitment.view');
+Route::get('recruitment/view/{id}', [RecruitmentController::class, 'viewJob'])->name('recruitment.view');
 Route::post('recruitment/view/apply', [RecruitmentController::class, 'apply'])->name('recruitment.apply');
 
 /** app privacy policy route */
@@ -561,6 +562,12 @@ Route::group([
         Route::post('jobapplication/approveeasemployee/{id}', [JobApplicationController::class, 'approveEmployee'])->name('jobapplication.approveeasemployee');
         Route::post('jobapplication/rejectcandidate/{id}', [JobApplicationController::class, 'rejectCandidate'])->name('jobapplication.rejectcandidate');
 
+
+        // Face Authentication 
+        Route::get('faceauth/registerface', [FaceAuthController::class, 'index'])->name('faceauth.registerface');
+        Route::post('faceauth/registerface/save-face-descriptor', [FaceAuthController::class, 'saveFaceDescriptor']);
+        Route::post('faceauth/verify-face', [FaceAuthController::class, 'verifyFace']);
+        Route::get('faceauth/get-face-descriptor', [FaceAuthController::class, 'getFaceDescriptor']);
     });
 });
 

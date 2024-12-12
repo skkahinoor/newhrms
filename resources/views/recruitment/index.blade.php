@@ -116,13 +116,8 @@
                                         class="title d-flex flex-row justify-content-between align-items-center border-bottom pb-2 mb-2">
                                         <!-- Left Section: Titles -->
                                         <div class="titles">
-                                            <form action="{{ route('recruitment.view') }}" method="POST" class="d-inline">
-                                                @csrf
-                                                <input type="hidden" name="id" value="{{ $post->id }}">
-                                                <button type="submit" class="btn btn-link p-0 text-dark fw-bold fs-5">
-                                                    <b>{{ $post->postname }}</b>
-                                                </button>
-                                            </form>
+                                            <a
+                                                href="{{ route('recruitment.view', ['id' => Crypt::encrypt($post->id)]) }}"><b>{{ $post->postname }}</b></a>
                                         </div>
                                     </div>
 
@@ -142,19 +137,16 @@
                                         </p>
                                         <p class="mb-0">
                                             <span class="lnr lnr-database me-2"></span>
-                                            <strong>Salary Range:</strong> {{ $post->salaryrange }}
+                                            <strong>Salary Range:</strong> ₹{{ $post->salaryrange }}
                                         </p>
                                     </div>
                                     <ul class="btns">
                                         <br>
                                         <li class="bg-danger ">
-                                            <form action="{{ route('recruitment.view') }}" method="POST" class="d-inline">
-                                                @csrf
-                                                <input type="hidden" name="id" value="{{ $post->id }}">
-                                                <button type="submit" class="btn btn-link text-light p-0 fw-bold fs-5">
+                                            <a
+                                                href="{{ route('recruitment.view', ['id' => Crypt::encrypt($post->id)]) }}"><button type="submit" class="btn btn-link text-light p-0 fw-bold fs-5">
                                                 Apply
-                                                </button>
-                                            </form>
+                                            </button></a>
                                         </li>
                                     </ul>
                                 </div>
@@ -219,8 +211,7 @@
                                 <a href="#" class="btns text-uppercase">Apply job</a>
                             </div>
                             <div class="single-rated">
-                                <img class="img-fluid" src="{{ asset('assets/recruitment/img/r1.jpg') }}"
-                                    alt="">
+                                <img class="img-fluid" src="{{ asset('assets/recruitment/img/r1.jpg') }}" alt="">
                                 <a href="single.html">
                                     <h4>Creative Art Designer</h4>
                                 </a>

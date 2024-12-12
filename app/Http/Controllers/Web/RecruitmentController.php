@@ -9,6 +9,7 @@ use App\Models\Recruitment;
 use App\Models\RecruitmentLocation;
 use App\Models\RecruitmentType;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Redirect;
 
 class RecruitmentController extends Controller
@@ -26,10 +27,11 @@ class RecruitmentController extends Controller
         return view('recruitment.index', ['applypage' => $applypage, 'applybylocation' => $applybylocation, 'activejobcount' => $activejobcount]);
     }
 
-    public function viewJob(Request $request)
+    public function viewJob($id)
     {
-        $id = $request->input('id'); // Retrieve the ID from the request body
-        $viewcurrentjob = Recruitment::findOrFail($id);
+        $decryptid = Crypt::decrypt($id);
+        // $id = $request->input('id'); // Retrieve the ID from the request body
+        $viewcurrentjob = Recruitment::findOrFail($decryptid);
         $applybylocation = RecruitmentLocation::where('status', 0)->limit(5)->get();
         $activejobcount = Recruitment::where('status', 0)->count();
         return view('recruitment.view', ['viewcurrentjob' => $viewcurrentjob, 'applybylocation' => $applybylocation, 'activejobcount' => $activejobcount]);
@@ -105,7 +107,8 @@ class RecruitmentController extends Controller
 
     public function view($id)
     {
-        $viewjob = Recruitment::find($id);
+        $jobId = Crypt::decrypt($id);
+        $viewjob = Recruitment::find($jobId);
         return view('admin.recruitment.view', ['viewjob' => $viewjob]);
     }
 

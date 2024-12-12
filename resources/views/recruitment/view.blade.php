@@ -36,7 +36,7 @@
                                         <h4>{{ $viewcurrentjob->postname }}</h4>
                                     </a>
                                 </div>
-                               
+
                             </div>
                             <br>
 
@@ -50,14 +50,11 @@
                             </p>
                             <p class="address fw-bold"><span class="lnr lnr-database"></span><span class="fw-bold">Salary
                                     Range: </span>
-                                {{ $viewcurrentjob->salaryrange }}</p>
+                                ₹{{ $viewcurrentjob->salaryrange }}</p>
                         </div>
                     </div>
 
                     {{-- Apply Page  --}}
-
-
-
                 </div>
                 <div class="col-lg-4 sidebar">
                     <div class="single-slidebar">

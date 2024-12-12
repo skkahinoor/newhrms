@@ -23,7 +23,16 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="d-flex flex-row align-items-center">
                                 <div class="icon">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><g fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" color="#000"><path d="M11.007 21H9.605c-3.585 0-5.377 0-6.491-1.135S2 16.903 2 13.25s0-5.48 1.114-6.615S6.02 5.5 9.605 5.5h3.803c3.585 0 5.378 0 6.492 1.135c.857.873 1.054 2.156 1.1 4.365"/><path d="M20.017 20.023L22 22m-.947-4.474a3.527 3.527 0 1 0-7.053 0a3.527 3.527 0 0 0 7.053 0M16 5.5l-.1-.31c-.495-1.54-.742-2.31-1.331-2.75C13.979 2 13.197 2 11.63 2h-.263c-1.565 0-2.348 0-2.937.44c-.59.44-.837 1.21-1.332 2.75L7 5.5"/></g></svg>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                        viewBox="0 0 24 24">
+                                        <g fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round"
+                                            stroke-width="2.2" color="#000">
+                                            <path
+                                                d="M11.007 21H9.605c-3.585 0-5.377 0-6.491-1.135S2 16.903 2 13.25s0-5.48 1.114-6.615S6.02 5.5 9.605 5.5h3.803c3.585 0 5.378 0 6.492 1.135c.857.873 1.054 2.156 1.1 4.365" />
+                                            <path
+                                                d="M20.017 20.023L22 22m-.947-4.474a3.527 3.527 0 1 0-7.053 0a3.527 3.527 0 0 0 7.053 0M16 5.5l-.1-.31c-.495-1.54-.742-2.31-1.331-2.75C13.979 2 13.197 2 11.63 2h-.263c-1.565 0-2.348 0-2.937.44c-.59.44-.837 1.21-1.332 2.75L7 5.5" />
+                                        </g>
+                                    </svg>
                                 </div>
                                 <div class="ms-2">
                                     <h6 class="mb-0">{{ $companyname->name }}</h6>
@@ -42,9 +51,11 @@
                                 <ul class="dropdown-menu">
                                     <!-- Add relevant dropdown menu options -->
                                     <li><a class="dropdown-item"
-                                            href="{{ route('admin.recruitment.view', $value->id) }}">View</a></li>
-                                    <li><a class="dropdown-item editPostButton" data-post="{{ json_encode($value) }}" href="javascript:void(0);">Edit</a></li>
-                                    <li><a class="dropdown-item deleteJob" data-delete="{{ $value->id }}" href="javascript:void(0);">Delete</a></li>
+                                            href="{{ route('admin.recruitment.view', ['id' => Crypt::encrypt($value->id)]) }}">View</a></li>
+                                    <li><a class="dropdown-item editPostButton" data-post="{{ json_encode($value) }}"
+                                            href="javascript:void(0);">Edit</a></li>
+                                    <li><a class="dropdown-item deleteJob" data-delete="{{ $value->id }}"
+                                            href="javascript:void(0);">Delete</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -52,9 +63,26 @@
                         <!-- Card Content -->
                         <div class="mt-4">
                             <h6 class="text-secondary mb-2">Post Name</h6>
-                            <h5 class="fw-bold">{{ $value->postname }}</h5>
+                            <a href="{{ route('admin.recruitment.view', ['id' => Crypt::encrypt($value->id)]) }}">
+                                <h5 class="fw-bold">{{ $value->postname }}</h5>
+                            </a>
+                            <br>
+                            <b class="text-secondary">Description: </b>
                             <p class="text-truncate text-secondary mb-2" title="{{ $value->description }}">
                                 {{ $value->description }}
+                            </p>
+                            <br>
+                            <p class="text-secondary mb-2">
+                                <span><b>Experience: </b></span>{{ $value->experience }} years
+                            </p>
+                            <p class="text-secondary mb-2">
+                                <span><b>Job Type: </b></span>{{ $value->type->posttype }}
+                            </p>
+                            <p class="text-secondary mb-2">
+                                <span><b>Location: </b></span>{{ $value->location->postlocation }}
+                            </p>
+                            <p class="text-secondary mb-2">
+                                <span><b>Salary Range: </b></span>₹ {{ $value->salaryrange }}
                             </p>
                         </div>
 
@@ -67,22 +95,12 @@
                                     aria-valuemax="{{ $value->totalvacancy }}">
                                 </div>
                             </div>
-                            <div class="mt-2">
-                                <p class="d-flex align-items-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#000"
-                                        class="me-1">
-                                        <path
-                                            d="M17 6V4H6v2h3.5c1.302 0 2.401.838 2.815 2H6v2h6.315A2.99 2.99 0 0 1 9.5 12H6v2.414L11.586 20h2.828l-6-6H9.5a5.01 5.01 0 0 0 4.898-4H17V8h-2.602a4.9 4.9 0 0 0-.924-2z" />
-                                    </svg>
-                                    {{ $value->salaryrange }}
-                                </p>
-                            </div>
                             <br>
                             <div class="row">
                                 <div class="col-md-6">
                                     <span class="text-muted">
                                         <strong>{{ $value->selected }}</strong> Selected
-                                        <span class="text-muted">out of {{ $value->totalvacancy }} Candidates</span>
+                                        <span class="text-muted">out of {{ $value->totalvacancy }}</span>
                                     </span>
                                 </div>
                                 <div class="col-md-6">

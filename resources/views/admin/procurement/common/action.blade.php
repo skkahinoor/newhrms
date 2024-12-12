@@ -12,7 +12,7 @@
     <ul class="dropdown-menu">
         @can('show_procurement')
             <li>
-                <a class="dropdown-item enquire-modal-trigger" href="{{ route('admin.procurement.show', $id) }}"
+                <a class="dropdown-item enquire-modal-trigger" href="{{ route('admin.procurement.show', ['id' => Crypt::encrypt($id)]) }}"
                     style="font-weight:bold;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="1.4rem" height="1.4rem" viewBox="0 0 24 24">
                         <path fill="none" stroke="#ff3366" stroke-width="2"
@@ -49,7 +49,7 @@
 
         @can('delete_procurement')
             <li>
-                <a class="dropdown-item deleteLeadEnquiryLink" href="{{ route('admin.procurement.delete', $id) }}"
+                <a class="dropdown-item deleteLeadEnquiryLink" href="{{ route('admin.procurement.delete', ['id' => Crypt::encrypt($id)]) }}"
                     style="cursor: pointer; font-weight:bold;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="1.4rem" height="1.4rem" viewBox="0 0 24 24">
                         <path fill="#ff3366" d="M8 9h8v10H8z" opacity="0.3" />

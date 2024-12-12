@@ -20,6 +20,7 @@ use App\Services\Procurement\ProcurementService;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 
 class ProcurementController extends Controller
@@ -247,29 +248,30 @@ class ProcurementController extends Controller
         }
     }
 
-    public function oldupdate(ProcurementRequest $request, $id)
-    {
-        $this->authorize('edit_procurement');
-        try {
-            $validatedData = $request->validated();
-            $this->procurementService->updateProcurement($id, $validatedData);
-            return redirect()->route('admin.procurement.index')
-                ->with('success', 'Request Updated Successfully');
-        } catch (Exception $exception) {
-            DB::rollBack();
-            return redirect()->back()->with('danger', $exception->getMessage())
-                ->withInput();
-        }
-    }
+    // public function oldupdate(ProcurementRequest $request, $id)
+    // {
+    //     $this->authorize('edit_procurement');
+    //     try {
+    //         $validatedData = $request->validated();
+    //         $this->procurementService->updateProcurement($id, $validatedData);
+    //         return redirect()->route('admin.procurement.index')
+    //             ->with('success', 'Request Updated Successfully');
+    //     } catch (Exception $exception) {
+    //         DB::rollBack();
+    //         return redirect()->back()->with('danger', $exception->getMessage())
+    //             ->withInput();
+    //     }
+    // }
 
     public function delete($id)
     {
         $this->authorize('delete_procurement');
         try {
+            $decryptid = Crypt::decrypt($id);
             DB::beginTransaction();
-            $this->procurementService->deleteProcurementRequest($id);
+            $this->procurementService->deleteProcurementRequest($decryptid);
             DB::commit();
-            return redirect()->back()->with('success', 'Request Deleted Successfully');
+            return redirect()->back()->with('success', 'Procurement Deleted Successfully');
         } catch (Exception $exception) {
             DB::rollBack();
             return redirect()->back()->with('danger', $exception->getMessage());
@@ -280,10 +282,11 @@ class ProcurementController extends Controller
     {
         $this->authorize('show_procurement');
         try {
+            $decryptid = Crypt::decrypt($id);
             $select = ['*'];
             $with = ['asset_types:id,name', 'assignedTo:id,name'];
-            $procurementDetails = $this->procurementService->findProcurementById($id, $select, $with, );
-            $requestAsset = ProcurementItem::where('procurement_id', $id)->get();
+            $procurementDetails = $this->procurementService->findProcurementById($decryptid, $select, $with, );
+            $requestAsset = ProcurementItem::where('procurement_id', $decryptid)->get();
 
             return view('admin.procurement.show', compact('procurementDetails', 'requestAsset'));
         } catch (Exception $exception) {
