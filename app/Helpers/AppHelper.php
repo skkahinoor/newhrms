@@ -119,11 +119,11 @@ class AppHelper
     public static function getAuthUserBranchId()
     {
         $user = auth()->user();
-        if(!$user){
+        if($user == null){
             throw new Exception('unauthenticated',401);
         }
-        $branchId = optional($user)->branch_id;
-        if (!$branchId) {
+        $branchId = $user->branch_id;
+        if ($branchId == null) {
             throw new Exception('User Branch Id Not Found',400);
         }
         return $branchId;
