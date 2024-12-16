@@ -122,7 +122,9 @@ class AppHelper
         if($user == null){
             throw new Exception('unauthenticated',401);
         }
+        // $branchId = "sk";
         $branchId = $user->branch_id;
+        // dd($branchId);
         if ($branchId == null) {
             throw new Exception('User Branch Id Not Found',400);
         }
