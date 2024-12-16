@@ -564,10 +564,8 @@ Route::group([
 
 
         // Face Authentication 
-        Route::get('faceauth/registerface', [FaceAuthController::class, 'index'])->name('faceauth.registerface');
-        Route::post('faceauth/registerface/save-face-descriptor', [FaceAuthController::class, 'saveFaceDescriptor']);
-        Route::post('faceauth/verify-face', [FaceAuthController::class, 'verifyFace']);
-        Route::get('faceauth/get-face-descriptor', [FaceAuthController::class, 'getFaceDescriptor']);
+        Route::get('registerface', [FaceAuthController::class, 'index'])->name('registerface.index');
+        Route::post('detect-face', [FaceAuthController::class, 'detectFace'])->name('detect.face');
     });
 });
 

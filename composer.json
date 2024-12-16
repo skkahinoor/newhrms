@@ -20,6 +20,7 @@
         "milantarami/number-to-words": "^1.0",
         "psr/simple-cache": "2.0",
         "simplesoftwareio/simple-qrcode": "~4",
+        "tecnickcom/tcpdf": "^6.7",
         "yajra/laravel-datatables": "^9.0",
         "yajra/laravel-datatables-buttons": "^9.1",
         "yajra/laravel-datatables-oracle": "^10.11"
