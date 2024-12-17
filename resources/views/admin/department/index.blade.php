@@ -32,7 +32,7 @@
                         <h5>Department Lists</h5>
                     </div>
 
-                    <div class="col-lg-3 col-md-6 mb-4">
+                    {{-- <div class="col-lg-3 col-md-6 mb-4">
                         <select class="form-select form-select-lg" name="branch">
                             <option value="" {{ !isset($filterParameters['branch']) ? 'selected' : '' }}>Select Branch
                             </option>
@@ -42,9 +42,9 @@
                                     {{ ucfirst($value->name) }} </option>
                             @endforeach
                         </select>
-                    </div>
+                    </div> --}}
 
-                    <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="col-lg-6 col-md-6 mb-4">
                         <input type="text" placeholder="Search by Department name" name="name"
                             value="{{ $filterParameters['name'] }}" class="form-control">
                     </div>
