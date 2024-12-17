@@ -7,6 +7,7 @@ use App\Exports\AttendanceExport;
 use App\Helpers\AppHelper;
 use App\Helpers\AttendanceHelper;
 use App\Http\Controllers\Controller;
+use App\Repositories\AttendanceRepository;
 use App\Repositories\BranchRepository;
 use App\Repositories\CompanyRepository;
 use App\Repositories\RouterRepository;
@@ -32,18 +33,22 @@ class AttendanceController extends Controller
     private UserRepository $userRepository;
     private BranchRepository $branchRepo;
 
+    private AttendanceRepository $attendanceRepo;
+
     public function __construct(
         CompanyRepository $companyRepo,
         AttendanceService $attendanceService,
         RouterRepository $routerRepo,
         UserRepository $userRepository,
         BranchRepository $branchRepo,
+        AttendanceRepository $attendanceRepo,
     ) {
         $this->attendanceService = $attendanceService;
         $this->companyRepo = $companyRepo;
         $this->routerRepo = $routerRepo;
         $this->userRepository = $userRepository;
         $this->branchRepo = $branchRepo;
+        $this->attendanceRepo = $attendanceRepo;
     }
 
     public function index(Request $request)
@@ -296,44 +301,56 @@ class AttendanceController extends Controller
     {
         try {
             Log::info('CheckOut process started', ['userId' => $userId, 'companyId' => $companyId]);
-
+    
             $userDetail = $this->userRepository->findUserDetailById($userId);
             if (!$userDetail) {
                 Log::error('User not found for CheckOut', ['userId' => $userId]);
                 throw new Exception('User not found for ID ' . $userId, 404);
             }
-
+    
+            // Fetch the user's attendance data for today
+            $attendanceData = $this->attendanceRepo->getAttendanceForUser($userId, $companyId, date('Y-m-d'));
+            if (!$attendanceData) {
+                Log::error('Attendance data not found for CheckOut', ['userId' => $userId]);
+                throw new Exception('Attendance data not found for the user.', 404);
+            }
+    
+            // Prepare validated data
             $validatedData = $this->prepareDataForAttendance($companyId, $userId, 'checkout');
+            if (!is_array($validatedData)) {
+                throw new Exception('Invalid data returned by prepareDataForAttendance. Expected array.');
+            }
+    
             if ($dashboardAttendance) {
                 $validatedData['check_out_latitude'] = $locationData['lat'] ?? null;
                 $validatedData['check_out_longitude'] = $locationData['long'] ?? null;
             }
-
+    
             Log::info('Validated Data for CheckOut', ['data' => $validatedData]);
-
+    
             DB::beginTransaction();
-
-            $attendanceCheckOut = $this->attendanceService->newCheckOut($validatedData, '');
+    
+            $attendanceCheckOut = $this->attendanceService->newCheckOut($attendanceData, $validatedData);
             $this->userRepository->updateUserOnlineStatus($userDetail, 0);
-
+    
             DB::commit();
-
+    
             AppHelper::sendNotificationToAuthorizedUser(
                 'Check Out Notification',
                 ucfirst($userDetail->name) . ' checked out at ' . AttendanceHelper::changeTimeFormatForAttendanceView($attendanceCheckOut->check_out_at),
                 'employee_check_out'
             );
-
+    
             Log::info('CheckOut process completed successfully', ['attendance' => $attendanceCheckOut]);
             return $attendanceCheckOut;
-
+    
         } catch (Exception $exception) {
             DB::rollBack();
             Log::error('CheckOut process failed', ['exception' => $exception]);
             throw $exception;
         }
     }
-
+    
     private function prepareDataForAttendance($companyId, $userId, $checkStatus): array | RedirectResponse
     {
         try {

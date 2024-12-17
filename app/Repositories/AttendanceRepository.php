@@ -6,11 +6,7 @@ use App\Models\Attendance;
 use App\Models\Regularization;
 use App\Models\User;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-
-use function PHPUnit\Framework\isType;
 
 class AttendanceRepository
 {
@@ -42,7 +38,7 @@ class AttendanceRepository
             $join->on('users.id', '=', 'attendances.user_id');
             if (!empty($filterParameter['start_date']) && !empty($filterParameter['end_date'])) {
 
-                $join->whereBetween('attendances.attendance_date',[$filterParameter['start_date'],$filterParameter['end_date']]);
+                $join->whereBetween('attendances.attendance_date', [$filterParameter['start_date'], $filterParameter['end_date']]);
             }
         })
             ->join('companies', 'users.company_id', '=', 'companies.id')
@@ -54,7 +50,7 @@ class AttendanceRepository
                 $query->where('users.department_id', $filterParameter['department_id']);
             })
             ->get();
-            // dd($result);
+        // dd($result);
     }
 
     public function getAllCompanyEmployeeregularizationDetailOfTheDay($filterParameter)
@@ -81,18 +77,18 @@ class AttendanceRepository
             'regularizations.created_by',
             'regularizations.updated_by',
         )->leftJoin('regularizations', function ($join) use ($filterParameter) {
-            
+
             // dd($filterParameter);
             if ($filterParameter['regularization_date'] != null) {
                 $join->on('users.id', '=', 'regularizations.user_id');
                 $join->where('regularizations.regularization_date', '=', $filterParameter['regularization_date']);
-            }else{
+            } else {
                 $join->on('users.id', '=', 'regularizations.user_id');
             }
-            
-            if($filterParameter['regularization_status'] != null){
+
+            if ($filterParameter['regularization_status'] != null) {
                 $join->where('regularizations.regularization_status', $filterParameter['regularization_status']);
-            }   
+            }
         })
             ->join('companies', 'users.company_id', '=', 'companies.id')
             ->join('branches', 'users.branch_id', '=', 'branches.id')
@@ -102,9 +98,9 @@ class AttendanceRepository
             ->when(isset($filterParameter['department_id']), function ($query) use ($filterParameter) {
                 $query->where('users.department_id', $filterParameter['department_id']);
             })
-            // ->when(isset($filterParameter['regularization_status']), function($query) use ($filterParameter){
-            //     $query->where('regularizations.regularization_status', $filterParameter['regularization_status']);
-            // })
+        // ->when(isset($filterParameter['regularization_status']), function($query) use ($filterParameter){
+        //     $query->where('regularizations.regularization_status', $filterParameter['regularization_status']);
+        // })
             ->get();
     }
 
@@ -139,7 +135,7 @@ class AttendanceRepository
     public function updateAttendanceStatus($attendanceDetail)
     {
         return $attendanceDetail->update([
-            'attendance_status' => !$attendanceDetail->attendance_status
+            'attendance_status' => !$attendanceDetail->attendance_status,
         ]);
     }
 
@@ -162,12 +158,12 @@ class AttendanceRepository
                 'regularization_date' => date('Y-m-d', strtotime($validatedData['attendance_date'])),
                 'check_in_at' => Carbon::createFromFormat('H:i', $validatedData['check_in_at'])->format('H:i:s'),
                 'check_out_at' => Carbon::createFromFormat('H:i', $validatedData['check_out_at'])->format('H:i:s'),
-                'reason' =>  $validatedData['reason'],
+                'reason' => $validatedData['reason'],
                 'check_in_latitude' => $validatedData['check_in_latitude'],
                 'check_out_latitude' => $validatedData['check_in_latitude'],
                 'check_in_longitude' => $validatedData['check_in_longitude'],
-                'check_out_longitude' => $validatedData['check_in_longitude'], 
-                'regularization_status' => 0
+                'check_out_longitude' => $validatedData['check_in_longitude'],
+                'regularization_status' => 0,
             ])->fresh();
         } catch (\Exception $e) {
             // Log the exception
@@ -180,4 +176,12 @@ class AttendanceRepository
         $attendanceDetail->update($validatedData);
         return $attendanceDetail;
     }
+    public function getAttendanceForUser($userId, $companyId, $date)
+    {
+        return Attendance::where('user_id', $userId)
+            ->where('company_id', $companyId)
+            ->whereDate('check_in_at', $date)
+            ->first();
+    }
+
 }

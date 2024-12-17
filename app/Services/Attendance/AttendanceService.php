@@ -275,69 +275,67 @@ class AttendanceService
     /**
      * @throws Exception
      */
-    public function newCheckOut($attendanceData, $validatedData)
-    {
-        $checkOut = Carbon::now()->toTimeString();
-        $timeLeaveInMinutes = 0;
-        $shift  = AppHelper::getUserShift();
+    public function newCheckOut($attendanceData, $validatedData = [])
+{
+    if (!is_array($validatedData)) {
+        throw new Exception('Invalid data type for validatedData. Expected array, got ' . gettype($validatedData), 500);
+    }
 
-        if(isset($shift->closing_time)){
-            $openingTime = Carbon::createFromFormat('H:i:s', $shift->closing_time);
-            $checkOutAt = Carbon::createFromTimeString(now()->toTimeString());
+    $checkOut = Carbon::now()->toTimeString();
+    $timeLeaveInMinutes = 0;
+    $shift  = AppHelper::getUserShift();
 
-            $timeLeave = $this->timeLeaveRepository->getEmployeeApprovedTimeLeave(date('Y-m-d'));
+    if (isset($shift->closing_time)) {
+        $openingTime = Carbon::createFromFormat('H:i:s', $shift->closing_time);
+        $checkOutAt = Carbon::createFromTimeString(now()->toTimeString());
 
-            if (!isset($timeLeave) && isset($shift->checkout_before)) {
+        $timeLeave = $this->timeLeaveRepository->getEmployeeApprovedTimeLeave(date('Y-m-d'));
 
-                $checkOutTimeAllowed = $openingTime->copy()->subMinutes($shift->checkout_before);
-
-                if ($checkOutAt->lt($checkOutTimeAllowed)) {
-                    throw new Exception('You cannot check-out early!', 400);
-                }
+        if (!isset($timeLeave) && isset($shift->checkout_before)) {
+            $checkOutTimeAllowed = $openingTime->copy()->subMinutes($shift->checkout_before);
+            if ($checkOutAt->lt($checkOutTimeAllowed)) {
+                throw new Exception('You cannot check-out early!', 400);
             }
-
-            if (!isset($timeLeave) &&  isset($shift->checkout_after)) {
-
-                $checkOutTimeAllowed = $openingTime->copy()->addMinutes($shift->checkout_after);
-
-                if ($checkOutAt->greaterThan($checkOutTimeAllowed)) {
-                    throw new Exception('Check-in is late than allowed time. contact Admin', 400);
-                }
-            }
-
-
-            if(isset($timeLeave) && (strtotime($timeLeave->start_time) < strtotime($checkOut) &&  strtotime($timeLeave->end_time) > strtotime($checkOut))){
-                $checkOut = Carbon::parse($timeLeave->start_time)->toTimeString();
-            }
-
-            if(isset($timeLeave) && (strtotime($timeLeave->end_time) == strtotime($shift->closing_time))){
-                $checkOut = Carbon::parse($timeLeave->start_time)->toTimeString();
-            }
-
-            if(isset($timeLeave) && (strtotime($timeLeave->end_time) < strtotime($checkOut))){
-                $timeLeaveInMinutes = Carbon::parse($timeLeave->end_time)->diffInMinutes(Carbon::parse($timeLeave->start_time));
-            }
-
         }
 
-        $validatedData['check_out_latitude'] = $validatedData['latitude'] ?? '';
-        $validatedData['check_out_longitude'] = $validatedData['longitude'] ?? '';
+        if (!isset($timeLeave) && isset($shift->checkout_after)) {
+            $checkOutTimeAllowed = $openingTime->copy()->addMinutes($shift->checkout_after);
+            if ($checkOutAt->greaterThan($checkOutTimeAllowed)) {
+                throw new Exception('Check-in is late than allowed time. Contact Admin', 400);
+            }
+        }
 
-        //calculate worked_hours
-        $workedData = AttendanceHelper::calculateWorkedHour($checkOut, $attendanceData->check_in_at,$attendanceData->user_id );
+        if (isset($timeLeave) && (strtotime($timeLeave->start_time) < strtotime($checkOut) && strtotime($timeLeave->end_time) > strtotime($checkOut))) {
+            $checkOut = Carbon::parse($timeLeave->start_time)->toTimeString();
+        }
 
-        $validatedData['check_out_at'] = $checkOut;
-        $validatedData['worked_hour'] = $workedData['workedHours'] - $timeLeaveInMinutes;
-        $validatedData['overtime'] = $workedData['overtime'];
-        $validatedData['undertime'] = $workedData['undertime'];
+        if (isset($timeLeave) && (strtotime($timeLeave->end_time) == strtotime($shift->closing_time))) {
+            $checkOut = Carbon::parse($timeLeave->start_time)->toTimeString();
+        }
 
-        DB::beginTransaction();
-            $attendanceCheckOut = $this->attendanceRepo->updateAttendanceDetail($attendanceData,$validatedData);
-            $this->updateUserOnlineStatus($validatedData['user_id'],User::OFFLINE);
-        DB::commit();
-        return $attendanceCheckOut;
-
+        if (isset($timeLeave) && (strtotime($timeLeave->end_time) < strtotime($checkOut))) {
+            $timeLeaveInMinutes = Carbon::parse($timeLeave->end_time)->diffInMinutes(Carbon::parse($timeLeave->start_time));
+        }
     }
+
+    $validatedData['check_out_latitude'] = $validatedData['latitude'] ?? '';
+    $validatedData['check_out_longitude'] = $validatedData['longitude'] ?? '';
+
+    $workedData = AttendanceHelper::calculateWorkedHour($checkOut, $attendanceData->check_in_at, $attendanceData->user_id);
+
+    $validatedData['check_out_at'] = $checkOut;
+    $validatedData['worked_hour'] = $workedData['workedHours'] - $timeLeaveInMinutes;
+    $validatedData['overtime'] = $workedData['overtime'];
+    $validatedData['undertime'] = $workedData['undertime'];
+
+    DB::beginTransaction();
+    $attendanceCheckOut = $this->attendanceRepo->updateAttendanceDetail($attendanceData, $validatedData);
+    $this->updateUserOnlineStatus($validatedData['user_id'], User::OFFLINE);
+    DB::commit();
+
+    return $attendanceCheckOut;
+}
+
 
     /**
      * @Deprecated Don't use this now
