@@ -1,10 +1,9 @@
 
 @extends('layouts.master')
 
-@section('title','Create Post')
+@section('title','Edit Post')
 
 {{--@section('nav-head','Company')--}}
-
 
 @section('main-content')
 
@@ -15,24 +14,23 @@
         <nav class="page-breadcrumb d-flex align-items-center justify-content-between">
             <ol class="breadcrumb mb-0">
                 <li class="breadcrumb-item"><a href="{{route('admin.dashboard')}}">Dashboard</a></li>
-                <li class="breadcrumb-item"><a href="{{route('admin.posts.index')}}">Post section</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Post create</li>
+                <li class="breadcrumb-item"><a href="{{route('admin.position.index')}}">Department section</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Department Edit</li>
             </ol>
-
-
-            <a href="{{route('admin.posts.index')}}" >
+            <a href="{{route('admin.position.index')}}" >
                 <button class="btn btn-sm btn-primary" ><i class="link-icon" data-feather="arrow-left"></i> Back</button>
             </a>
         </nav>
-
         <div class="card">
             <div class="card-body">
-                <form class="forms-sample" action="{{route('admin.posts.store')}}" enctype="multipart/form-data" method="POST">
+                <form class="forms-sample" action="{{route('admin.position.update',$postDetail->id)}}" enctype="multipart/form-data" method="post">
+                    @method('PUT')
                     @csrf
-                    @include('admin.post.common.form')
+                    @include('admin.position.common.form')
                 </form>
             </div>
         </div>
 
     </section>
 @endsection
+

@@ -1,5 +1,5 @@
 @extends('layouts.master')
-@section('title','Post')
+@section('title','Position')
 
 @section('main-content')
 
@@ -9,25 +9,25 @@
         <nav class="page-breadcrumb d-flex align-items-center justify-content-between">
             <ol class="breadcrumb mb-0">
                 <li class="breadcrumb-item"><a href="{{route('admin.dashboard')}}">Dashboard</a></li>
-                <li class="breadcrumb-item"><a href="{{route('admin.posts.index')}}">Post section</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Posts</li>
+                <li class="breadcrumb-item"><a href="{{route('admin.position.index')}}">Position section</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Position</li>
             </ol>
 
             @can('create_post')
-                <a href="{{ route('admin.posts.create')}}">
+                <a href="{{ route('admin.position.create')}}">
                     <button class="btn btn-primary add_department">
-                        <i class="link-icon" data-feather="plus"></i>Add Post
+                        <i class="link-icon" data-feather="plus"></i>Add Position
                     </button>
                 </a>
             @endcan
         </nav>
 
         <div class="search-box p-4 bg-white rounded mb-3 box-shadow pb-2">
-            <form class="forms-sample" action="{{route('admin.posts.index')}}" method="get">
+            <form class="forms-sample" action="{{route('admin.position.index')}}" method="get">
                 <div class="row align-items-center">
 
                     <div class="col-lg-2 mb-3">
-                        <h5>Posts Lists</h5>
+                        <h5>Position Lists</h5>
                     </div>
 
                     <div class="col-lg-4 col-md-4 mb-3">
@@ -41,13 +41,13 @@
                     </div>
 
                     <div class="col-lg-4 col-md-4 mb-3">
-                        <input type="text" placeholder="Search by Post name" name="name" value="{{$filterParameters['name']}}" class="form-control">
+                        <input type="text" placeholder="Search by Position name" name="name" value="{{$filterParameters['name']}}" class="form-control">
                     </div>
 
                     <div class="col-lg-2 col-md-4 d-flex">
                         <button type="submit" class="btn btn-block btn-secondary form-control me-md-2 me-0 mb-3">Filter</button>
 
-                        <a class="btn btn-block btn-primary me-md-2 me-0 mb-3 form-control" href="{{route('admin.posts.index')}}">Reset</a>
+                        <a class="btn btn-block btn-primary me-md-2 me-0 mb-3 form-control" href="{{route('admin.position.index')}}">Reset</a>
                     </div>
                 </div>
             </form>
@@ -86,7 +86,7 @@
 
                                 <td class="text-center">
                                     <label class="switch">
-                                        <input class="toggleStatus" href="{{route('admin.posts.toggle-status',$value->id)}}"
+                                        <input class="toggleStatus" href="{{route('admin.position.toggle-status',$value->id)}}"
                                                type="checkbox" {{($value->is_active) == 1 ?'checked':''}}>
                                         <span class="slider round"></span>
                                     </label>
@@ -98,7 +98,7 @@
 
                                         @can('edit_post')
                                             <li class="me-2">
-                                                <a href="{{route('admin.posts.edit',$value->id)}}">
+                                                <a href="{{route('admin.position.edit',$value->id)}}">
                                                     <i class="link-icon" data-feather="edit"></i>
                                                 </a>
                                             </li>
@@ -107,7 +107,7 @@
                                         @can('delete_post')
                                             <li>
                                                 <a class="deletePost" href="#"
-                                                   data-href="{{route('admin.posts.delete',$value->id)}}">
+                                                   data-href="{{route('admin.position.delete',$value->id)}}">
                                                     <i class="link-icon"  data-feather="delete"></i>
                                                 </a>
                                             </li>
@@ -134,13 +134,13 @@
             {{$posts->appends($_GET)->links()}}
         </div>
 
-        @include('admin.post.show')
+        @include('admin.position.show')
 
     </section>
 @endsection
 
 @section('scripts')
-   @include('admin.post.common.scripts')
+   @include('admin.position.common.scripts')
 @endsection
 
 

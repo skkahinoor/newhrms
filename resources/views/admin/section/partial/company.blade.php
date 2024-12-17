@@ -47,9 +47,9 @@
 
             @can('list_post')
                 <li class="nav-item">
-                    <a href="{{route('admin.posts.index')}}"
-                       data-href="{{route('admin.posts.index')}}"
-                       class="nav-link {{request()->routeIs('admin.posts.*') ? 'active' : ''}}">Position</a>
+                    <a href="{{route('admin.position.index')}}"
+                       data-href="{{route('admin.position.index')}}"
+                       class="nav-link {{request()->routeIs('admin.position.*') ? 'active' : ''}}">Position</a>
                 </li>
             @endcan
             </ul>

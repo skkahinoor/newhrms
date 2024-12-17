@@ -31,6 +31,6 @@
 
 
     <div class="col-lg-3 mb-4 mt-lg-4">
-        <button type="submit" class="btn btn-primary"><i class="link-icon" data-feather="plus"></i> {{isset($postDetail)? 'Update':'Create'}} Post</button>
+        <button type="submit" class="btn btn-primary"><i class="link-icon" data-feather="plus"></i> {{isset($postDetail)? 'Update':'Create'}} Position</button>
     </div>
 </div>

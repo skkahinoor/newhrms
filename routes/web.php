@@ -36,7 +36,7 @@ use App\Http\Controllers\Web\OfficeTimeController;
 use App\Http\Controllers\Web\OverTimeSettingController;
 use App\Http\Controllers\Web\PaymentCurrencyController;
 use App\Http\Controllers\Web\PaymentMethodController;
-use App\Http\Controllers\Web\PostController;
+use App\Http\Controllers\Web\PositionController;
 use App\Http\Controllers\Web\PrivacyPolicyController;
 use App\Http\Controllers\Web\ProcurementController;
 use App\Http\Controllers\Web\ProjectController;
@@ -140,10 +140,10 @@ Route::group([
         Route::get('departments/get-All-Departments/{branchId}', [DepartmentController::class, 'getAllDepartmentsByBranchId'])->name('departments.getAllDepartmentsByBranchId');
 
         /** post route */
-        Route::resource('posts', PostController::class);
-        Route::get('posts/toggle-status/{id}', [PostController::class, 'toggleStatus'])->name('posts.toggle-status');
-        Route::get('posts/delete/{id}', [PostController::class, 'delete'])->name('posts.delete');
-        Route::get('posts/get-All-posts/{deptId}', [PostController::class, 'getAllPostsByBranchId'])->name('posts.getAllPostsByBranchId');
+        Route::resource('position', PositionController::class);
+        Route::get('position/toggle-status/{id}', [PositionController::class, 'toggleStatus'])->name('position.toggle-status');
+        Route::get('position/delete/{id}', [PositionController::class, 'delete'])->name('position.delete');
+        Route::get('position/get-All-posts/{deptId}', [PositionController::class, 'getAllPostsByBranchId'])->name('position.getAllPostsByBranchId');
 
         /** roles & permissions route */
         Route::resource('roles', RoleController::class);

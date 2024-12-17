@@ -13,10 +13,10 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class PostController extends Controller
+class PositionController extends Controller
 {
 
-    private $view = 'admin.post.';
+    private $view = 'admin.position.';
 
     private PostRepository $postRepo;
     private DepartmentRepository $departmentRepo;
@@ -83,7 +83,7 @@ class PostController extends Controller
             DB::beginTransaction();
             $this->postRepo->store($validatedData);
             DB::commit();
-            return redirect()->route('admin.posts.index')->with('success', 'New Post Added Successfully');
+            return redirect()->route('admin.position.index')->with('success', 'New Position Added Successfully');
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()->back()
@@ -115,12 +115,12 @@ class PostController extends Controller
             $validatedData = $request->validated();
             $postDetail = $this->postRepo->getPostById($id);
             if(!$postDetail){
-                throw new \Exception('Post Detail Not Found',404);
+                throw new \Exception('Position Detail Not Found',404);
             }
             DB::beginTransaction();
             $post = $this->postRepo->update($postDetail,$validatedData);
             DB::commit();
-            return redirect()->route('admin.posts.index')->with('success', 'Post Detail Updated Successfully');
+            return redirect()->route('admin.position.index')->with('success', 'Position Detail Updated Successfully');
         }catch(\Exception $exception){
             return redirect()->back()->with('danger', $exception->getMessage())
                 ->withInput();
@@ -148,15 +148,15 @@ class PostController extends Controller
         try {
             $postDetail = $this->postRepo->getPostById($id);
             if (!$postDetail) {
-                throw new \Exception('Post Detail Not Found', 404);
+                throw new \Exception('Position Detail Not Found', 404);
             }
             if(!($postDetail->hasEmployee->isEmpty())){
-                throw new Exception('Post With Active or Inactive Employees Cannot Be Deleted.',400);
+                throw new Exception('Position With Active or Inactive Employees Cannot Be Deleted.',400);
             }
             DB::beginTransaction();
                 $this->postRepo->delete($postDetail);
             DB::commit();
-            return redirect()->back()->with('success', 'Post Detail Deleted  Successfully');
+            return redirect()->back()->with('success', 'Position Detail Deleted  Successfully');
         } catch (\Exception $exception) {
             DB::rollBack();
             return redirect()->back()->with('danger', $exception->getMessage());
