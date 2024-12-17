@@ -8,22 +8,21 @@
         </select>
     </div>
 
-    <div class="col-lg-4 col-md-6 mb-4">
+    {{-- <div class="col-lg-4 col-md-6 mb-4">
         <label for="exampleFormControlSelect1" class="form-label">Branch <span style="color: red">*</span> </label>
         <select class="form-select" id="exampleFormControlSelect1" name="branch_id" required >
             <option value="" {{!isset($departmentsDetail) ? 'selected': ''}}  disabled >Select Branch</option>
             @if($companyDetail)
                 @foreach($companyDetail->branches()->get() as $key => $branch)
                     <option value="{{ $branch->id }}" @selected( old('branch_id', isset($departmentsDetail) && $departmentsDetail->branch_id ) == $branch->id)>{{ucfirst($branch->name)}}</option>
-    {{--                <option value="{{ $branch->id }}" {{ (isset($departmentsDetail) && $branch->id == $departmentsDetail->branch_id) ?'selected':'' }} > {{ucfirst($branch->name)}} </option>--}}
                 @endforeach
             @endif
         </select>
-    </div>
+    </div> --}}
 
     <div class="col-lg-4 col-md-6 mb-4">
         <label for="name" class="form-label"> Department Name <span style="color: red">*</span></label>
-        <input type="text" class="form-control" id="dept_name" required name="dept_name" value="{{ ( isset($departmentsDetail) ? $departmentsDetail->dept_name: '' )}}" autocomplete="off" placeholder="">
+        <input type="text" class="form-control" id="dept_name" required name="dept_name" value="{{ ( isset($departmentsDetail) ? $departmentsDetail->dept_name: '' )}}" autocomplete="off" placeholder="Enter Department Name">
     </div>
 
     <div class="col-lg-4 col-md-6 mb-4">
@@ -32,20 +31,8 @@
             <option value="" {{!isset($departmentsDetail) ? 'selected': ''}}  disabled >Select Department Head</option>
             @foreach($users as $key => $user)
                 <option value="{{ $user->id }}" @selected( old('dept_head_id', isset($departmentsDetail) && $departmentsDetail->dept_head_id ) == $user->id)>{{ucfirst($user->name)}}</option>
-
-{{--                <option value="{{$user->id}}" {{ (isset($departmentsDetail) && $user->id == $departmentsDetail->dept_head_id ) ?'selected':'' }} > {{ucfirst($user->name)}} </option>--}}
             @endforeach
         </select>
-    </div>
-
-    <div class="col-lg-4 col-md-6 mb-4">
-        <label for="address" class="form-label"> Address <span style="color: red">*</span> </label>
-        <input type="text" class="form-control" id="address" required name="address" value="{{ isset($departmentsDetail)? $departmentsDetail->address: old('address') }}" autocomplete="off" placeholder="">
-    </div>
-
-    <div class="col-lg-4 col-md-6 mb-4">
-        <label for="number" class="form-label">Phone No <span style="color: red">*</span></label>
-        <input type="number" class="form-control" id="phone" required name="phone" value="{{ isset($departmentsDetail)? $departmentsDetail->phone: old('phone') }}" autocomplete="off" placeholder="">
     </div>
 
     <div class="col-lg-4 mb-4">

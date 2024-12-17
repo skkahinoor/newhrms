@@ -27,11 +27,8 @@ class DepartmentStoreRequest extends FormRequest
     {
         return [
             'dept_name' => 'required|string',
-            'address' => 'required|string',
-            'phone' => 'required|string',
             'dept_head_id' => 'nullable|exists:users,id',
             'company_id' => 'required|exists:companies,id',
-            'branch_id' => 'required|exists:branches,id',
             'is_active' => ['nullable', 'boolean', Rule::in([1, 0])],
         ];
 
