@@ -107,7 +107,7 @@ return array(
     'App\\Http\\Controllers\\Web\\OverTimeSettingController' => $baseDir . '/app/Http/Controllers/Web/OverTimeSettingController.php',
     'App\\Http\\Controllers\\Web\\PaymentCurrencyController' => $baseDir . '/app/Http/Controllers/Web/PaymentCurrencyController.php',
     'App\\Http\\Controllers\\Web\\PaymentMethodController' => $baseDir . '/app/Http/Controllers/Web/PaymentMethodController.php',
-    'App\\Http\\Controllers\\Web\\PostController' => $baseDir . '/app/Http/Controllers/Web/PostController.php',
+    'App\\Http\\Controllers\\Web\\PositionController' => $baseDir . '/app/Http/Controllers/Web/PositionController.php',
     'App\\Http\\Controllers\\Web\\PrivacyPolicyController' => $baseDir . '/app/Http/Controllers/Web/PrivacyPolicyController.php',
     'App\\Http\\Controllers\\Web\\ProcurementController' => $baseDir . '/app/Http/Controllers/Web/ProcurementController.php',
     'App\\Http\\Controllers\\Web\\ProjectController' => $baseDir . '/app/Http/Controllers/Web/ProjectController.php',

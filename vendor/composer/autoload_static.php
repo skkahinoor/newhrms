@@ -869,7 +869,7 @@ class ComposerStaticInit8ace53024fda3b1d0245aac60adcb908
         'App\\Http\\Controllers\\Web\\OverTimeSettingController' => __DIR__ . '/../..' . '/app/Http/Controllers/Web/OverTimeSettingController.php',
         'App\\Http\\Controllers\\Web\\PaymentCurrencyController' => __DIR__ . '/../..' . '/app/Http/Controllers/Web/PaymentCurrencyController.php',
         'App\\Http\\Controllers\\Web\\PaymentMethodController' => __DIR__ . '/../..' . '/app/Http/Controllers/Web/PaymentMethodController.php',
-        'App\\Http\\Controllers\\Web\\PostController' => __DIR__ . '/../..' . '/app/Http/Controllers/Web/PostController.php',
+        'App\\Http\\Controllers\\Web\\PositionController' => __DIR__ . '/../..' . '/app/Http/Controllers/Web/PositionController.php',
         'App\\Http\\Controllers\\Web\\PrivacyPolicyController' => __DIR__ . '/../..' . '/app/Http/Controllers/Web/PrivacyPolicyController.php',
         'App\\Http\\Controllers\\Web\\ProcurementController' => __DIR__ . '/../..' . '/app/Http/Controllers/Web/ProcurementController.php',
         'App\\Http\\Controllers\\Web\\ProjectController' => __DIR__ . '/../..' . '/app/Http/Controllers/Web/ProjectController.php',

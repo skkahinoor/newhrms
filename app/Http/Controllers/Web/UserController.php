@@ -6,6 +6,7 @@ use App\Exports\EmployeeFormExport;
 use App\Helpers\AppHelper;
 use App\Http\Controllers\Controller;
 use App\Imports\ImportUser;
+use App\Models\Department;
 use App\Models\User;
 use App\Repositories\BranchRepository;
 use App\Repositories\CompanyRepository;
@@ -65,7 +66,7 @@ class UserController extends Controller
 
             $company = $this->companyRepository->getCompanyDetail(['id']);
             $branches = $this->branchRepository->getLoggedInUserCompanyBranches($company->id, ['id', 'name']);
-
+            
             return view($this->view . 'index', compact('users', 'filterParameters', 'branches'));
         } catch (Exception $exception) {
             return redirect()->back()->with('danger', $exception->getMessage());
@@ -99,16 +100,17 @@ class UserController extends Controller
     {
         $this->authorize('create_employee');
         try {
-            $with = ['branches:id,name'];
+            $with = ['branches:id,name', 'departments:id,dept_name', 'positions:id,post_name', 'supervisor:id,name'];
             $select = ['id', 'name'];
             $companyDetail = $this->companyRepo->getCompanyDetail($select, $with);
+            $departments = Department::all();
             $roles = $this->roleRepo->getAllActiveRoles();
 
             $employeeCode = AppHelper::getEmployeeCode();
 
             $leaveTypes = $this->leaveTypeRepository->getPaidLeaveTypes();
 
-            return view($this->view . 'create', compact('companyDetail', 'roles', 'leaveTypes', 'employeeCode'));
+            return view($this->view . 'create', compact('companyDetail', 'departments', 'roles', 'leaveTypes', 'employeeCode'));
         } catch (Exception $exception) {
             return redirect()->back()->with('danger', $exception->getMessage());
         }

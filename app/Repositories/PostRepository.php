@@ -27,6 +27,9 @@ class PostRepository
 
     public function store($validatedData)
     {
+        $companyId = auth()->user();
+        $validatedData['company_id'] = $companyId->company_id;
+        // dd($validatedData);
         return Post::create($validatedData)->fresh();
     }
 

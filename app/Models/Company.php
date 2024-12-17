@@ -66,6 +66,21 @@ class Company extends Model
         return $this->hasMany(Branch::class,'company_id','id')->select('id','name')->where('is_active',1);
     }
 
+    public function departments()
+    {
+        return $this->hasMany(Department::class,'company_id','id')->select('id','dept_name')->where('is_active',1);
+    }
+
+    public function positions()
+    {
+        return $this->hasMany(Post::class,'company_id','id')->select('id','post_name')->where('is_active',1);
+    }
+
+    public function supervisor()
+    {
+        return $this->hasMany(User::class,'company_id','id')->select('id','name')->where('is_active',1)->where('role_id', '!=', 2);
+    }
+
     public function users()
     {
         return $this->hasMany(User::class);

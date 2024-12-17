@@ -14,7 +14,8 @@ class Post extends Model
     protected $fillable = [
         'post_name',
         'is_active',
-        'dept_id'
+        'dept_id',
+        'company_id'
     ];
 
     const RECORDS_PER_PAGE = 10;
