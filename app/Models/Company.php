@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 
-
 class Company extends Model
 {
     use HasFactory;
@@ -26,13 +25,12 @@ class Company extends Model
         'logo',
         'weekend',
         'created_by',
-        'updated_by'
+        'updated_by',
     ];
 
     const RECORDS_PER_PAGE = 10;
 
     const UPLOAD_PATH = 'uploads/company/logo/';
-
 
     public static function boot()
     {
@@ -53,32 +51,37 @@ class Company extends Model
 
     public function createdBy()
     {
-        return $this->belongsTo(User::class,'created_by','id');
+        return $this->belongsTo(User::class, 'created_by', 'id');
     }
 
     public function updatedBy()
     {
-        return $this->belongsTo(User::class,'updated_by','id');
+        return $this->belongsTo(User::class, 'updated_by', 'id');
     }
 
     public function branches()
     {
-        return $this->hasMany(Branch::class,'company_id','id')->select('id','name')->where('is_active',1);
+        return $this->hasMany(Branch::class, 'company_id', 'id')->select('id', 'name')->where('is_active', 1);
     }
 
     public function departments()
     {
-        return $this->hasMany(Department::class,'company_id','id')->select('id','dept_name')->where('is_active',1);
+        return $this->hasMany(Department::class, 'company_id', 'id')->select('id', 'dept_name')->where('is_active', 1);
     }
 
     public function positions()
     {
-        return $this->hasMany(Post::class,'company_id','id')->select('id','post_name')->where('is_active',1);
+        return $this->hasMany(Post::class, 'company_id', 'id')->select('id', 'post_name')->where('is_active', 1);
     }
 
     public function supervisor()
     {
-        return $this->hasMany(User::class,'company_id','id')->select('id','name')->where('is_active',1)->where('role_id', '!=', 2);
+        return $this->hasMany(User::class, 'company_id', 'id')->select('id', 'name')->where('is_active', 1)->where('role_id', '!=', 2);
+    }
+
+    public function officeTime()
+    {
+        return $this->hasMany(OfficeTime::class, 'company_id', 'id')->select('id', 'shift', 'opening_time', 'closing_time')->where('is_active', 1);
     }
 
     public function users()
@@ -93,10 +96,10 @@ class Company extends Model
 
     public function employee()
     {
-        return $this->hasMany(User::class,'company_id','id')
+        return $this->hasMany(User::class, 'company_id', 'id')
             ->select('*')
-            ->where('is_active',1)
-            ->where('status','verified');
+            ->where('is_active', 1)
+            ->where('status', 'verified');
     }
 
 }

@@ -22,7 +22,7 @@
             <h5 class="mb-3 border-bottom pb-3">Personal Detail</h5>
             <div class="row">
                 <div class="col-lg-4 col-md-6 mb-3">
-                    <label for="employee_code" class="form-label"> Employee Code</label>
+                    <label for="employee_code" class="form-label"> Employee Code <span style="color: red">*</span></label>
                     <input type="text" class="form-control" id="employee_code" name="employee_code"
                         autocomplete="off" value="{{ $userDetail->employee_code ?? '' }}"
                         placeholder="Enter Employee Code" required>
@@ -39,10 +39,10 @@
                 </div>
 
                 <div class="col-lg-4 col-md-6 mb-3">
-                    <label for="address" class="form-label"> Address <span style="color: red">*</span></label>
+                    <label for="address" class="form-label"> Address</label>
                     <input type="text" class="form-control" id="address" name="address"
                         value="{{ isset($userDetail) ? $userDetail->address : old('address') }}" autocomplete="off"
-                        placeholder="Enter Employee Address" required>
+                        placeholder="Enter Employee Address">
                 </div>
 
                 <div class="col-lg-4 col-md-6 mb-3">
@@ -56,14 +56,14 @@
                     <label for="number" class="form-label">Phone No <span style="color: red">*</span></label>
                     <input type="number" class="form-control" id="phone" name="phone"
                         value="{{ isset($userDetail) ? $userDetail->phone : old('phone') }}" required autocomplete="off"
-                        placeholder="">
+                        placeholder="Enter Phone number">
                 </div>
 
                 <div class="col-lg-4 col-md-6 mb-3">
-                    <label for="dob" class="form-label"> Date Of Birth <span style="color: red">*</span></label>
+                    <label for="dob" class="form-label"> Date Of Birth</label>
                     <input type="date" class="form-control" id="dob" name="dob"
-                        value="{{ isset($userDetail) ? $userDetail->dob : old('dob') }}" required autocomplete="off"
-                        placeholder="">
+                        value="{{ isset($userDetail) ? $userDetail->dob : old('dob') }}" autocomplete="off"
+                        placeholder="Enter Date Of Birth">
                 </div>
 
                 <div class="col-lg-4 col-md-6 mb-3">
@@ -82,9 +82,8 @@
                 </div>
 
                 <div class="col-lg-4 col-md-6 mb-3">
-                    <label for="marital_status" class="form-label">Marital Status <span
-                            style="color: red">*</span></label>
-                    <select class="form-select" id="marital_status" name="marital_status" required>
+                    <label for="marital_status" class="form-label">Marital Status</label>
+                    <select class="form-select" id="marital_status" name="marital_status">
                         <option value="" {{ isset($userDetail) || old('marital_status') ? '' : 'selected' }}
                             disabled>
                             Choose Marital Status
@@ -100,10 +99,10 @@
 
 
                 <div class="col-lg-4 mb-3">
-                    <label for="avatar" class="form-label">Upload Avatar <span style="color: red">*</span> </label>
+                    <label for="avatar" class="form-label">Upload Profile Photo </label>
                     <input class="form-control" type="file" id="avatar" name="avatar" accept="image/*"
                         value="{{ isset($userDetail) ? $userDetail->avatar : old('avatar') }}"
-                        {{ isset($userDetail) ? '' : 'required' }}>
+                        {{ isset($userDetail) ?? '' }}>
 
                     <img class="mt-2 rounded {{ isset($userDetail) && $userDetail->avatar ? '' : 'd-none' }}"
                         id="image-preview"
@@ -207,8 +206,8 @@
                 <div class="col-lg-4 col-md-6 mb-3">
                     <label for="post" class="form-label">Position <span style="color: red">*</span></label>
                     <select class="form-select" id="positions" name="post_id" required>
-                        <option value="" {{ !isset($userDetail) || old('post_id') ? 'selected' : '' }}
-                            disabled>Select
+                        <option value="" {{ !isset($userDetail) || old('post_id') ? 'selected' : '' }} disabled>
+                            Select
                             Position
                         </option>
                         @if (isset($companyDetail))
@@ -222,19 +221,19 @@
                 </div>
 
                 <div class="col-lg-4 col-md-6 mb-3">
-                    <label for="supervisor" class="form-label">Supervisor <span style="color: red">*</span></label>
+                    <label for="supervisor" class="form-label">Supervisor</label>
                     <select class="form-select" id="supervisors" name="supervisor_id">
-                        <option value="" {{ !isset($userDetail) || old('post_id') ? 'selected' : '' }}
-                        disabled>Select
-                        Supervisor
-                    </option>
-                    @if (isset($companyDetail))
-                        @foreach ($companyDetail->supervisor()->get() as $key => $sup)
-                            <option value="{{ $sup->id }}"
-                                {{ (isset($userDetail) && $userDetail->supervisor_id == $sup->id) || old('supervisor_id') == $sup->id ? 'selected' : '' }}>
-                                {{ ucfirst($sup->name) }}</option>
-                        @endforeach
-                    @endif
+                        <option value="" {{ !isset($userDetail) || old('post_id') ? 'selected' : '' }} disabled>
+                            Select
+                            Supervisor
+                        </option>
+                        @if (isset($companyDetail))
+                            @foreach ($companyDetail->supervisor()->get() as $key => $sup)
+                                <option value="{{ $sup->id }}"
+                                    {{ (isset($userDetail) && $userDetail->supervisor_id == $sup->id) || old('supervisor_id') == $sup->id ? 'selected' : '' }}>
+                                    {{ ucfirst($sup->name) }}</option>
+                            @endforeach
+                        @endif
                     </select>
                 </div>
 
@@ -244,7 +243,7 @@
                     <select class="form-select" id="employment_type" name="employment_type" required>
                         <option value="" {{ isset($userDetail) || old('employment_type') ? '' : 'selected' }}
                             disabled>
-                            select employment type
+                            Select employment type
                         </option>
                         @foreach (User::EMPLOYMENT_TYPE as $value)
                             <option value="{{ $value }}"
@@ -255,16 +254,28 @@
                 </div>
                 <div class="col-lg-4 col-md-6 mb-3">
                     <label for="officeTime" class="form-label">Office Time <span style="color: red">*</span></label>
-                    <select class="form-select" id="officeTime" name="office_time_id" required>
-
+                    <select class="form-select" id="officeTimes" name="office_time_id" required>
+                        <option value="" {{ isset($userDetail) || old('employment_type') ? '' : 'selected' }}
+                            disabled>
+                            Select Office Time
+                        </option>
+                        @if (isset($companyDetail))
+                            @foreach ($companyDetail->officeTime()->get() as $key => $shift)
+                                <option value="{{ $shift->id }}"
+                                    {{ (isset($userDetail) && $userDetail->office_time_id == $shift->id) || old('office_time_id') == $shift->id ? 'selected' : '' }}>
+                                    {{ ucfirst($shift->shift) }} ({{ $shift->opening_time }} - {{ $shift->closing_time }})
+                                </option>
+                            @endforeach
+                        @endif
                     </select>
                 </div>
 
+
                 <div class="col-lg-4 col-md-6 mb-3">
-                    <label for="joining_date" class="form-label"> Joining Date</label>
+                    <label for="joining_date" class="form-label"> Joining Date <span style="color: red">*</span></label>
                     <input type="date" class="form-control" id="joining_date" name="joining_date"
                         value="{{ isset($userDetail) ? $userDetail->joining_date : old('joining_date') }}"
-                        autocomplete="off" placeholder="Enter Joining Date">
+                        autocomplete="off" placeholder="Enter Joining Date" required>
                 </div>
 
                 <div class="col-lg-4 col-md-6 mb-3">
@@ -356,33 +367,29 @@
                     <h5 class="mb-3 border-bottom pb-3">Bank Detail</h5>
                     <div class="row">
                         <div class="col-lg-6 col-md-6 mb-4">
-                            <label for="bank_name" class="form-label">Bank Name <span
-                                    style="color: red">*</span></label>
+                            <label for="bank_name" class="form-label">Bank Name</label>
                             <input type="text" class="form-control" id="bank_name" name="bank_name"
                                 value="{{ isset($userDetail?->accountDetail) ? $userDetail?->accountDetail?->bank_name : old('bank_name') }}"
-                                autocomplete="off" placeholder="Enter Bank Name" required>
+                                autocomplete="off" placeholder="Enter Bank Name">
                         </div>
 
                         <div class="col-lg-6 col-md-6 mb-4">
-                            <label for="bank_account_no" class="form-label">Bank Account Number <span
-                                    style="color: red">*</span></label>
+                            <label for="bank_account_no" class="form-label">Bank Account Number</label>
                             <input type="number" class="form-control" id="bank_account_no" name="bank_account_no"
                                 value="{{ isset($userDetail?->accountDetail) ? $userDetail?->accountDetail?->bank_account_no : old('bank_account_no') }}"
-                                autocomplete="off" placeholder=" Enter Bank Account Number" required>
+                                autocomplete="off" placeholder=" Enter Bank Account Number">
                         </div>
 
                         <div class="col-lg-6 col-md-6 mb-4">
-                            <label for="account_holder" class="form-label">Account Holder Name <span
-                                    style="color: red">*</span></label>
+                            <label for="account_holder" class="form-label">Account Holder Name</label>
                             <input type="text" class="form-control" id="account_holder" name="account_holder"
                                 value="{{ isset($userDetail) ? $userDetail?->accountDetail?->account_holder : old('account_holder') }}"
                                 autocomplete="off" required placeholder="Enter Account Holder">
                         </div>
 
                         <div class="col-lg-6 col-md-6 mb-4">
-                            <label for="bank_account_type" class="form-label">Bank Account Type<span
-                                    style="color: red">*</span></label>
-                            <select class="form-select" id="bank_account_type" name="bank_account_type" required>
+                            <label for="bank_account_type" class="form-label">Bank Account Type</label>
+                            <select class="form-select" id="bank_account_type" name="bank_account_type">
                                 <option value=""
                                     {{ isset($userDetail) || old('bank_account_type') ? '' : 'selected' }}>
                                     select account type

@@ -100,7 +100,7 @@ class UserController extends Controller
     {
         $this->authorize('create_employee');
         try {
-            $with = ['branches:id,name', 'departments:id,dept_name', 'positions:id,post_name', 'supervisor:id,name'];
+            $with = ['branches:id,name', 'departments:id,dept_name', 'positions:id,post_name', 'supervisor:id,name', 'officeTime:id,shift,opening_time,closing_time'];
             $select = ['id', 'name'];
             $companyDetail = $this->companyRepo->getCompanyDetail($select, $with);
             $departments = Department::all();
