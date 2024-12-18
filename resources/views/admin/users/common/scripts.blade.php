@@ -82,6 +82,24 @@
             })
         })
 
+        $('.adminEmployee').click(function (event) {
+            event.preventDefault();
+            let href = $(this).data('href');
+            Swal.fire({
+                title: 'Are you sure you want to make Admin to this Employee ?',
+                showDenyButton: true,
+                confirmButtonText: `Yes`,
+                denyButtonText: `No`,
+                padding:'10px 50px 10px 50px',
+                // width:'1000px',
+                allowOutsideClick: false
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = href;
+                }
+            })
+        })
+
         $('.forceLogOut').click(function (event) {
             event.preventDefault();
             let href = $(this).data('href');
@@ -206,7 +224,6 @@
     $('#employeeDetail').validate({
             rules: {
                 name: { required: true },
-                address: { required: true },
                 email: { required: true },
                 role_id: { required: true },
                 username: { required: true },
@@ -216,9 +233,7 @@
                 name: {
                     required: "Please enter name",
                 },
-                address: {
-                    required: "Please enter address"
-                },
+                
                 email: {
                     required: "Please enter valid email"
                 },

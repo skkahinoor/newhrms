@@ -135,10 +135,10 @@
                                     </div>
                                 @endif
 
-                                <div class="col-lg-12 col-md-4 mb-3">
+                                {{-- <div class="col-lg-12 col-md-4 mb-3">
                                     <label for="role" class="form-label">Role <span
                                             style="color: red">*</span></label>
-                                    <select class="form-select" id="role" name="role_id" required>
+                                    <select class="form-select" id="role" name="role_id">
                                         <option value=""
                                             {{ isset($userDetail) || old('role_id') ? '' : 'selected' }} disabled>
                                             Select
@@ -152,7 +152,7 @@
                                             @endforeach
                                         @endif
                                     </select>
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
                     </div>
@@ -384,7 +384,7 @@
                             <label for="account_holder" class="form-label">Account Holder Name</label>
                             <input type="text" class="form-control" id="account_holder" name="account_holder"
                                 value="{{ isset($userDetail) ? $userDetail?->accountDetail?->account_holder : old('account_holder') }}"
-                                autocomplete="off" required placeholder="Enter Account Holder">
+                                autocomplete="off" placeholder="Enter Account Holder">
                         </div>
 
                         <div class="col-lg-6 col-md-6 mb-4">

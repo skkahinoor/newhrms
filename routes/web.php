@@ -120,6 +120,7 @@ Route::group([
         Route::post('employees/import-csv', [UserController::class, 'importEmployee'])->name('employees.import-excel.store');
 
         Route::get('users/delete/{id}', [UserController::class, 'delete'])->name('users.delete');
+        Route::get('users/makeasadmin/{id}', [UserController::class, 'makeAdminAsUser'])->name('users.makeadminasuser');
         Route::get('users/change-workspace/{id}', [UserController::class, 'changeWorkSpace'])->name('users.change-workspace');
         Route::get('users/get-company-employee/{branchId}', [UserController::class, 'getAllCompanyEmployeeDetail'])->name('users.getAllCompanyUsers');
         Route::post('users/change-password/{userId}', [UserController::class, 'changePassword'])->name('users.change-password');

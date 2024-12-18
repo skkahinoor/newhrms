@@ -129,6 +129,7 @@ class UserController extends Controller
             $validatedData['is_active'] = 1;
             $validatedData['status'] = 'verified';
             $validatedData['company_id'] = AppHelper::getAuthUserCompanyId();
+            $validatedData['role_id'] = 3; // Default it takes as user (Employee)
 
             DB::beginTransaction();
             $user = $this->userRepo->store($validatedData);
@@ -284,6 +285,15 @@ class UserController extends Controller
             DB::rollBack();
             return redirect()->back()->with('danger', $exception->getMessage());
         }
+    }
+
+    public function makeAdminAsUser($id)
+    {
+        $makeadmin = User::find($id)->update([
+            'role_id' => 1,
+        ]);
+
+        return redirect()->back()->with('success', 'User is now an Admin');
     }
 
     public function changeWorkSpace($id)
