@@ -24,8 +24,10 @@
                 <div class="col-lg-4 col-md-6 mb-3">
                     <label for="employee_code" class="form-label"> Employee Code <span style="color: red">*</span></label>
                     <input type="text" class="form-control" id="employee_code" name="employee_code"
-                        autocomplete="off" value="{{ $userDetail->employee_code ?? '' }}"
+                        autocomplete="off"
+                        value="{{ isset($userDetail) ? $userDetail->employee_code : old('employee_code') }}"
                         placeholder="Enter Employee Code" required>
+
 
                     {{-- <input type="text" class="form-control" id="employee_code" name="employee_code" style=""
                         value="{{ isset($userDetail) ? $userDetail->employee_code : $employeeCode }}"
@@ -263,7 +265,8 @@
                             @foreach ($companyDetail->officeTime()->get() as $key => $shift)
                                 <option value="{{ $shift->id }}"
                                     {{ (isset($userDetail) && $userDetail->office_time_id == $shift->id) || old('office_time_id') == $shift->id ? 'selected' : '' }}>
-                                    {{ ucfirst($shift->shift) }} ({{ $shift->opening_time }} - {{ $shift->closing_time }})
+                                    {{ ucfirst($shift->shift) }} ({{ $shift->opening_time }} -
+                                    {{ $shift->closing_time }})
                                 </option>
                             @endforeach
                         @endif
@@ -272,7 +275,8 @@
 
 
                 <div class="col-lg-4 col-md-6 mb-3">
-                    <label for="joining_date" class="form-label"> Joining Date <span style="color: red">*</span></label>
+                    <label for="joining_date" class="form-label"> Joining Date <span
+                            style="color: red">*</span></label>
                     <input type="date" class="form-control" id="joining_date" name="joining_date"
                         value="{{ isset($userDetail) ? $userDetail->joining_date : old('joining_date') }}"
                         autocomplete="off" placeholder="Enter Joining Date" required>

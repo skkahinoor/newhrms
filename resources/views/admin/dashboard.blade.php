@@ -233,7 +233,11 @@ $viewCheckOut = $checkOutAt ? \App\Helpers\AttendanceHelper::changeTimeFormatFor
                                 </div>
                                 <div class="row align-items-center d-md-flex">
                                     <div class="col-lg-6 col-md-6">
+                                        @if ($isAdmin)
+                                            <h3>{{ number_format($dashboardDetail->total_holidays) ?? 0 }}</h3>
+                                        @else
                                         <h3>{{ number_format($dashboardDetail?->total_holidays) ?? 0 }}</h3>
+                                        @endif
                                     </div>
                                     <div class="col-lg-6 col-md-6 text-md-end dash-icon mt-md-0 mt-2">
                                         <i class="link-icon" data-feather="umbrella"> </i>

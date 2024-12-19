@@ -49,7 +49,12 @@ class ClientRepository
 
     public function store($validatedData)
     {
-        $validatedData['avatar'] = $this->storeImage($validatedData['avatar'], Client::UPLOAD_PATH,500,500);
+        // $validatedData['avatar'] = $this->storeImage($validatedData['avatar'], Client::UPLOAD_PATH,500,500);
+        // return Client::create($validatedData)->fresh();
+        if (array_key_exists('avatar', $validatedData) && $validatedData['avatar']) {
+            $validatedData['avatar'] = $this->storeImage($validatedData['avatar'], Client::UPLOAD_PATH, 500, 500);
+        }
+    
         return Client::create($validatedData)->fresh();
     }
 

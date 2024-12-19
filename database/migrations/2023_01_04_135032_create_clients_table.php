@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('name',255);
             $table->string('email');
             $table->string('contact_no');
-            $table->string('avatar');
+            $table->string('avatar')->nullable();
             $table->string('address')->nullable();
             $table->string('country');
             $table->boolean('is_active')->default(1);

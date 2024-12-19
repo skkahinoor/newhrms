@@ -33,14 +33,14 @@ class UserCreateRequest extends FormRequest
             'email'=>'required|email|unique:users',
             'password'=>'required|string|min:4',
             'username'=>'required|string|unique:users',
-            'address'=>'required',
-            'dob'=>'required|date|before:today',
+            // 'address'=>'required',
+            // 'dob'=>'date|before:today',
             'phone'=>'required|numeric',
             'gender' => ['required', 'string', Rule::in(User::GENDER)],
-            'marital_status' => ['required', 'string', Rule::in(User::MARITAL_STATUS)],
+            'marital_status' => ['string', Rule::in(User::MARITAL_STATUS)],
             'employment_type' => ['required', 'string', Rule::in(User::EMPLOYMENT_TYPE)],
             'joining_date' => 'nullable|date|before_or_equal:today',
-            'role_id' => 'required|exists:roles,id',
+            'role_id' => 'exists:roles,id',
             'branch_id' => 'required|exists:branches,id',
             'department_id' => 'required|exists:departments,id',
             'post_id' => 'required|exists:posts,id',
@@ -49,7 +49,7 @@ class UserCreateRequest extends FormRequest
             'leave_allocated' => 'nullable|numeric|gte:0',
             'remarks' => 'nullable|string|max:1000',
             'workspace_type' => ['nullable', 'boolean', Rule::in([1, 0])],
-            'avatar' => ['required', 'file', 'mimes:jpeg,png,jpg,webp','max:5048'],
+            'avatar' => ['file', 'mimes:jpeg,png,jpg,webp','max:5048'],
         ];
 
     }

@@ -6,6 +6,7 @@ use App\Helpers\AppHelper;
 use App\Http\Controllers\Controller;
 use App\Imports\HolidaysImport;
 use App\Models\Branch;
+use App\Models\Role;
 use App\Requests\Holiday\HolidayRequest;
 use App\Services\Holiday\HolidayService;
 use Carbon\Carbon;
@@ -16,6 +17,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -41,8 +43,13 @@ class HolidayController extends Controller
             $filterParameters['event_year'] = $request->event_year ?? Carbon::now()->format('Y');
             $filterParameters['event'] = $request->event ?? null;
             $filterParameters['month'] = $request->month ?? null;
-            // new Code
-            $filterParameters['branch_id'] = $userBranchId;
+            // new Code for check admin and user and display according the list
+            $currentUser = Auth::user();
+            $roleAdminId = Role::where('slug', 'admin')->value('id');
+            $admin = $currentUser->role_id == $roleAdminId;
+            if (!$admin) {
+                $filterParameters['branch_id'] = $userBranchId;
+            }
             // end new code
             if (AppHelper::ifDateInBsEnabled()) {
                 $nepaliDate = AppHelper::getCurrentNepaliYearMonth();

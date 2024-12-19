@@ -86,7 +86,10 @@ class UserRepository
     public function store($validatedData)
     {
         $validatedData['created_by'] = getAuthUserCode();
-        $validatedData['avatar'] = $this->storeImage($validatedData['avatar'], User::AVATAR_UPLOAD_PATH, 500, 500);
+        if (array_key_exists('avatar', $validatedData) && $validatedData['avatar']) {
+            $validatedData['avatar'] = $this->storeImage($validatedData['avatar'], User::AVATAR_UPLOAD_PATH, 500, 500);
+        }
+        // $validatedData['avatar'] = $this->storeImage($validatedData['avatar'], User::AVATAR_UPLOAD_PATH, 500, 500);
         return User::create($validatedData)->fresh();
     }
 

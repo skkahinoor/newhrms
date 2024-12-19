@@ -3,6 +3,8 @@
 namespace App\Repositories;
 
 use App\Helpers\AppHelper;
+use App\Models\Role;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class DashboardRepository
@@ -59,10 +61,22 @@ class DashboardRepository
             ->where('is_active', '1')
             ->groupBy('company_id');
 
-        $totalHolidaysInYear = DB::table('holidays')
-            ->select('company_id', DB::raw('count(id) as total_holidays'))
-            ->where('is_active', '1')
-            ->where($branchFilter);
+        $currentUser = Auth::user();
+        $roleAdminId = Role::where('slug', 'admin')->value('id');
+        $admin = $currentUser->role_id == $roleAdminId;
+
+        if ($admin) {
+            $totalHolidaysInYear = DB::table('holidays')
+                ->select('company_id', DB::raw('count(id) as total_holidays'))
+                ->where('is_active', '1');
+            // ->where($branchFilter);
+        } else {
+            $totalHolidaysInYear = DB::table('holidays')
+                ->select('company_id', DB::raw('count(id) as total_holidays'))
+                ->where('is_active', '1')
+                ->where($branchFilter);
+        }
+
         if (isset($date['start_date'])) {
             $totalHolidaysInYear->whereBetween('event_date', [$date['start_date'], $date['end_date']]);
         } else {
@@ -70,14 +84,12 @@ class DashboardRepository
         }
         $totalHolidaysInYear->groupBy('company_id');
 
-
         $projects = DB::table('projects')
             ->select('users.company_id as company_id', DB::raw('count(projects.id) as total_projects'))
             ->leftJoin('users', function ($join) {
                 $join->on('projects.created_by', '=', 'users.id');
             })
             ->groupBy('users.company_id');
-
 
         return DB::table('companies')->select(
             'companies.name as company_name',
@@ -126,5 +138,3 @@ class DashboardRepository
     }
 
 }
-
-

@@ -44,9 +44,13 @@ class DashboardController extends Controller
             // Get current date and date 2 days from now
 
             // check use is admin or not
-            $role = Role::all();
-            $admin = User::where('role_id', $role);
-            $user = Auth::user();
+            // $role = Role::all();
+            // $admin = User::where('role_id', $role);
+            // $user = Auth::user();
+            
+            $currentUser = Auth::user();
+            $roleAdminId = Role::where('slug', 'admin')->value('id');
+            $admin = $currentUser->role_id == $roleAdminId;
 
             $isLeadAgent = false;
 
@@ -58,7 +62,7 @@ class DashboardController extends Controller
             }
 
             // Check If the user is Admin Or Not
-            if (auth()->user()->role_id == $user->id) { // This is Admin
+            if ($admin) { // This is Admin
                 $isAdmin = true;
                 $Followupsetting = FollowUpSetting::first();
                 $notifydays = $Followupsetting ? $Followupsetting->notifyday : 2;
@@ -78,7 +82,7 @@ class DashboardController extends Controller
                 $currentDate = Carbon::now();
                 $upcomingDate = Carbon::now()->addDays($notifydays);
 
-                $leadAgent = LeadAgent::where('userid', $user->id)->first();
+                $leadAgent = LeadAgent::where('userid', $currentUser->id)->first();
 
                 if ($leadAgent) {
                     // Retrieve follow-ups related to the leads that this lead agent is assigned to

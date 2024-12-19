@@ -89,114 +89,82 @@
 
         <div class="card">
             <div class="card-body">
-                <ul class="nav nav-tabs" id="myTab" role="tablist">
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane"
-                            type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">All
-                            Holidays</button>
-                    </li>
-                    {{-- <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane"
-                            type="button" role="tab" aria-controls="profile-tab-pane"
-                            aria-selected="false">Bhubaneshwar</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane"
-                            type="button" role="tab" aria-controls="contact-tab-pane"
-                            aria-selected="false">Cuttack</button>
-                    </li> --}}
-                </ul>
-                <div class="tab-content" id="myTabContent">
-                    <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab"
-                        tabindex="0">
-                        {{-- All Holidays Lists  --}}
-                        <div class="table-responsive">
-                            <table id="dataTableExample" class="table">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Event</th>
-                                        <th>Event Date </th>
-                                        <th class="text-center">Status</th>
-                                        @canany(['show_holiday', 'edit_holiday', 'delete_holiday'])
-                                            <th class="text-center">Action</th>
-                                        @endcanany
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
+                <div class="table-responsive">
+                    <table id="dataTableExample" class="table">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Event</th>
+                            <th>Event Date </th>
+                            <th class="text-center">Status</th>
+                            @canany(['show_holiday','edit_holiday','delete_holiday'])
+                                <th class="text-center">Action</th>
+                            @endcanany
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
 
-                                        @forelse($holidays as $key => $value)
-                                    <tr>
-                                        <td>{{ ($holidays->currentPage() - 1) * \App\Models\Holiday::RECORDS_PER_PAGE + ++$key }}
-                                        </td>
-                                        <td>{{ ucfirst($value->event) }}</td>
-                                        <td>{{ \App\Helpers\AppHelper::formatDateForView($value->event_date) }}</td>
+                        @forelse($holidays as $key => $value)
+                            <tr>
+                                <td>{{(($holidays->currentPage()- 1 ) * (\App\Models\Holiday::RECORDS_PER_PAGE) + (++$key))}}</td>
+                                <td>{{ucfirst($value->event)}}</td>
+                                <td>{{\App\Helpers\AppHelper::formatDateForView($value->event_date)}}</td>
 
-                                        <td class="text-center">
-                                            <label class="switch">
-                                                <input class="toggleStatus"
-                                                    href="{{ route('admin.holidays.toggle-status', $value->id) }}"
-                                                    type="checkbox" {{ $value->is_active == 1 ? 'checked' : '' }}>
-                                                <span class="slider round"></span>
-                                            </label>
-                                        </td>
+                                <td class="text-center">
+                                    <label class="switch">
+                                        <input class="toggleStatus" href="{{route('admin.holidays.toggle-status',$value->id)}}"
+                                               type="checkbox" {{($value->is_active) == 1 ?'checked':''}}>
+                                        <span class="slider round"></span>
+                                    </label>
+                                </td>
 
-                                        @canany(['show_holiday', 'edit_holiday', 'delete_holiday'])
-                                            <td class="text-center">
-                                                <ul class="d-flex list-unstyled mb-0 justify-content-center">
+                                @canany(['show_holiday','edit_holiday','delete_holiday'])
+                                    <td class="text-center">
+                                    <ul class="d-flex list-unstyled mb-0 justify-content-center">
 
-                                                    @can('edit_holiday')
-                                                        <li class="me-2">
-                                                            <a href="{{ route('admin.holidays.edit', $value->id) }}"
-                                                                title="Edit">
-                                                                <i class="link-icon" data-feather="edit"></i>
-                                                            </a>
-                                                        </li>
-                                                    @endcan
+                                        @can('edit_holiday')
+                                            <li class="me-2">
+                                                <a href="{{route('admin.holidays.edit',$value->id)}}" title="Edit">
+                                                    <i class="link-icon" data-feather="edit"></i>
+                                                </a>
+                                            </li>
+                                        @endcan
 
-                                                    @can('show_holiday')
-                                                        <li class="me-2">
-                                                            <a href="" id="showHolidayDetail"
-                                                                data-href="{{ route('admin.holidays.show', $value->id) }}"
-                                                                data-id="{{ $value->id }}">
-                                                                <i class="link-icon" data-feather="eye"></i>
-                                                            </a>
-                                                        </li>
-                                                    @endcan
+                                        @can('show_holiday')
+                                            <li class="me-2">
+                                                <a href=""
+                                                   id="showHolidayDetail"
+                                                   data-href="{{route('admin.holidays.show',$value->id)}}"
+                                                   data-id="{{ $value->id }}">
+                                                    <i class="link-icon" data-feather="eye"></i>
+                                                </a>
+                                            </li>
+                                        @endcan
 
-                                                    @can('delete_holiday')
-                                                        <li>
-                                                            <a class="deleteHoliday"
-                                                                data-href="{{ route('admin.holidays.delete', $value->id) }}"
-                                                                title="Delete">
-                                                                <i class="link-icon" data-feather="delete"></i>
-                                                            </a>
-                                                        </li>
-                                                    @endcan
+                                        @can('delete_holiday')
+                                            <li>
+                                                <a class="deleteHoliday"
+                                                   data-href="{{route('admin.holidays.delete',$value->id)}}" title="Delete">
+                                                    <i class="link-icon"  data-feather="delete"></i>
+                                                </a>
+                                            </li>
+                                        @endcan
 
-                                                </ul>
-                                            </td>
-                                        @endcanany
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="100%">
-                                            <p class="text-center"><b>No records found!</b></p>
-                                        </td>
-                                    </tr>
-                                    @endforelse
-                                </tbody>
-                            </table>
-                            <div class="dataTables_paginate mt-3">
-                                {{ $holidays->appends($_GET)->links() }}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab"
-                        tabindex="0">...</div>
-                    <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab"
-                        tabindex="0">...</div>
+                                    </ul>
+                                </td>
+                                @endcanany
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="100%">
+                                    <p class="text-center"><b>No records found!</b></p>
+                                </td>
+                            </tr>
+                        @endforelse
+
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

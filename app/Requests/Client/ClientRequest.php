@@ -32,13 +32,14 @@ class ClientRequest extends FormRequest
             'address' => ['nullable','string','max:255'],
             'country' => ['required','string','max:255'],
             'is_active' => ['nullable', 'boolean', Rule::in([1, 0])],
+            'avatar' => ['sometimes', 'file', 'mimes:jpeg,png,jpg,svg', 'max:5048'],
         ];
 
-        if ($this->isMethod('put')) {
-            $rules['avatar'] = ['sometimes', 'file', 'mimes:jpeg,png,jpg,svg','max:5048'];
-        } else {
-            $rules['avatar'] = ['required', 'file', 'mimes:jpeg,png,jpg,svg','max:5048'];
-        }
+        // if ($this->isMethod('put')) {
+        //     $rules['avatar'] = ['sometimes', 'file', 'mimes:jpeg,png,jpg,svg','max:5048'];
+        // } else {
+        //     $rules['avatar'] = ['required', 'file', 'mimes:jpeg,png,jpg,svg','max:5048'];
+        // }
         return $rules;
 
     }
