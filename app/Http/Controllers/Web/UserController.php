@@ -194,7 +194,6 @@ class UserController extends Controller
 
             return view($this->view . 'edit', compact('companyDetail', 'roles', 'userDetail', 'leaveTypes', 'employeeLeaveTypes'));
         } catch (Exception $exception) {
-
             return redirect()->back()->with('danger', $exception->getFile());
         }
     }
