@@ -175,7 +175,7 @@
                     <label for="branch_id" class="form-label">Branch <span style="color: red">*</span></label>
                     <select class="form-select" id="branch" name="branch_id" required>
                         <option value="" {{ !isset($userDetail) || old('branch_id') ? 'selected' : '' }}
-                            disabled>Select
+                            >Select
                             Branch
                         </option>
                         @if (isset($companyDetail))
@@ -192,7 +192,7 @@
                     <label for="department" class="form-label">Departments <span style="color: red">*</span></label>
                     <select class="form-select" id="departments" name="department_id" required>
                         <option value="" {{ !isset($userDetail) || old('department_id') ? 'selected' : '' }}
-                            disabled>Select
+                            >Select
                             Department
                         </option>
                         @if (isset($companyDetail))
@@ -208,7 +208,7 @@
                 <div class="col-lg-4 col-md-6 mb-3">
                     <label for="post" class="form-label">Position <span style="color: red">*</span></label>
                     <select class="form-select" id="positions" name="post_id" required>
-                        <option value="" {{ !isset($userDetail) || old('post_id') ? 'selected' : '' }} disabled>
+                        <option value="" {{ !isset($userDetail) || old('post_id') ? 'selected' : '' }} >
                             Select
                             Position
                         </option>
@@ -225,7 +225,7 @@
                 <div class="col-lg-4 col-md-6 mb-3">
                     <label for="supervisor" class="form-label">Supervisor</label>
                     <select class="form-select" id="supervisors" name="supervisor_id">
-                        <option value="" {{ !isset($userDetail) || old('post_id') ? 'selected' : '' }} disabled>
+                        <option value="" {{ !isset($userDetail) || old('post_id') ? 'selected' : '' }}>
                             Select
                             Supervisor
                         </option>
@@ -244,7 +244,7 @@
                     </label>
                     <select class="form-select" id="employment_type" name="employment_type" required>
                         <option value="" {{ isset($userDetail) || old('employment_type') ? '' : 'selected' }}
-                            disabled>
+                            >
                             Select employment type
                         </option>
                         @foreach (User::EMPLOYMENT_TYPE as $value)
@@ -258,7 +258,7 @@
                     <label for="officeTime" class="form-label">Office Time <span style="color: red">*</span></label>
                     <select class="form-select" id="officeTimes" name="office_time_id" required>
                         <option value="" {{ isset($userDetail) || old('employment_type') ? '' : 'selected' }}
-                            disabled>
+                            >
                             Select Office Time
                         </option>
                         @if (isset($companyDetail))
@@ -286,7 +286,7 @@
                     <label for="workspace_type" class="form-label">WorkSpace</label>
                     <select class="form-select" id="workspace_type" name="workspace_type">
                         <option value="" {{ isset($userDetail) || old('workspace_type') ? '' : 'selected' }}
-                            disabled>
+                            >
                             select work place
                         </option>
                         <option value="{{ User::FIELD }}"
