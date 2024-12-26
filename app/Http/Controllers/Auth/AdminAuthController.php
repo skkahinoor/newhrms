@@ -133,7 +133,7 @@ class AdminAuthController extends Controller
         $user = Auth::user(); // Get the authenticated user
 
         // Check user type and redirect accordingly
-        $redirectTo = ($user->role_id == 2)
+        $redirectTo = ($user->role_id == 2) // 2 is vendor
             ? $this->redirectToVendor
             : $this->redirectTo;
 

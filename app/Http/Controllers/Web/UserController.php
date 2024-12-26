@@ -125,6 +125,7 @@ class UserController extends Controller
             $accountValidatedData = $accountRequest->validated();
             $leaveTypeData = $leaveRequest->validated();
 
+            $validatedData['address'] = $request->address;
             $validatedData['password'] = bcrypt($validatedData['password']);
             $validatedData['is_active'] = 1;
             $validatedData['status'] = 'verified';
@@ -214,6 +215,7 @@ class UserController extends Controller
             if (!$userDetail) {
                 throw new Exception('User Detail Not Found', 404);
             }
+            $validatedData['address'] = $request->address;
             DB::beginTransaction();
             $this->userRepo->update($userDetail, $validatedData);
             $this->accountRepo->createOrUpdate($userDetail, $accountValidatedData);
