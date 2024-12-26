@@ -89,7 +89,7 @@
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="email" class="form-label">Email Address *</label>
-                                    <input type="email" class="form-control" id="email" name="email"
+                                    <input type="email" class="form-control" id="email" name="email_address"
                                         placeholder="Enter your email" required>
                                 </div>
 
@@ -104,7 +104,7 @@
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="mobile" class="form-label">Mobile Number *</label>
-                                    <input type="text" class="form-control" id="mobile" name="mobile"
+                                    <input type="text" class="form-control" id="mobile" name="mobile_number"
                                         placeholder="Enter your mobile number" required>
                                 </div>
 
@@ -153,14 +153,14 @@
                             <!-- Notice Period -->
                             <div class="mb-3">
                                 <label for="noticePeriod" class="form-label">Notice Period (In Months) *</label>
-                                <input type="number" class="form-control" id="noticePeriod" name="notice_period"
+                                <input type="number" class="form-control" id="noticePeriod" name="notice_period_days"
                                     placeholder="Enter notice period in days" required>
                             </div>
 
                             <!-- Upload Your CV -->
                             <div class="mb-3">
                                 <label for="cv" class="form-label">Upload Your CV (PDF Only) *</label>
-                                <input type="file" class="form-control" id="cv" name="cv"
+                                <input type="file" class="form-control" id="cv" name="cv_file_path"
                                     accept="application/pdf" required>
                             </div>
 

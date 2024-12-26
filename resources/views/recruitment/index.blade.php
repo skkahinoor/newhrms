@@ -143,10 +143,10 @@
                                     <ul class="btns">
                                         <br>
                                         <li class="bg-danger ">
-                                            <a
-                                                href="{{ route('recruitment.view', ['id' => Crypt::encrypt($post->id)]) }}"><button type="submit" class="btn btn-link text-light p-0 fw-bold fs-5">
-                                                Apply
-                                            </button></a>
+                                            <a href="{{ route('recruitment.view', ['id' => Crypt::encrypt($post->id)]) }}"><button
+                                                    type="submit" class="btn btn-link text-light p-0 fw-bold fs-5">
+                                                    Apply
+                                                </button></a>
                                         </li>
                                     </ul>
                                 </div>
