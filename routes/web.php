@@ -36,6 +36,7 @@ use App\Http\Controllers\Web\OfficeTimeController;
 use App\Http\Controllers\Web\OverTimeSettingController;
 use App\Http\Controllers\Web\PaymentCurrencyController;
 use App\Http\Controllers\Web\PaymentMethodController;
+use App\Http\Controllers\Web\PayrollGeneralSettingsController;
 use App\Http\Controllers\Web\PositionController;
 use App\Http\Controllers\Web\PrivacyPolicyController;
 use App\Http\Controllers\Web\ProcurementController;
@@ -436,6 +437,10 @@ Route::group([
         Route::post('procurement/{id}/resume-status', [ProcurementController::class, 'resumeStatus'])->name('resumeStatus');
         Route::get('getQuotationDetails/{id}', [ProcurementController::class, 'getQuotationDetails'])->name('getQuotationDetails');
         Route::post('approveStatusQuotation/{id}', [ProcurementController::class, 'approveStatusQuotation'])->name('approveStatusQuotation');
+
+        // Salary General Settings Route
+
+        Route::get('payroll-general-settings', [PayrollGeneralSettingsController::class, 'index'])->name('payroll-general-settings.index');
 
         /** Salary Component route */
         Route::resource('salary-components', SalaryComponentController::class, [
