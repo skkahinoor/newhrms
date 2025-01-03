@@ -1,7 +1,7 @@
 <div class="card overflow-hidden">
 <ul class=" nav payroll-sidebar-menu">
-    <li class="nav-item {{request()->routeIs('admin.payroll-general-settings.index.*') ? 'bg-danger' : '' }} w-100" style="border-bottom: 1px solid #ede7e7;">
-        <a class="nav-link {{request()->routeIs('admin.payroll-general-settings.index.*') ? 'text-white' : 'text-black' }}"
+    <li class="nav-item {{request()->routeIs('admin.payroll-general-settings.*') ? 'bg-danger' : '' }} w-100" style="border-bottom: 1px solid #ede7e7;">
+        <a class="nav-link {{request()->routeIs('admin.payroll-general-settings.*') ? 'text-white' : 'text-black' }}"
            href="{{ route('admin.payroll-general-settings.index')}}">
             General Settings
         </a>

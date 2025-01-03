@@ -12,18 +12,18 @@ class PayrollGeneralSetting extends Model
     protected $table = 'payroll_general_settings';
 
     protected $fillable = [
-        'lin-number',
-        'esic-number',
-        'lwf-number',
-        'professional-tax',
-        'days-run-in-payroll',
-        'payroll-run-acess-role',
-        'attendence-cycle-start-day',
-        'payable-days-in-month',
-        'salary-pwd',
-        'lop-days',
-        'additional-component-in-ctc',
-        'ytd-start-month',
+        'lin_number',
+        'esic_number',
+        'lwf_number',
+        'professional_tax',
+        'days_run_in_payroll',
+        'payroll_run_acess_role',
+        'attendence_cycle_start_day',
+        'payable_days_in_month',
+        'salary_pwd',
+        'lop_days',
+        'additional_component_in_ctc',
+        'ytd_start_month',
     ];
 
     // Role relationship

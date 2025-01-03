@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('gratuities', function (Blueprint $table) {
             $table->id();
-            $table->integer('eligible-for-gratuity')->nullable()->default(0);
+            $table->integer('gratuity')->nullable()->default(0);
             $table->timestamps();
         });
     }

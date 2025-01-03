@@ -12,6 +12,6 @@ class Gratuity extends Model
     protected $table = 'gratuities';
 
     protected $fillable = [
-        'eligible-for-gratuity',
+        'gratuity',
     ];
 }

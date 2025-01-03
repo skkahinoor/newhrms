@@ -442,6 +442,10 @@ Route::group([
 
         Route::get('payroll-general-settings', [PayrollGeneralSettingsController::class, 'index'])->name('payroll-general-settings.index');
 
+        Route::post('payroll-general-settings/general-setting', [PayrollGeneralSettingsController::class, 'payrollGeneralSettingEdit'])->name('payroll-general-settings.payrollGeneralSettingEdit');
+
+        Route::post('payroll-general-settings/gratuity', [PayrollGeneralSettingsController::class, 'gratuityEdit'])->name('payroll-general-settings.gratuityEdit');
+
         /** Salary Component route */
         Route::resource('salary-components', SalaryComponentController::class, [
             'except' => ['destroy', 'show'],
